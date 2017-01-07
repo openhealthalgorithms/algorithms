@@ -167,9 +167,9 @@ if hasChol == "YES":
 else:
     print "Without cholesterol the assessment will be less accurate. We will use an average of 5.2"
     c = 5.2
+    cholIndex = convert_chol(c)
 
-
-path = '/Users/fredhersch/Development/cvdrisk/WHOfiles/'
+path = 'WHOfiles/'
 sbp = sbpIndex #represent ranges to be converted
 tchol = cholIndex # represeent ranges to be converted
 
