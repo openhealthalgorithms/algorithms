@@ -23,5 +23,68 @@ Steps:
     
 """
 
-def calcDiabetesStatus(*args):
+#def calcDiabetesStatus(*args):
+    
+"""
+// Gender; F = 0, M = 2
+// Age; if =<30 = 0, 31-40 = 3, >=41 = 4
+// BMI; <25 = 0, >=25 = 2
+// WHR; m < 0.9, f < 0.8 = 0; m >= 0.9, f >= 0.8 = 5
+// HTN; SBP <140, DBP < 90 = 0; SBP >= 140, DBP >= 90 = 2
+// If score >= 9/15, then should be further evaluated
+"""
+
+def calcWHR(waist, hip):
+    whr = waist/hip
+    print ("whr %s " % whr)
+    return whr
+
+def calcBMI(height, weight):
+    bmi = weight/(height*height)
+    print ("BMI is %s " % bmi)
+    return bmi
+
+def calcDiabetesRisk(gender, age, bmi, whr, sbp, dbp):
+
+    risk_score = 0
+    
+    if gender == "M":
+        risk_score = risk_score + 2
+        if whr >= 0.9:
+            risk_score = risk_score + 5
+    else:
+        if whr >= 0.8:
+            risk_score = risk_score + 5
+        
+    if ((age > 30) & (age < 41)):
+        risk_score = risk_score + 3
+    elif age > 40:
+        risk_score = risk_score + 4
+    
+    if bmi >= 25:
+        risk_score = risk_score + 2
+        
+    # need to clarify this is it & or OR
+    #  should be the average of two readings
+    if ((sbp >= 140) or (dbp >= 90)):
+        risk_score = risk_score + 2
+    
+    return risk_score
+
+"""
+Sample data
+"""    
+gender = "F"
+age = 30
+height = 1.5
+weight = 70.0
+waist = 99.0
+hip = 104.0
+sbp = 145
+dbp = 80
+
+diabetes_risk = calcDiabetesRisk(gender, age, calcBMI(height, weight), calcWHR(waist, hip), sbp, dbp)
+
+print ("Risk is %s " % diabetes_risk)
+
     
