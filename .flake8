@@ -1,0 +1,13 @@
+[flake8]
+
+max-complexity = 10
+max-line-length = 80
+
+count = True
+format = pylint
+show-source = True
+statistics = True
+doctests = True
+
+exclude =
+    *.pyc
