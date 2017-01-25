@@ -20,12 +20,10 @@ class Diabetes(object):
         >>> from OpenHealthAlgorithms.Diabetes import Diabetes
         >>> params = {
         ...    'gender': 'M', 'age': 31, 'systolic': 139, 'diastolic': 90,
-        ...    'weight': 50.0, 'height': 2.0, 'waist': 50.0, 'hip': 90.0
+        ...    'weight': 50.0, 'height': 1.5, 'waist': 50.0, 'hip': 90.0
         ... }
-        >>> risk_score = Diabetes().risk_score(params)
-        >>> print risk_score
-        7
-
+        >>> result = Diabetes().calculate(params)
+        >>> print result
     """
     @staticmethod
     def __calculate_waist_hip_ratio(waist, hip):
@@ -38,7 +36,7 @@ class Diabetes(object):
         return body_mass_index
 
     @staticmethod
-    def risk_score(params):
+    def calculate(params):
         """
 
         Parameters
@@ -60,10 +58,11 @@ class Diabetes(object):
             ...    'waist':     99.0,
             ...    'hip':       104.0,
             ... }
+            >>> Diabetes().calculate(params)
 
         Returns
         -------
-        int
+        dict
             Diabetes risk score
         """
 
@@ -82,28 +81,31 @@ class Diabetes(object):
             params.get('height')
         )
 
-        calculated_risk_score = 0
+        risk_score = 0
 
-        if gender == "M":
-            calculated_risk_score += 2
-            if waist_hip_ratio >= 0.9:
-                calculated_risk_score += 5
-        else:
-            if waist_hip_ratio >= 0.8:
-                calculated_risk_score += 5
+        if gender == "M" and waist_hip_ratio < 0.9:
+            risk_score += 2
+        elif gender == "M" and waist_hip_ratio >= 0.9:
+            risk_score += 7
+        elif waist_hip_ratio >= 0.8:
+            risk_score += 5
 
         if 30 < age < 41:
-            calculated_risk_score += 3
+            risk_score += 3
         elif age > 40:
-            calculated_risk_score += 4
+            risk_score += 4
 
         if body_mass_index >= 25:
-            calculated_risk_score += 2
+            risk_score += 2
 
         # ToDo:
         # need to clarify this is it AND or OR
         # should be the average of two readings
         if systolic_blood_pressure >= 140 or diastolic_blood_pressure >= 90:
-            calculated_risk_score += 2
+            risk_score += 2
 
-        return calculated_risk_score
+        return {
+            'risk_score':      risk_score,
+            'waist_hip_ratio': waist_hip_ratio,
+            'body_mass_index': body_mass_index,
+        }
