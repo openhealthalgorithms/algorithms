@@ -24,7 +24,6 @@ class Diabetes(object):
         ... }
         >>> result = Diabetes().calculate(params)
         >>> print result
-        7
 
     """
     @staticmethod
