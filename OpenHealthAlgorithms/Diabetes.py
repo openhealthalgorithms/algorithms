@@ -20,10 +20,12 @@ class Diabetes(object):
         >>> from OpenHealthAlgorithms.Diabetes import Diabetes
         >>> params = {
         ...    'gender': 'M', 'age': 31, 'systolic': 139, 'diastolic': 90,
-        ...    'weight': 50.0, 'height': 1.5, 'waist': 50.0, 'hip': 90.0
+        ...    'weight': 50.0, 'height': 2.0, 'waist': 50.0, 'hip': 90.0
         ... }
         >>> result = Diabetes().calculate(params)
         >>> print result
+        7
+
     """
     @staticmethod
     def __calculate_waist_hip_ratio(waist, hip):
@@ -67,6 +69,11 @@ class Diabetes(object):
         """
 
         # ToDo: add parameter validations
+
+        params = {
+            key: float(value) if type(value) is int else value
+            for key, value in params.iteritems()
+        }
 
         gender = params.get('gender')
         age = params.get('age')
