@@ -46,12 +46,14 @@ class Framingham(object):
         is_smoker = params['is_smoker']
         has_diabetes = params['has_diabetes']
 
-        risk_chol = Framingham.__get_co_efficient("logAge", gender) \
-                    * np.log(age) \
-                    + Framingham.__get_co_efficient("logTChol", gender) \
-                      * np.log(total_cholesterol) \
-                    - Framingham.__get_co_efficient("logHDLChol", gender) \
-                      * np.log(hdl_cholesterol)
+        risk_chol = (
+            Framingham.__get_co_efficient("logAge", gender)
+            * np.log(age)
+            + Framingham.__get_co_efficient("logTChol", gender)
+            * np.log(total_cholesterol)
+            - Framingham.__get_co_efficient("logHDLChol", gender)
+            * np.log(hdl_cholesterol)
+        )
 
         # If on medication for BP
         if on_bp_medication:
@@ -65,19 +67,20 @@ class Framingham(object):
                 * np.log(systolic)
             )
 
-        risk_smoking_diabetes = (
-            risk_chol
-            + risk_systolic
-            + Framingham.__get_co_efficient("logSmoking", gender)
+        risk_smoking = (
+            Framingham.__get_co_efficient("logSmoking", gender)
             * is_smoker
-            + Framingham.__get_co_efficient("logDM", gender)
+        )
+        risk_diabetes = (
+            Framingham.__get_co_efficient("logDM", gender)
             * has_diabetes
         )
+        total_risk = risk_chol + risk_systolic + risk_smoking + risk_diabetes
 
         framingham_risk_score = 1 - np.power(
             Framingham.__get_co_efficient("so10", gender),
             np.exp(
-                risk_smoking_diabetes
+                total_risk
                 - Framingham.__get_co_efficient("calc_mean", gender)
             )
         )
