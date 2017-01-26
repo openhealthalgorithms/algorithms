@@ -1,0 +1,15 @@
+## auto environment files
+.env
+.out
+
+## python version file
+.python-version
+
+## virtualenv
+venv/
+
+## ide settings
+.idea
+
+## coverage file
+.coverage
