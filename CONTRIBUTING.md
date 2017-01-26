@@ -75,4 +75,4 @@ go into the project directory and run the following command in terminal:
  * run flake8: `flake8 OpenHealthAlgorithms`
 * __Test Code__: Write testcode in the `tests` package. Test file name should be `test_(name of the algorithm).py` ex: `test_diabetes.py`
  * use nose to run the tests: `nosetests tests`
- * make sure tests cover 100% of the code. (run test with coverage `nosetests tests --with-coverage`)
+ * make sure tests cover 100% of the code. (run test with coverage `nosetests tests --with-coverage --cover-package=OpenHealthAlgorithms`)
