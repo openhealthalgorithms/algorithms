@@ -153,7 +153,7 @@ class Framingham(object):
         Returns
         -------
         dict
-           Framongham risk score and heart age
+           Framingham risk score and heart age
         """
         params = {
             key: float(value) if type(value) is int else value
