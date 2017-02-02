@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-# ToDo: insert file headers
 import numpy as np
+from __helpers import format_params
 
+# ToDo: insert file headers
 __author__ = ""
 __copyright__ = ""
 
@@ -155,10 +156,7 @@ class Framingham(object):
         dict
            Framingham risk score and heart age
         """
-        params = {
-            key: float(value) if type(value) is int else value
-            for key, value in params.iteritems()
-        }
+        params = format_params(params)
 
         cvd_risk = Framingham.calculate_fre_score(params)
         heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])

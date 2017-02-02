@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
+from __helpers import format_params
+
 # ToDo: insert file headers
+
 __author__ = ""
 __copyright__ = ""
 
@@ -37,6 +40,43 @@ class Diabetes(object):
         return body_mass_index
 
     @staticmethod
+    def __adjust_risk_by_gender_and_whi(risk_score, gender, waist_hip_ratio):
+        if gender == "M" and waist_hip_ratio < 0.9:
+            risk_score += 2
+        elif gender == "M" and waist_hip_ratio >= 0.9:
+            risk_score += 7
+        elif waist_hip_ratio >= 0.8:
+            risk_score += 5
+        return risk_score
+
+    @staticmethod
+    def __adjust_risk_by_age(risk_score, age):
+        if 30 < age < 41:
+            risk_score += 3
+        elif age > 40:
+            risk_score += 4
+        return risk_score
+
+    @staticmethod
+    def __adjust_risk_by_bmi(risk_score, body_mass_index):
+        if body_mass_index >= 25:
+            risk_score += 2
+        return risk_score
+
+    @staticmethod
+    def __adjust_risk_by_bp(
+            risk_score,
+            systolic_blood_pressure,
+            diastolic_blood_pressure
+    ):
+        # ToDo:
+        # need to clarify this is it AND or OR
+        # should be the average of two readings
+        if systolic_blood_pressure >= 140 or diastolic_blood_pressure >= 90:
+            risk_score += 2
+        return risk_score
+
+    @staticmethod
     def calculate(params):
         """
 
@@ -69,10 +109,7 @@ class Diabetes(object):
 
         # ToDo: add parameter validations
 
-        params = {
-            key: float(value) if type(value) is int else value
-            for key, value in params.iteritems()
-        }
+        params = format_params(params)
 
         gender = params.get('gender')
         age = params.get('age')
@@ -88,27 +125,18 @@ class Diabetes(object):
         )
 
         risk_score = 0
-
-        if gender == "M" and waist_hip_ratio < 0.9:
-            risk_score += 2
-        elif gender == "M" and waist_hip_ratio >= 0.9:
-            risk_score += 7
-        elif waist_hip_ratio >= 0.8:
-            risk_score += 5
-
-        if 30 < age < 41:
-            risk_score += 3
-        elif age > 40:
-            risk_score += 4
-
-        if body_mass_index >= 25:
-            risk_score += 2
-
-        # ToDo:
-        # need to clarify this is it AND or OR
-        # should be the average of two readings
-        if systolic_blood_pressure >= 140 or diastolic_blood_pressure >= 90:
-            risk_score += 2
+        risk_score = Diabetes.__adjust_risk_by_gender_and_whi(
+            risk_score,
+            gender,
+            waist_hip_ratio
+        )
+        risk_score = Diabetes.__adjust_risk_by_age(risk_score, age)
+        risk_score = Diabetes.__adjust_risk_by_bmi(risk_score, body_mass_index)
+        risk_score = Diabetes.__adjust_risk_by_bp(
+            risk_score,
+            systolic_blood_pressure,
+            diastolic_blood_pressure
+        )
 
         return {
             'risk_score':      risk_score,
