@@ -17,3 +17,4 @@ exclude_paths:
 - tests/
 - venv/
 - cvdrisk/
+- demo.py
