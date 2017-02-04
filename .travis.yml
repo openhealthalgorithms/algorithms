@@ -6,4 +6,3 @@ install:
   - pip install -r requirements/dev.txt
 # command to run tests
 script: 'nosetests'
-after-success: 'codecov'
