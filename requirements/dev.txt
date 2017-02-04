@@ -1,0 +1,9 @@
+-r common.txt
+# code quality
+radon
+flake8
+
+# testing
+nose
+coverage
+codecov

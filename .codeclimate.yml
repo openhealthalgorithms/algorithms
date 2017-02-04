@@ -6,9 +6,11 @@ engines:
       languages:
       - python
   fixme:
-    enabled: true
+    enabled: false
   radon:
     enabled: true
+    config:
+      threshold: "C"
 ratings:
   paths:
   - "OpenHealthAlgorithms/**.py"
@@ -17,3 +19,4 @@ exclude_paths:
 - tests/
 - venv/
 - cvdrisk/
+- demo.py
