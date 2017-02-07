@@ -2,7 +2,7 @@
 #  -*- coding: utf-8 -*-
 
 import numpy as np
-from __helpers import format_params
+from OpenHealthAlgorithms.__helpers import format_params
 
 # ToDo: insert file headers
 __author__ = ""

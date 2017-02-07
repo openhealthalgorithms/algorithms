@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-from __helpers import format_params
+from OpenHealthAlgorithms.__helpers import format_params
 
 # ToDo: insert file headers
 
