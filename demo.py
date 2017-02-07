@@ -12,7 +12,7 @@ params = {
     'hip':       90,
 }
 result = Diabetes().calculate(params)
-print '{0: <20}'.format(' --> Diabetes:'), result
+print('--> Diabetes:', result)
 
 params = {
    'gender':            'F',
@@ -25,4 +25,4 @@ params = {
    'has_diabetes':      False,
 }
 result = Framingham().calculate(params)
-print '{0: <20}'.format(' --> Framingham:'), result
+print('--> Framingham:', result)

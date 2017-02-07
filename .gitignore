@@ -13,3 +13,9 @@ venv/
 
 ## coverage file
 .coverage
+
+## python dist files
+build/
+dist/
+**.egg-info
+

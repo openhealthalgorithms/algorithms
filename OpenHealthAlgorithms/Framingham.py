@@ -104,7 +104,7 @@ class Framingham(object):
         # run a binary search to estimate heart age
         min_heart_age = 10
         max_heart_age = 200
-        suggested_heart_age = (min_heart_age + max_heart_age) / 2
+        suggested_heart_age = int((min_heart_age + max_heart_age) / 2)
 
         while min_heart_age <= max_heart_age:
             standard_params['age'] = suggested_heart_age
@@ -119,10 +119,10 @@ class Framingham(object):
                 break
             elif round(age_risk, 6) > round(cvd_risk, 6):
                 max_heart_age = suggested_heart_age - 1
-                suggested_heart_age = (min_heart_age + max_heart_age) / 2
+                suggested_heart_age = int((min_heart_age + max_heart_age) / 2)
             elif round(age_risk, 6) < round(cvd_risk, 6):
                 min_heart_age = suggested_heart_age + 1
-                suggested_heart_age = (min_heart_age + max_heart_age) / 2
+                suggested_heart_age = int((min_heart_age + max_heart_age) / 2)
 
         return suggested_heart_age
 
