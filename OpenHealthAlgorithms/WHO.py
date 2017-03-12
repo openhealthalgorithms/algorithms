@@ -122,7 +122,7 @@ class WHO(object):
         params = format_params(params)
 
         cholesterol = WHO.__convert_cholesterol(params['cholesterol']) \
-            if 'cholesterol' in params.keys() else 'uc '
+            if 'cholesterol' in params.keys() else 'uc'
         diabetes = params['has_diabetes']
         gender = params['gender']
         smoker = params['is_smoker']
