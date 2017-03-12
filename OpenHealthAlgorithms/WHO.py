@@ -78,8 +78,6 @@ class WHO(object):
             return "30-40%"
         elif cvd_risk == 50:
             return "> 40%"
-        else:
-            return "UNIDENTIFIED"
 
     @staticmethod
     def calculate(params):
@@ -138,8 +136,16 @@ class WHO(object):
             filename
         ))
 
-        data = np.loadtxt(file_path, dtype=int, delimiter=',')
+        try:
+            data = np.loadtxt(file_path, dtype=int, delimiter=',')
+            risk = data[sbp_index] if cholesterol == 'uc' \
+                else data[sbp_index, cholesterol]
+            return {'risk': risk, 'risk_range': WHO.__convert_risk(risk)}
+        except FileNotFoundError:
+            return {
+                'risk': None,
+                'risk_range': None,
+                'exception': 'file not found'
+            }
 
-        risk = data[sbp_index] if cholesterol == 'uc' else data[sbp_index, cholesterol]
 
-        return {'risk': risk, 'risk_range': WHO.__convert_risk(risk)}
