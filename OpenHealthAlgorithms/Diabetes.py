@@ -137,6 +137,6 @@ class Diabetes(object):
 
         return {
             'risk_score':      risk_score,
-            'waist_hip_ratio': round(waist_hip_ratio, 2),
-            'body_mass_index': round(body_mass_index, 2),
+            'waist_hip_ratio': float('%.2f' % (round(waist_hip_ratio, 2))),
+            'body_mass_index': float('%.2f' % (round(body_mass_index, 2))),
         }

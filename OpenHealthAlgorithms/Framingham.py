@@ -4,31 +4,18 @@
 import numpy as np
 from OpenHealthAlgorithms.__helpers import format_params
 
-__author__ = "indrajit"
+# ToDo: insert file headers
+__author__ = ""
+__copyright__ = ""
 
-__license__ = "Apache License"
-__version__ = "0.1.1"
-__maintainer__ = "indrajit"
-__email__ = "eendroroy@gmail.com"
+__license__ = ""
+__version__ = ""
+__maintainer__ = ""
+__email__ = ""
 
 
 class Framingham(object):
     """
-    Calculates Framingham Risk Score and Heart age
-
-    Example
-    -------
-       >>> params = {
-       ...    'gender':            'M',
-       ...    'age':               40,
-       ...    'total_cholesterol': 180,
-       ...    'hdl_cholesterol':   45,
-       ...    'systolic':          125,
-       ...    'on_bp_medication':  False,
-       ...    'is_smoker':         False,
-       ...    'has_diabetes':      False,
-       ... }
-       >>> Framingham().calculate(params)
 
     """
 
@@ -175,6 +162,6 @@ class Framingham(object):
         heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])
 
         return {
-            'cvd_risk': round(cvd_risk, 4),
+            'cvd_risk': float('%.4f' % (round(cvd_risk, 4))),
             'heart_age': heart_age,
         }
