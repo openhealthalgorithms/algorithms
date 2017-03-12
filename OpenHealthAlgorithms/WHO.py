@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
+
 import math
 import numpy as np
 import os
+import sys
 
 from OpenHealthAlgorithms.__helpers import format_params
 
@@ -11,6 +13,12 @@ __license__ = "Apache License"
 __version__ = "0.1.1"
 __maintainer__ = "indrajit"
 __email__ = "eendroroy@gmail.com"
+
+# support both python2 and python3
+if sys.version_info[0] == 3:
+    FileException = FileNotFoundError
+elif sys.version_info[0] == 2:
+    FileException = IOError
 
 
 class WHO(object):
@@ -141,7 +149,7 @@ class WHO(object):
             risk = data[sbp_index] if cholesterol == 'uc' \
                 else data[sbp_index, cholesterol]
             return {'risk': risk, 'risk_range': WHO.__convert_risk(risk)}
-        except FileNotFoundError:
+        except FileException:
             return {
                 'risk': None,
                 'risk_range': None,
