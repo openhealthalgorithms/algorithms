@@ -148,7 +148,10 @@ class WHO(object):
             data = np.loadtxt(file_path, dtype=int, delimiter=',')
             risk = data[sbp_index] if cholesterol == 'uc' \
                 else data[sbp_index, cholesterol]
-            return {'risk': risk, 'risk_range': WHO.__convert_risk(risk)}
+            return {
+                'risk': int(risk),
+                'risk_range': WHO.__convert_risk(int(risk))
+            }
         except FileException:
             return {
                 'risk': None,
