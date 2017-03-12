@@ -3,15 +3,12 @@
 
 from OpenHealthAlgorithms.__helpers import format_params
 
-# ToDo: insert file headers
+__author__ = "indrajit"
 
-__author__ = ""
-__copyright__ = ""
-
-__license__ = ""
-__version__ = ""
-__maintainer__ = ""
-__email__ = ""
+__license__ = "Apache License"
+__version__ = "0.1.1"
+__maintainer__ = "indrajit"
+__email__ = "eendroroy@gmail.com"
 
 
 class Diabetes(object):
@@ -26,7 +23,7 @@ class Diabetes(object):
         ...    'weight': 50.0, 'height': 2.0, 'waist': 50.0, 'hip': 90.0
         ... }
         >>> result = Diabetes().calculate(params)
-        >>> print result
+        >>> print(result)
 
     """
     @staticmethod
@@ -140,6 +137,6 @@ class Diabetes(object):
 
         return {
             'risk_score':      risk_score,
-            'waist_hip_ratio': round(waist_hip_ratio, 2),
-            'body_mass_index': round(body_mass_index, 2),
+            'waist_hip_ratio': float('%.2f' % (round(waist_hip_ratio, 2))),
+            'body_mass_index': float('%.2f' % (round(body_mass_index, 2))),
         }

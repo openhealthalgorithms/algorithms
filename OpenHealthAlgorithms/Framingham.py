@@ -162,6 +162,6 @@ class Framingham(object):
         heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])
 
         return {
-            'cvd_risk': round(cvd_risk, 4),
+            'cvd_risk': float('%.4f' % (round(cvd_risk, 4))),
             'heart_age': heart_age,
         }
