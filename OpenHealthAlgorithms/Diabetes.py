@@ -3,15 +3,12 @@
 
 from OpenHealthAlgorithms.__helpers import format_params
 
-# ToDo: insert file headers
+__author__ = "indrajit"
 
-__author__ = ""
-__copyright__ = ""
-
-__license__ = ""
-__version__ = ""
-__maintainer__ = ""
-__email__ = ""
+__license__ = "Apache License"
+__version__ = "0.1.0"
+__maintainer__ = "indrajit"
+__email__ = "eendroroy@gmail.com"
 
 
 class Diabetes(object):
