@@ -7,13 +7,28 @@ from OpenHealthAlgorithms.__helpers import format_params
 __author__ = "indrajit"
 
 __license__ = "Apache License"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __maintainer__ = "indrajit"
 __email__ = "eendroroy@gmail.com"
 
 
 class Framingham(object):
     """
+    Calculates Framingham Risk Score and Heart age
+
+    Example
+    -------
+       >>> params = {
+       ...    'gender':            'M',
+       ...    'age':               40,
+       ...    'total_cholesterol': 180,
+       ...    'hdl_cholesterol':   45,
+       ...    'systolic':          125,
+       ...    'on_bp_medication':  False,
+       ...    'is_smoker':         False,
+       ...    'has_diabetes':      False,
+       ... }
+       >>> Framingham().calculate(params)
 
     """
 

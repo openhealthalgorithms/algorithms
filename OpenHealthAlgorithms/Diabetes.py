@@ -6,7 +6,7 @@ from OpenHealthAlgorithms.__helpers import format_params
 __author__ = "indrajit"
 
 __license__ = "Apache License"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __maintainer__ = "indrajit"
 __email__ = "eendroroy@gmail.com"
 
@@ -23,7 +23,7 @@ class Diabetes(object):
         ...    'weight': 50.0, 'height': 2.0, 'waist': 50.0, 'hip': 90.0
         ... }
         >>> result = Diabetes().calculate(params)
-        >>> print result
+        >>> print(result)
 
     """
     @staticmethod
