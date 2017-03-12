@@ -155,5 +155,3 @@ class WHO(object):
                 'risk_range': None,
                 'exception': 'file not found'
             }
-
-
