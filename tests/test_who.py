@@ -14,8 +14,8 @@ class FraminghamTest(unittest.TestCase):
             'systolic_blood_pressure_1': 130,
             'systolic_blood_pressure_2': 145,
             'cholesterol': 5,
-            'is_smoker': "Y",
-            'has_diabetes': "Y",
+            'is_smoker': True,
+            'has_diabetes': True,
         }
         result = WHO().calculate(params)
         self.assertEqual(result['exception'], 'file not found')
@@ -26,8 +26,8 @@ class FraminghamTest(unittest.TestCase):
             'systolic_blood_pressure_1': 130,
             'systolic_blood_pressure_2': 145,
             'cholesterol': 5,
-            'is_smoker': "Y",
-            'has_diabetes': "Y",
+            'is_smoker': True,
+            'has_diabetes': True,
         }
         result = WHO().calculate(params)
         self.assertEqual(result['exception'], 'file not found')
@@ -39,8 +39,8 @@ class FraminghamTest(unittest.TestCase):
             'systolic_blood_pressure_1': 130,
             'systolic_blood_pressure_2': 145,
             'cholesterol': 4,
-            'is_smoker': "Y",
-            'has_diabetes': "Y",
+            'is_smoker': True,
+            'has_diabetes': True,
         }
         result = WHO().calculate(params)
         self.assertEqual(result['risk'], 10)
@@ -52,8 +52,8 @@ class FraminghamTest(unittest.TestCase):
             'systolic_blood_pressure_1': 130,
             'systolic_blood_pressure_2': 145,
             'cholesterol': 7,
-            'is_smoker': "Y",
-            'has_diabetes': "Y",
+            'is_smoker': True,
+            'has_diabetes': True,
         }
         result = WHO().calculate(params)
         self.assertEqual(result['risk'], 20)
@@ -65,8 +65,8 @@ class FraminghamTest(unittest.TestCase):
             'systolic_blood_pressure_1': 180,
             'systolic_blood_pressure_2': 185,
             'cholesterol': 4,
-            'is_smoker': "N",
-            'has_diabetes': "N",
+            'is_smoker': False,
+            'has_diabetes': False,
         }
         result = WHO().calculate(params)
         self.assertEqual(result['risk'], 30)
@@ -78,8 +78,8 @@ class FraminghamTest(unittest.TestCase):
             'systolic_blood_pressure_1': 140,
             'systolic_blood_pressure_2': 150,
             'cholesterol': 5,
-            'is_smoker': "Y",
-            'has_diabetes': "Y",
+            'is_smoker': True,
+            'has_diabetes': True,
         }
         result = WHO().calculate(params)
         self.assertEqual(result['risk'], 40)
@@ -91,8 +91,8 @@ class FraminghamTest(unittest.TestCase):
             'systolic_blood_pressure_1': 160,
             'systolic_blood_pressure_2': 180,
             'cholesterol': 7,
-            'is_smoker': "Y",
-            'has_diabetes': "Y",
+            'is_smoker': True,
+            'has_diabetes': True,
         }
         result = WHO().calculate(params)
         self.assertEqual(result['risk'], 50)

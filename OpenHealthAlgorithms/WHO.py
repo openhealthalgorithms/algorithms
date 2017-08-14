@@ -31,7 +31,7 @@ class WHO(object):
         >>> params = {
         ...    'gender': "M", 'age': 30 ,'systolic_blood_pressure_1':  130,
         ...    'systolic_blood_pressure_2': 145, 'cholesterol': 7.0,
-        ...    'is_smoker': "Y", 'has_diabetes': "Y"
+        ...    'is_smoker': True, 'has_diabetes': True
         ... }
         >>> result = WHO().calculate(params)
         >>> print(result)
@@ -106,8 +106,8 @@ class WHO(object):
             ...    'systolic_blood_pressure_1':  130,
             ...    'systolic_blood_pressure_2':  145,
             ...    'cholesterol':                5,
-            ...    'is_smoker':                  "Y",
-            ...    'has_diabetes':               "Y",
+            ...    'is_smoker':                  True,
+            ...    'has_diabetes':               True,
             ... }
             >>> WHO().calculate(params)
 
@@ -133,9 +133,9 @@ class WHO(object):
 
         filename = ("%s_%s_%s_%s_%s.txt" % (
             cholesterol if cholesterol == 'uc' else 'c',
-            'd' if str(diabetes).upper() == 'Y' else 'ud',
+            'd' if diabetes else 'ud',
             str(gender).lower(),
-            's' if str(smoker).upper() == 'Y' else 'ns',
+            's' if smoker else 'ns',
             str(age)
         ))
 

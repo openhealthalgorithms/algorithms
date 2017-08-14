@@ -34,8 +34,8 @@ params = {
     'systolic_blood_pressure_1': 130,
     'systolic_blood_pressure_2': 145,
     'cholesterol': 5,
-    'is_smoker': "Y",
-    'has_diabetes': "Y",
+    'is_smoker': True,
+    'has_diabetes': True,
 }
 
 result = WHO().calculate(params)
