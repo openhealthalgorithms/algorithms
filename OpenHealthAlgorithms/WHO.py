@@ -141,7 +141,7 @@ class WHO(object):
             str(age)
         ))
 
-        file_path = ("%s/who_files/%s/%s" % (
+        file_path = ("%s/color_charts/%s/%s" % (
             os.path.dirname(os.path.realpath(__file__)),
             region,
             filename
