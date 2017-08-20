@@ -40,6 +40,7 @@ params = {
     'systolic_blood_pressure_1': 150,
     'systolic_blood_pressure_2': 170,
     'cholesterol': 7,
+    'cholesterol_unit': 'mmol/l',
     'is_smoker': True,
     'has_diabetes': True,
     'region': 'SEARD'
@@ -55,6 +56,7 @@ params = {
     'systolic_blood_pressure_1': 150,
     'systolic_blood_pressure_2': 170,
     'cholesterol': 7,
+    'cholesterol_unit': 'mmol/l',
     'is_smoker': True,
     'has_diabetes': True,
     'region': 'AFRD'
@@ -70,6 +72,7 @@ params = {
     'systolic_blood_pressure_1': 150,
     'systolic_blood_pressure_2': 170,
     'cholesterol': 7,
+    'cholesterol_unit': 'mmol/l',
     'is_smoker': True,
     'has_diabetes': True,
     'region': 'AFRE'

@@ -6,13 +6,10 @@ import numpy as np
 import os
 import sys
 
-from OpenHealthAlgorithms.__helpers import format_params
+from OpenHealthAlgorithms.__helpers import format_params, convert_cholesterol_unit
 
-__author__ = "indrajit"
-__license__ = "Apache License"
-__version__ = "0.1.1"
-__maintainer__ = "indrajit"
-__email__ = "eendroroy@gmail.com"
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
 
 # support both python2 and python3
 if sys.version_info[0] == 3:
@@ -37,6 +34,8 @@ class WHO(object):
         >>> print(result)
 
     """
+
+    __default_cholesterol_unit = 'mmol/l'
 
     @staticmethod
     def __convert_age(age):
@@ -77,15 +76,15 @@ class WHO(object):
     @staticmethod
     def __convert_risk(cvd_risk):
         if cvd_risk == 10:
-            return "<10%"
+            return '<10%'
         elif cvd_risk == 20:
-            return "10-20%"
+            return '10-20%'
         elif cvd_risk == 30:
-            return "20-30%"
+            return '20-30%'
         elif cvd_risk == 40:
-            return "30-40%"
+            return '30-40%'
         elif cvd_risk == 50:
-            return "> 40%"
+            return '> 40%'
 
     @staticmethod
     def calculate(params):
@@ -106,6 +105,7 @@ class WHO(object):
             ...    'systolic_blood_pressure_1':  130,
             ...    'systolic_blood_pressure_2':  145,
             ...    'cholesterol':                5,
+            ...    'cholesterol_unit':           'mmol/l',
             ...    'is_smoker':                  True,
             ...    'has_diabetes':               True,
             ...    'region':                     'SEARD',
@@ -122,18 +122,23 @@ class WHO(object):
 
         params = format_params(params)
 
-        cholesterol = WHO.__convert_cholesterol(params['cholesterol']) \
-            if 'cholesterol' in params.keys() else 'uc'
-        diabetes = params['has_diabetes']
-        gender = params['gender']
-        smoker = params['is_smoker']
-        age = str(WHO.__convert_age(params['age']))
-        sbp1 = params['systolic_blood_pressure_1']
-        sbp2 = params['systolic_blood_pressure_2']
+        cholesterol = WHO.__convert_cholesterol(
+            convert_cholesterol_unit(
+                params.get('cholesterol'),
+                params.get('cholesterol_unit') or WHO.__default_cholesterol_unit,
+                WHO.__default_cholesterol_unit
+            )
+        ) if 'cholesterol' in params.keys() else 'uc'
+        diabetes = params.get('has_diabetes')
+        gender = params.get('gender')
+        smoker = params.get('is_smoker')
+        age = str(WHO.__convert_age(params.get('age')))
+        sbp1 = params.get('systolic_blood_pressure_1')
+        sbp2 = params.get('systolic_blood_pressure_2')
         sbp_index = WHO.__convert_sbp((sbp1 + sbp2) / 2)
-        region = params['region'] if 'region' in params.keys() else 'SEARD'
+        region = params.get('region') if 'region' in params.keys() else 'SEARD'
 
-        filename = ("%s_%s_%s_%s_%s.txt" % (
+        filename = ('%s_%s_%s_%s_%s.txt' % (
             cholesterol if cholesterol == 'uc' else 'c',
             'd' if diabetes else 'ud',
             str(gender).lower(),
@@ -141,7 +146,7 @@ class WHO(object):
             str(age)
         ))
 
-        file_path = ("%s/color_charts/%s/%s" % (
+        file_path = ('%s/color_charts/%s/%s' % (
             os.path.dirname(os.path.realpath(__file__)),
             region,
             filename
