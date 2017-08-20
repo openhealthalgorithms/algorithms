@@ -4,8 +4,8 @@
 import numpy as np
 from OpenHealthAlgorithms.__helpers import format_params, convert_cholesterol_unit
 
-__author__ = "indrajit"
-__email__ = "eendroroy@gmail.com"
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
 
 
 class Framingham(object):
@@ -52,41 +52,41 @@ class Framingham(object):
         has_diabetes = params.get('has_diabetes')
 
         risk_chol = (
-            Framingham.__get_co_efficient("logAge", gender)
+            Framingham.__get_co_efficient('logAge', gender)
             * np.log(age)
-            + Framingham.__get_co_efficient("logTChol", gender)
+            + Framingham.__get_co_efficient('logTChol', gender)
             * np.log(total_cholesterol)
-            - Framingham.__get_co_efficient("logHDLChol", gender)
+            - Framingham.__get_co_efficient('logHDLChol', gender)
             * np.log(hdl_cholesterol)
         )
 
         # If on medication for BP
         if on_bp_medication:
             risk_systolic = (
-                Framingham.__get_co_efficient("logSBPRx", gender)
+                Framingham.__get_co_efficient('logSBPRx', gender)
                 * np.log(systolic)
             )
         else:
             risk_systolic = (
-                Framingham.__get_co_efficient("logSBPNonRx", gender)
+                Framingham.__get_co_efficient('logSBPNonRx', gender)
                 * np.log(systolic)
             )
 
         risk_smoking = (
-            Framingham.__get_co_efficient("logSmoking", gender)
+            Framingham.__get_co_efficient('logSmoking', gender)
             * is_smoker
         )
         risk_diabetes = (
-            Framingham.__get_co_efficient("logDM", gender)
+            Framingham.__get_co_efficient('logDM', gender)
             * has_diabetes
         )
         total_risk = risk_chol + risk_systolic + risk_smoking + risk_diabetes
 
         framingham_risk_score = 1 - np.power(
-            Framingham.__get_co_efficient("so10", gender),
+            Framingham.__get_co_efficient('so10', gender),
             np.exp(
                 total_risk
-                - Framingham.__get_co_efficient("calc_mean", gender)
+                - Framingham.__get_co_efficient('calc_mean', gender)
             )
         )
 
