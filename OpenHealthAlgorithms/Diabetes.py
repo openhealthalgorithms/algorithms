@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-from OpenHealthAlgorithms.__helpers import format_params
+from OpenHealthAlgorithms.__helpers import format_params, \
+    convert_weight_unit, convert_height_unit
 
-__author__ = "indrajit"
-
-__license__ = "Apache License"
-__version__ = "0.1.1"
-__maintainer__ = "indrajit"
-__email__ = "eendroroy@gmail.com"
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
 
 
 class Diabetes(object):
@@ -26,6 +23,11 @@ class Diabetes(object):
         >>> print(result)
 
     """
+    __default_weight_unit = 'kg'
+    __default_height_unit = 'm'
+    __default_waist_unit = 'cm'
+    __default_hip_unit = 'cm'
+
     @staticmethod
     def __calculate_waist_hip_ratio(waist, hip):
         waist_hip_ratio = waist / hip
@@ -38,9 +40,9 @@ class Diabetes(object):
 
     @staticmethod
     def __adjust_risk_by_gender_and_whi(risk_score, gender, waist_hip_ratio):
-        if gender == "M" and waist_hip_ratio < 0.9:
+        if gender == 'M' and waist_hip_ratio < 0.9:
             risk_score += 2
-        elif gender == "M" and waist_hip_ratio >= 0.9:
+        elif gender == 'M' and waist_hip_ratio >= 0.9:
             risk_score += 7
         elif waist_hip_ratio >= 0.8:
             risk_score += 5
@@ -87,14 +89,18 @@ class Diabetes(object):
         Example
         -------
             >>> params = {
-            ...    'gender':    "M",
-            ...    'age':       30,
-            ...    'systolic':  145,
-            ...    'diastolic': 80,
-            ...    'weight':    70.0,
-            ...    'height':    1.5,
-            ...    'waist':     99.0,
-            ...    'hip':       104.0,
+            ...    'gender':      'M',
+            ...    'age':         30,
+            ...    'systolic':    145,
+            ...    'diastolic':   80,
+            ...    'weight':      70.0,
+            ...    'weight_unit': 'kg',
+            ...    'height':      1.5,
+            ...    'height_unit': 'm',
+            ...    'waist':       99.0,
+            ...    'waist_unit':  'cm',
+            ...    'hip':         104.0,
+            ...    'hip_unit':    'cm',
             ... }
             >>> Diabetes().calculate(params)
 
@@ -113,12 +119,28 @@ class Diabetes(object):
         systolic_blood_pressure = params.get('systolic')
         diastolic_blood_pressure = params.get('diastolic')
         waist_hip_ratio = Diabetes.__calculate_waist_hip_ratio(
-            params.get('waist'),
-            params.get('hip')
+            convert_height_unit(
+                params.get('waist'),
+                params.get('waist_unit') or Diabetes.__default_waist_unit,
+                Diabetes.__default_waist_unit
+            ),
+            convert_height_unit(
+                params.get('hip'),
+                params.get('hip_unit') or Diabetes.__default_hip_unit,
+                Diabetes.__default_hip_unit
+            )
         )
         body_mass_index = Diabetes.__calculate_body_mass_index(
-            params.get('weight'),
-            params.get('height')
+            convert_weight_unit(
+                params.get('weight'),
+                params.get('weight_unit') or Diabetes.__default_weight_unit,
+                Diabetes.__default_weight_unit
+            ),
+            convert_height_unit(
+                params.get('height'),
+                params.get('height_unit') or Diabetes.__default_height_unit,
+                Diabetes.__default_height_unit
+            )
         )
 
         risk_score = 0

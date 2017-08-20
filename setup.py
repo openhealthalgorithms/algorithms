@@ -14,7 +14,7 @@ def find_packages(*args, **kwargs):
 
 setup(
     name='openhealthalgorithms',
-    version='0.1.2',
+    version='0.1.3',
     description='An implementation of health algorithms.',
     long_description=long_description,
     url='https://github.com/openhealthalgorithms/openhealthalgorithms',
