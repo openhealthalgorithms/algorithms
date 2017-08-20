@@ -96,7 +96,7 @@ class WHO(object):
         params: dict
             dictionary includes 'gender', 'age', 'systolic_blood_pressure_1',
             'systolic_blood_pressure_2', 'cholesterol', 'is_smoker',
-            'has_diabetes'
+            'has_diabetes', 'region'
 
         Example
         -------
@@ -108,6 +108,7 @@ class WHO(object):
             ...    'cholesterol':                5,
             ...    'is_smoker':                  True,
             ...    'has_diabetes':               True,
+            ...    'region':                     'SEARD',
             ... }
             >>> WHO().calculate(params)
 
@@ -130,6 +131,7 @@ class WHO(object):
         sbp1 = params['systolic_blood_pressure_1']
         sbp2 = params['systolic_blood_pressure_2']
         sbp_index = WHO.__convert_sbp((sbp1 + sbp2) / 2)
+        region = params['region'] if 'region' in params.keys() else 'SEARD'
 
         filename = ("%s_%s_%s_%s_%s.txt" % (
             cholesterol if cholesterol == 'uc' else 'c',
@@ -139,8 +141,9 @@ class WHO(object):
             str(age)
         ))
 
-        file_path = ("%s/who_files/%s" % (
+        file_path = ("%s/color_charts/%s/%s" % (
             os.path.dirname(os.path.realpath(__file__)),
+            region,
             filename
         ))
 

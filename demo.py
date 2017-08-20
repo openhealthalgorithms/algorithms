@@ -36,6 +36,7 @@ params = {
     'cholesterol': 5,
     'is_smoker': True,
     'has_diabetes': True,
+    'region': 'SEARD'
 }
 
 result = WHO().calculate(params)
