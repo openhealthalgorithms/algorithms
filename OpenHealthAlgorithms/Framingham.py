@@ -2,16 +2,10 @@
 #  -*- coding: utf-8 -*-
 
 import numpy as np
-from OpenHealthAlgorithms.__helpers import format_params
+from OpenHealthAlgorithms.__helpers import format_params, convert_cholesterol_unit
 
-# ToDo: insert file headers
-__author__ = ""
-__copyright__ = ""
-
-__license__ = ""
-__version__ = ""
-__maintainer__ = ""
-__email__ = ""
+__author__ = "indrajit"
+__email__ = "eendroroy@gmail.com"
 
 
 class Framingham(object):
@@ -31,6 +25,8 @@ class Framingham(object):
         'calc_mean': {'F': 26.1931, 'M': 23.9802}
     }
 
+    __default_cholesterol_unit = 'mg/dl'
+
     # co-efficients used in the calculation. See relevant paper
     @staticmethod
     def __get_co_efficient(key, gender):
@@ -38,14 +34,22 @@ class Framingham(object):
 
     @staticmethod
     def calculate_fre_score(params):
-        gender = params['gender']
-        age = params['age']
-        total_cholesterol = params['total_cholesterol']
-        hdl_cholesterol = params['hdl_cholesterol']
-        on_bp_medication = params['on_bp_medication']
-        systolic = params['systolic']
-        is_smoker = params['is_smoker']
-        has_diabetes = params['has_diabetes']
+        gender = params.get('gender')
+        age = params.get('age')
+        total_cholesterol = convert_cholesterol_unit(
+            params.get('total_cholesterol'),
+            params.get('total_cholesterol_unit') or Framingham.__default_cholesterol_unit,
+            Framingham.__default_cholesterol_unit
+        )
+        hdl_cholesterol = convert_cholesterol_unit(
+            params.get('hdl_cholesterol'),
+            params.get('hdl_cholesterol_unit') or Framingham.__default_cholesterol_unit,
+            Framingham.__default_cholesterol_unit
+        )
+        on_bp_medication = params.get('on_bp_medication')
+        systolic = params.get('systolic')
+        is_smoker = params.get('is_smoker')
+        has_diabetes = params.get('has_diabetes')
 
         risk_chol = (
             Framingham.__get_co_efficient("logAge", gender)
@@ -140,14 +144,16 @@ class Framingham(object):
         Example
         -------
            >>> params = {
-           ...    'gender':            'M',
-           ...    'age':               40,
-           ...    'total_cholesterol': 180,
-           ...    'hdl_cholesterol':   45,
-           ...    'systolic':          125,
-           ...    'on_bp_medication':  False,
-           ...    'is_smoker':         False,
-           ...    'has_diabetes':      False,
+           ...    'gender':                 'M',
+           ...    'age':                    40,
+           ...    'total_cholesterol':      180,
+           ...    'total_cholesterol_unit': 'mg/dl',
+           ...    'hdl_cholesterol':        45,
+           ...    'hdl_cholesterol_unit':   'mg/dl',
+           ...    'systolic':               125,
+           ...    'on_bp_medication':       False,
+           ...    'is_smoker':              False,
+           ...    'has_diabetes':           False,
            ... }
            >>> Framingham().calculate(params)
 
