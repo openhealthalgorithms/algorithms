@@ -30,14 +30,44 @@ print('--> Framingham:', result)
 
 params = {
     'gender': "M",
-    'age': 30,
-    'systolic_blood_pressure_1': 130,
-    'systolic_blood_pressure_2': 145,
-    'cholesterol': 5,
+    'age': 50,
+    'systolic_blood_pressure_1': 150,
+    'systolic_blood_pressure_2': 170,
+    'cholesterol': 7,
     'is_smoker': True,
     'has_diabetes': True,
     'region': 'SEARD'
 }
 
 result = WHO().calculate(params)
-print('--> WHO:', result)
+print('--> WHO:', params['region'], ' => ',  result)
+
+
+params = {
+    'gender': "M",
+    'age': 50,
+    'systolic_blood_pressure_1': 150,
+    'systolic_blood_pressure_2': 170,
+    'cholesterol': 7,
+    'is_smoker': True,
+    'has_diabetes': True,
+    'region': 'AFRD'
+}
+
+result = WHO().calculate(params)
+print('--> WHO:', params['region'], ' => ',  result)
+
+
+params = {
+    'gender': "M",
+    'age': 50,
+    'systolic_blood_pressure_1': 150,
+    'systolic_blood_pressure_2': 170,
+    'cholesterol': 7,
+    'is_smoker': True,
+    'has_diabetes': True,
+    'region': 'AFRE'
+}
+
+result = WHO().calculate(params)
+print('--> WHO:', params['region'], ' => ',  result)
