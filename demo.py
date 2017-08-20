@@ -8,9 +8,13 @@ params = {
     'systolic': 150,
     'diastolic': 92,
     'weight': 92,
+    'weight_unit': 'kg',
     'height': 1.5,
+    'height_unit': 'm',
     'waist': 50,
+    'waist_unit': 'cm',
     'hip': 90,
+    'hip_unit': 'cm',
 }
 result = Diabetes().calculate(params)
 print('--> Diabetes:', result)
