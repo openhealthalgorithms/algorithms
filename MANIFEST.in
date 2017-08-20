@@ -1,3 +1,3 @@
 include LICENSE
 include README.rst
-include OpenHealthAlgorithms/who_files/*.txt
+include OpenHealthAlgorithms/color_charts/**/*.txt
