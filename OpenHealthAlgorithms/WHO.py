@@ -87,6 +87,8 @@ class WHO(object):
             return '30-40%'
         elif cvd_risk == 50:
             return '> 40%'
+        else:
+            return '> 40%'
 
     @staticmethod
     def calculate(params):
