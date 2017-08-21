@@ -72,6 +72,8 @@ class WHO(object):
             return 0
         elif temp_cholesterol_index <= 4:
             return temp_cholesterol_index
+        else:
+            return 4
 
     @staticmethod
     def __convert_risk(cvd_risk):
@@ -153,6 +155,7 @@ class WHO(object):
         ))
 
         try:
+            print(file_path)
             data = np.loadtxt(file_path, dtype=int, delimiter=',')
             risk = data[sbp_index] if cholesterol == 'uc' \
                 else data[sbp_index, cholesterol]
