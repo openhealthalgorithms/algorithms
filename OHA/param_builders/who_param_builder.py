@@ -56,6 +56,7 @@ class WhoParamsBuilder(object):
             'cholesterol_unit': self.__chol_unit,
             'is_smoker': self.__smoker,
             'has_diabetes': self.__diabetic,
+            'region': self.__region,
         }
 
         return params
