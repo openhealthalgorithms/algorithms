@@ -3,7 +3,7 @@
 
 import unittest
 
-from OpenHealthAlgorithms.WHO import WHO
+from OHA.WHO import WHO
 
 
 class FraminghamTest(unittest.TestCase):

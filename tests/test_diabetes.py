@@ -3,7 +3,7 @@
 
 import unittest
 
-from OpenHealthAlgorithms.Diabetes import Diabetes
+from OHA.Diabetes import Diabetes
 
 
 class DiabetesTest(unittest.TestCase):

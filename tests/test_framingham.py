@@ -3,7 +3,7 @@
 
 import unittest
 
-from OpenHealthAlgorithms.Framingham import Framingham
+from OHA.Framingham import Framingham
 
 
 class FraminghamTest(unittest.TestCase):
