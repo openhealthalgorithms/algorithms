@@ -1,6 +1,7 @@
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.WHO import WHO
+from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
 params = {
     'gender': 'M',
@@ -34,49 +35,16 @@ params = {
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 
-params = {
-    'gender': "M",
-    'age': 50,
-    'systolic_blood_pressure_1': 150,
-    'systolic_blood_pressure_2': 170,
-    'cholesterol': 7,
-    'cholesterol_unit': 'mmol/l',
-    'is_smoker': True,
-    'has_diabetes': True,
-    'region': 'SEARD'
-}
+WPB = WhoParamsBuilder()
 
+params = WPB.gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('SEARD').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ',  result)
 
-
-params = {
-    'gender': "M",
-    'age': 50,
-    'systolic_blood_pressure_1': 150,
-    'systolic_blood_pressure_2': 170,
-    'cholesterol': 7,
-    'cholesterol_unit': 'mmol/l',
-    'is_smoker': True,
-    'has_diabetes': True,
-    'region': 'AFRD'
-}
-
+params = WPB.gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRD').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ',  result)
 
-
-params = {
-    'gender': "M",
-    'age': 50,
-    'systolic_blood_pressure_1': 150,
-    'systolic_blood_pressure_2': 170,
-    'cholesterol': 7,
-    'cholesterol_unit': 'mmol/l',
-    'is_smoker': True,
-    'has_diabetes': True,
-    'region': 'AFRE'
-}
-
+params = WPB.gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRE').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ',  result)
