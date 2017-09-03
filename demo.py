@@ -1,6 +1,6 @@
-from OpenHealthAlgorithms.Diabetes import Diabetes
-from OpenHealthAlgorithms.Framingham import Framingham
-from OpenHealthAlgorithms.WHO import WHO
+from OHA.Diabetes import Diabetes
+from OHA.Framingham import Framingham
+from OHA.WHO import WHO
 
 params = {
     'gender': 'M',

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-from OpenHealthAlgorithms.__helpers import format_params, \
+from OHA.__helpers import format_params, \
     convert_weight_unit, convert_height_unit
 
 __author__ = 'indrajit'
@@ -14,7 +14,7 @@ class Diabetes(object):
 
     Example
     -------
-        >>> from OpenHealthAlgorithms.Diabetes import Diabetes
+        >>> from OHA.Diabetes import Diabetes
         >>> params = {
         ...    'gender': 'M', 'age': 31, 'systolic': 139, 'diastolic': 90,
         ...    'weight': 50.0, 'height': 2.0, 'waist': 50.0, 'hip': 90.0

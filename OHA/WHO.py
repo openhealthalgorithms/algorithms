@@ -6,7 +6,7 @@ import numpy as np
 import os
 import sys
 
-from OpenHealthAlgorithms.__helpers import format_params, convert_cholesterol_unit
+from OHA.__helpers import format_params, convert_cholesterol_unit
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
@@ -24,7 +24,7 @@ class WHO(object):
 
     Example
     -------
-        >>> from OpenHealthAlgorithms.WHO import WHO
+        >>> from OHA.WHO import WHO
         >>> params = {
         ...    'gender': "M", 'age': 30 ,'systolic_blood_pressure_1':  130,
         ...    'systolic_blood_pressure_2': 145, 'cholesterol': 7.0,

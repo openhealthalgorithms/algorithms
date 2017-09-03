@@ -2,7 +2,7 @@
 #  -*- coding: utf-8 -*-
 
 import numpy as np
-from OpenHealthAlgorithms.__helpers import format_params, convert_cholesterol_unit
+from OHA.__helpers import format_params, convert_cholesterol_unit
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'

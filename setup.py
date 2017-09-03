@@ -13,7 +13,7 @@ def find_packages(*args, **kwargs):
     return ['OpenHealthAlgorithms', 'tests']
 
 setup(
-    name='openhealthalgorithms',
+    name='OHA',
     version='0.1.4',
     description='An implementation of health algorithms.',
     long_description=long_description,
