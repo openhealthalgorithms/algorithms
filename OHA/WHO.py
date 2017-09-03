@@ -168,5 +168,5 @@ class WHO(object):
             return {
                 'risk': None,
                 'risk_range': None,
-                'exception': 'file not found'
+                'exception': 'color chart not found.'
             }
