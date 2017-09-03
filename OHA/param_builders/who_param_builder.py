@@ -8,6 +8,7 @@ class WhoParamsBuilder(object):
         self.__chol_unit = 'mmol/l'
         self.__smoker = False
         self.__diabetic = False
+        self.__region = 'SEARD'
 
     def gender(self, gender):
         self.__gender = gender
@@ -39,6 +40,10 @@ class WhoParamsBuilder(object):
 
     def diabetic(self, diabetic=True):
         self.__diabetic = diabetic
+        return self
+
+    def region(self, region):
+        self.__region = region
         return self
 
     def build(self):
