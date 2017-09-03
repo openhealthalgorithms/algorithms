@@ -26,11 +26,8 @@ class WhoParamsBuilder(object):
         self.__sbp2 = sbp2
         return self
 
-    def chol(self, chol):
+    def chol(self, chol, chol_unit='mmol/l'):
         self.__chol = chol
-        return self
-
-    def chol_unit(self, chol_unit):
         self.__chol_unit = chol_unit
         return self
 
