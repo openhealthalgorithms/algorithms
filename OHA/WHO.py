@@ -11,12 +11,6 @@ from OHA.__helpers import format_params, convert_cholesterol_unit
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
-# support both python2 and python3
-if sys.version_info[0] == 3:
-    FileException = FileNotFoundError
-elif sys.version_info[0] == 2:
-    FileException = IOError
-
 
 class WHO(object):
     """
@@ -164,7 +158,7 @@ class WHO(object):
                 'risk': int(risk),
                 'risk_range': WHO.__convert_risk(int(risk))
             }
-        except FileException:
+        except IOError:
             return {
                 'risk': None,
                 'risk_range': None,
