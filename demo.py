@@ -1,6 +1,7 @@
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.WHO import WHO
+from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder as FPB
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
 
 params = {
@@ -20,18 +21,7 @@ params = {
 result = Diabetes().calculate(params)
 print('--> Diabetes:', result)
 
-params = {
-    'gender': 'F',
-    'age': 40,
-    'total_cholesterol': 170,
-    'total_cholesterol_unit': 'mg/dl',
-    'hdl_cholesterol': 45,
-    'hdl_cholesterol_unit': 'mg/dl',
-    'systolic': 125,
-    'on_bp_medication': False,
-    'is_smoker': False,
-    'has_diabetes': False,
-}
+params = FPB().gender("F").age(40).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).build()
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 
