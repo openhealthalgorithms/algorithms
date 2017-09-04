@@ -10,10 +10,10 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 
 def find_packages(*args, **kwargs):
-    return ['OpenHealthAlgorithms', 'tests']
+    return ['OHA', 'tests']
 
 setup(
-    name='openhealthalgorithms',
+    name='OpenHealthAlgorithms',
     version='0.1.4',
     description='An implementation of health algorithms.',
     long_description=long_description,
