@@ -3,21 +3,10 @@ from OHA.Framingham import Framingham
 from OHA.WHO import WHO
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder as FPB
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
+from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
 
-params = {
-    'gender': 'M',
-    'age': 40,
-    'systolic': 150,
-    'diastolic': 92,
-    'weight': 92,
-    'weight_unit': 'kg',
-    'height': 1.5,
-    'height_unit': 'm',
-    'waist': 50,
-    'waist_unit': 'cm',
-    'hip': 90,
-    'hip_unit': 'cm',
-}
+params = DBP()\
+    .gender("M").age(40).sbp(150).dbp(92).weight(92, 'kg').height(1.5, 'm').waist(50, 'cm').hip(90, 'cm').build()
 result = Diabetes().calculate(params)
 print('--> Diabetes:', result)
 
