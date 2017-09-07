@@ -168,7 +168,7 @@ class WHO(object):
 
     @staticmethod
     def get_sample_params():
-        WhoParamsBuilder() \
+        return WhoParamsBuilder() \
             .gender("M")\
             .age(70)\
             .sbp1(130)\

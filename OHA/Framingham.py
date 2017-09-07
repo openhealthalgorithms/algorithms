@@ -175,7 +175,7 @@ class Framingham(object):
 
     @staticmethod
     def get_sample_params():
-        FraminghamParamsBuilder() \
+        return FraminghamParamsBuilder() \
             .gender("F")\
             .age(40)\
             .t_chol(170, 'mg/dl')\

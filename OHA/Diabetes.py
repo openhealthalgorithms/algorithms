@@ -166,7 +166,7 @@ class Diabetes(object):
 
     @staticmethod
     def get_sample_params():
-        DiabetesParamsBuilder()\
+        return DiabetesParamsBuilder()\
             .gender("M")\
             .age(40)\
             .sbp(150)\
