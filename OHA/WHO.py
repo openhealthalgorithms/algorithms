@@ -7,6 +7,7 @@ import os
 import sys
 
 from OHA.__helpers import format_params, convert_cholesterol_unit
+from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
@@ -164,3 +165,15 @@ class WHO(object):
                 'risk_range': None,
                 'exception': 'color chart not found.'
             }
+
+    @staticmethod
+    def get_sample_params():
+        WhoParamsBuilder() \
+            .gender("M")\
+            .age(70)\
+            .sbp1(130)\
+            .sbp2(145)\
+            .chol(270, 'mg/dl')\
+            .smoker()\
+            .diabetic()\
+            .build()

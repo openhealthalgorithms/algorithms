@@ -3,6 +3,7 @@
 
 from OHA.__helpers import format_params, \
     convert_weight_unit, convert_height_unit
+from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
@@ -162,3 +163,16 @@ class Diabetes(object):
             'waist_hip_ratio': float('%.2f' % (round(waist_hip_ratio, 2))),
             'body_mass_index': float('%.2f' % (round(body_mass_index, 2))),
         }
+
+    @staticmethod
+    def get_sample_params():
+        DiabetesParamsBuilder()\
+            .gender("M")\
+            .age(40)\
+            .sbp(150)\
+            .dbp(92)\
+            .weight(92, 'kg')\
+            .height(1.5, 'm')\
+            .waist(50, 'cm')\
+            .hip(90, 'cm')\
+            .build()

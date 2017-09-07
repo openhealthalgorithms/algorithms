@@ -3,6 +3,7 @@
 
 import numpy as np
 from OHA.__helpers import format_params, convert_cholesterol_unit
+from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
@@ -171,3 +172,13 @@ class Framingham(object):
             'risk':      float('%.4f' % (round(cvd_risk, 4))),
             'heart_age': heart_age,
         }
+
+    @staticmethod
+    def get_sample_params():
+        FraminghamParamsBuilder() \
+            .gender("F")\
+            .age(40)\
+            .t_chol(170, 'mg/dl')\
+            .hdl_chol(45, 'mg/dl')\
+            .sbp(125)\
+            .build()
