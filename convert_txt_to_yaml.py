@@ -2,8 +2,8 @@ import os
 import yaml
 import io
 
-for region in ['AFRD', 'AFRE', 'SEARD']:
-    base_path = "%s/OpenHealthAlgorithms/color_charts/%s" % (os.path.dirname(os.path.realpath(__file__)), region)
+for region in ['AFRD', 'AFRE', 'EURA', 'EURB', 'EURC', 'SEARB', 'SEARD', 'WPRA']:
+    base_path = "%s/OHA/color_charts/%s" % (os.path.dirname(os.path.realpath(__file__)), region)
 
     data = {
         'cholesterol': {
