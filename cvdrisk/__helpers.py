@@ -26,6 +26,12 @@ def convert_weight_unit(value, from_unit, to_unit):
     else:
         return None
 
+def calculate_bmi(height, weight):
+    #process this and ensure the correct values etc
+    return round(weight/(height*height), 1)
+
+def calculate_waist_hip_ratio(waist, hip):
+    return round((waist/hip), 1)
 
 def convert_height_unit(value, from_unit, to_unit):
     if from_unit.lower() == to_unit.lower():

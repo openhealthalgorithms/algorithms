@@ -1,23 +1,72 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-# 
+#
+
+import json
+# Replace this as a module with accessor methods
+from __helpers import calculate_bmi, calculate_waist_hip_ratio
+
+global targets
+
+targets = {
+    'general' : {
+        'active_time' : 150,
+        'fruit' : 2,
+        'vegetables' : 5,
+        'sbp' : 140,
+        'dbp' : 90,
+    },
+    'diabetes' : {
+        'sbp' : 130,
+        'dbp' : 80,
+        'soft_drinks' : 0
+    },
+    'hypertension' : {
+        'sbp' : 120,
+        'dbp' : 80,
+        'added_salt' : 0,
+    }
+}
+
+# if dob object passed in then return age
+def calculate_age(object):
+
+    return None
+
 def assess_smoking_status(smoking):
 
     if smoking['current'] == 1:
-        return (True, "current smoker")
+        return (True, 'SM-R', "Current Smoker")
     elif ((smoking['ex_smoker']) & (smoking['quit_within_year'])):
-        return (True, "ex-smoker, quit within the year")
+        return (True, 'SM-A-1', "Ex-smoker, Quit within the year")
+    elif ((smoking['ex_smoker'])):
+        return (False, 'SM-A-2', "Ex-smoker, Quit more than a year ago")
     else:
-        return (False, "non-smoker OR quit over a year ago")
+        return (False, 'SM-G', "Non-smoker")
 
-def calculate_waist_hip_ratio(waist, hip):
-    whr = waist[0]/hip[0]
-    print ("whr %s " % whr)
-    return whr
+def assess_waist_hip_ratio(waist, hip, gender):
+    whr = calculate_waist_hip_ratio(waist[0], hip[0])
+    if gender == "F":
+        if whr >= 0.85:
+            return (True, whr, "High WHR")
+        else:
+            return (False, whr, "Normal WHR")
+    if gender == "M":
+        if whr >= 0.9:
+            return (True, whr, "High WHR")
+        else:
+            return (False, whr, "Normal WHR")
 
-def calculate_bmi(height, weight):
-    bmi = weight[0]/(height[0]*height[0])
-    print ("BMI is %s " % bmi)
+def assess_bmi(height, weight):
+    bmi = calculate_bmi(height[0], weight[0])
+    if bmi < 18.5:
+        return (True, bmi, "Underweight")
+    elif bmi < 25:
+        return (False, bmi, "Ideal weight range")
+    elif bmi < 30:
+        return (True, bmi, "Overweight")
+    else:
+        return (True, bmi, "Obese")
     return bmi
 
 def assess_physical_activity(active_time):
@@ -28,13 +77,7 @@ def assess_physical_activity(active_time):
         return (False, "off_target")
 
 def assess_diet(diet_history):
-    print("calculating diet")
-    print('diet history is %s ' % diet_history)
-    print('targets are %s ' % targets)
     
-    if diet_history['fruit'] < targets['general']['fruit']:
-        print("Fruit below target")
-
     if ((diet_history['fruit'] < targets['general']['fruit']) and (diet_history['veg'] < targets['general']['vegetables'])):
         return (False, "low" ,"Fruit & Vegetables targets not being met")
     elif ((diet_history['fruit'] < targets['general']['fruit']) and (diet_history['veg'] >= targets['general']['vegetables'])):
@@ -42,8 +85,12 @@ def assess_diet(diet_history):
     elif ((diet_history['fruit'] > targets['general']['fruit']) and (diet_history['veg'] < targets['general']['vegetables'])):
         return (False, "mod", "Veg targets not met, Good work on the fruit!")
     else:
-        print(diet_history['veg'])
         return (True, "high", "Great work, Fruit & Veg targets being met")
+
+def assess_blood_pressure(bp, conditions):
+
+    if bp['sbp'] > 160:
+        return None
 
 '''
 Known heart disease, stroke, transient ischemic attack, DM, kidney disease 
@@ -51,34 +98,57 @@ Known heart disease, stroke, transient ischemic attack, DM, kidney disease
 Replace these with a lookup table based on concepts (SNOMED or other)
 Could also integrate with lexigram.io
 '''
-def high_risk_condition_check(conditions):
-    
+def high_risk_condition_check(age, blood_pressure, conditions):
+
+    # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not been done)    
     high_risk_conditions = ['CAD', 'AMI', 'HEART ATTACK', 'CVA', 'TIA', 'STROKE', 'CKD', 'PVD']
     # Return whether medical history contains any of these
     for condition in conditions:
         if condition.upper() in high_risk_conditions:
             return (True, 'Has High Risk Condition %s' % condition.upper())
 
-    return False
+    #check for other high risk states such as BP > 160 and age > 60 + diabetes (including newly suggested)
+    #if (assessment[])
+    #blood pressure [value, observation_type]
+    sbp = blood_pressure['sbp'][0]
+    dbp = blood_pressure['dbp'][0]
+    if ((sbp > 200) or (dbp > 120)):
+        return (True, 'Severely high blood pressure. Emergency check')
+    elif ((age < 40) and ((sbp >= 140) or (dbp >= 90))):
+        return (True, 'High blood pressure in under 40, shold be investigated for secondary htn')
+    '''
+    Go through the guidelines and pull out the rules
+    New chest pain .. capture via history?
+    Target organ damage based on physical exam
+    Cardiac murmurs
+    Raised BP ≥140/90 ( in DM above 130/ 80mmHg) while on treatment with 2 or 3 agents
+    Any proteinuria
+    Newly diagnosed DM with urine ketones 2+ or in lean persons of <30 years
+    Total cholesterol >8mmol/l
+    DM with poor control despite maximal metformin with or without sulphonylurea
+    DM with severe infection and/or foot ulcers
+    DM with recent deterioration of vision or no eye exam in 2 years
+    High cardiovascular risk
+    '''
+    return (False, "NO high risk condition, For CVD risk assessment")
 
 def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
 
+    # move to a helper function
     if bsl_units == 'mg/dl':
         bsl_value = round(float(bsl_value)/18, 1)
-        print('bsl type is %s ' % bsl_type)
-        print('bsl value is %s ' % bsl_value)
-
+ 
     for condition in conditions:
         if condition == "diabetes":
             return True
         else:
             if bsl_type == "random":
                 if bsl_value >= 11.1:
-                    return (True, "new_diagnosis")
+                    return (True, "BSL-R", "Looks like newly diagnosed diabates")
                 elif bsl_value > 7:
-                    return (False, "pre_diabetes")
+                    return (False, "BSL-A", "You are at risk of developing diabetes")
                 else:
-                    return (False, "normal")
+                    return (False, "BSL-G", "Blood sugar normal")
         return False
 
 def calculate_diabetes_risk(gender, age, bmi, whr, sbp, dbp):
@@ -107,3 +177,24 @@ def calculate_diabetes_risk(gender, age, bmi, whr, sbp, dbp):
         risk_score = risk_score + 2
     
     return risk_score
+
+def generate_management_plan(assessment):
+    '''
+    Calculate the specific targets, management advice, follow up, referrals based on the assessment
+    General lifestyle
+        - BMI & WHR
+        - diet
+        - exercise
+    Smoking
+    CVD Risk
+    Blood Pressure
+        - manage as per cvd risk unless very high
+    Cholesterol
+        - manage as per cvd risk unless very high
+    '''
+    management = {}
+
+
+    return None
+
+
