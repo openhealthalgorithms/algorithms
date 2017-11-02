@@ -1,0 +1,61 @@
+{
+  "header" : {
+    "content-type" : "message file",
+    "published_by" : "Fred Hersch",
+    "publication_date" : "",
+    "version_number" : "0.1"
+  },
+  "body" :
+  {
+    "advice" : {
+        "lifestyle" : "A healthy diet, regular exercise and reduction in risk factors is key to disease prevention", 
+        "management" : "Speak to a healthcare professional about:",
+        "follow_up" : "You should follow up in "
+    },
+    "messages" : {
+        "smoking" : {
+            "SM-R" : "You will benefit from smoking cessation. For advice [go to]",
+            "SM-A-1" : "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor",
+            "SM-A-2" : "Good work quitting. It\"s the best thing you can do for your health. Stay strong",
+            "SM-G" : "Your lungs will thank you!"
+        },
+        "nutrition" : {
+            "FV-G" : "You are eating the recommended amount of fruit and vegetables. Keep it up",
+            "FV-A" : "Almost there .. Daily recommended diet is 2 servings of fruit and 5 of vegetables",
+            "FV-R" : "A diet rich in fruit and vegetables is recommended. Try for 2 + 5",
+            "SSF-G" : "Avoiding foods high in salt & sugar is important to maintaining a healthy diet. Keep up the great work [Share your story]",
+            "SSF-A" : "Added sugar Or salt ..",
+            "SSF-R" : "Its time to look at what you are eating .. "
+        },
+        "physical_activity" : {
+            "PH-G" : "You are meeting the recommended amount of exercise (150 minutes per week). Keep it up. [Looking for a community?]",
+            "PH-A" : "Keep moving. Remember every bit counts. Aim for 150 minutes of moderate intensity exercsie per week. [Learn more]",
+            "PH-R" : "Regular exercise is essential. Aim for 150 minutes per week. Start slow and build up gradually. [Need support?]"
+        },
+        "blood_pressure" : {
+            "BP-Dx-1" : "You told us you have high blood pressure",
+            "BP-Rx" : "You are on medication for your blood pressure",
+            "BP-G" : "You are on target. Keep it up",
+            "BP-A" : "Your BP is a little on the high side. Follow lifestyle advice and ensure you get a review",
+            "BP-R" : "At this level you need a review with a doctor, [Find one now]",
+            "BP-E" : "Seek care now"
+        },
+        "diabetes" : {
+            "DM-Dx-1" : "You told us you have diabetes. [Find a doctor to discuss]", 
+            "BSL-G" : "Your blood sugar control is good. Maintain a healthy diet ...",
+            "BSL-A" : "Your reading indicates a state called 'pre-diabetes'",
+            "BSL-R" : "Looks like you may habe diabetes. [Follow up]" 
+        },
+        "lipids" : {
+    
+        },
+        "cvd_risk" : {
+            "CVD-HR" : "You have a high risk condition",
+            "CVD-G" : "You are at low risk",
+            "CVD-A" : "You are at moderate risk",
+            "CVD-R" : "You are at high risk",
+            "CVD-E" : "You are at very high risk"
+        }
+    }
+  }
+}
