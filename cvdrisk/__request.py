@@ -5,7 +5,8 @@ request : {
   'country_code' : 'D'
   'response_type' : 'COMPLETE'
 }, 
-body : {
+body : 
+{
     last_assessment = {
         'assessment_date' : '',
         'cvd_risk' : '20'
@@ -41,13 +42,14 @@ body : {
     medications = ['anti_hypertensive', 'statin', 'antiplatelet', 'bronchodilator'],
     family_history = ['cvd'],
     pathology = {
-    [
+    	[
         'bsl' = {
             'type' : 'random', 'units' : 'mg/dl', 'value' : 240
         }
-    ],
-    ['cholesterol' = {
-          'type' : 'fasting', 'units' : 'mg/dl', 'total_chol' : 320, 'hdl' : 100, 'ldl' : 240  
-        }
-    ]
+    	],
+	    ['cholesterol' = {
+	          'type' : 'fasting', 'units' : 'mg/dl', 'total_chol' : 320, 'hdl' : 100, 'ldl' : 240  
+	        }
+	    ]
+	}
 }

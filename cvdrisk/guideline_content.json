@@ -5,12 +5,17 @@
     "publication_date" : "",
     "version_number" : "0.1"
   },
-  "body" :
-  {
+  "body" : {
     "advice" : {
         "lifestyle" : "A healthy diet, regular exercise and reduction in risk factors is key to disease prevention", 
+        "diet" : {
+            "Salt (sodium chloride)" :  ["Restrict to less than 5 grams (1 teaspoon) per day", "Reduce salt when cooking, limit processed and fast foods"],
+            "Fruits &amp; Vegetables" : ["5 servings (400-500 grams) of fruits and vegetable per day", "1 serving is equivalent to 1 orange, apple, mango, banana or 3 tablespoons of cooked vegetables"],    
+            "Fatty Food" : ["Limit fatty meat, dairy fat and cooking oil (less than two tablespoons per day)", "Replace palm and coconut oil with olive, soya, corn, rapeseed or safflower oil", "Replace other meat with chicken (without skin)"]       
+        },
+        "physical_activity" : ["Progressively increase physical activity to moderate levels (such as brisk walking); at least 150 minutes per week", "Control body weight and avoid overweight by reducing high calorie food and taking adequate physical activity"],
         "management" : "Speak to a healthcare professional about:",
-        "follow_up" : "You should follow up in "
+        "follow_up" : "You should follow up in"
     },
     "messages" : {
         "smoking" : {
@@ -18,6 +23,17 @@
             "SM-A-1" : "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor",
             "SM-A-2" : "Good work quitting. It\"s the best thing you can do for your health. Stay strong",
             "SM-G" : "Your lungs will thank you!"
+        },
+        "bmi" : {
+            "UW" : "You are underweight",
+            "NW" : "Normal weight",
+            "OW" : "Overweight",
+            "OB" : "Obese"
+        },
+        "whr" : {
+            "WHR-H" : "High WHR",
+            "WHR-M" : "Moderate WHR",
+            "WHR-N" : "Normal WHR"
         },
         "nutrition" : {
             "FV-G" : "You are eating the recommended amount of fruit and vegetables. Keep it up",
@@ -47,7 +63,6 @@
             "BSL-R" : "Looks like you may habe diabetes. [Follow up]" 
         },
         "lipids" : {
-    
         },
         "cvd_risk" : {
             "CVD-HR" : "You have a high risk condition",
@@ -55,6 +70,11 @@
             "CVD-A" : "You are at moderate risk",
             "CVD-R" : "You are at high risk",
             "CVD-E" : "You are at very high risk"
+        },
+        "high_risk" : {
+            "HR-" : "",
+            "HR-BP" : "Blood pressure is very high. Seek emergency care",
+            "HR-AGE-BP" : "Elevated blood pressure, age < 40. Should be investigated for secondary hypertension"
         }
     }
   }
