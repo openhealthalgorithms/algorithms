@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-from OHA.__helpers import format_params, convert_weight_unit, convert_height_unit
+from OHA.__helpers import format_params
+from OHA.__unit import convert_height_unit, convert_weight_unit
 from OHA.__utilities import calculate_bmi, calculate_waist_hip_ratio
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 
