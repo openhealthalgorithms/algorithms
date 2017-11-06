@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-from OHA.__helpers import format_params, \
-    convert_weight_unit, convert_height_unit
+from OHA.__helpers import format_params, convert_weight_unit, convert_height_unit
+from OHA.__utilities import calculate_bmi, calculate_waist_hip_ratio
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 
 __author__ = 'indrajit'
@@ -28,16 +28,6 @@ class Diabetes(object):
     __default_height_unit = 'm'
     __default_waist_unit = 'cm'
     __default_hip_unit = 'cm'
-
-    @staticmethod
-    def __calculate_waist_hip_ratio(waist, hip):
-        waist_hip_ratio = waist / hip
-        return waist_hip_ratio
-
-    @staticmethod
-    def __calculate_body_mass_index(weight, height):
-        body_mass_index = weight / (height * height)
-        return body_mass_index
 
     @staticmethod
     def __adjust_risk_by_gender_and_whi(risk_score, gender, waist_hip_ratio):
@@ -119,7 +109,7 @@ class Diabetes(object):
         age = params.get('age')
         systolic_blood_pressure = params.get('systolic')
         diastolic_blood_pressure = params.get('diastolic')
-        waist_hip_ratio = Diabetes.__calculate_waist_hip_ratio(
+        waist_hip_ratio = calculate_waist_hip_ratio(
             convert_height_unit(
                 params.get('waist'),
                 params.get('waist_unit') or Diabetes.__default_waist_unit,
@@ -131,7 +121,7 @@ class Diabetes(object):
                 Diabetes.__default_hip_unit
             )
         )
-        body_mass_index = Diabetes.__calculate_body_mass_index(
+        body_mass_index = calculate_bmi(
             convert_weight_unit(
                 params.get('weight'),
                 params.get('weight_unit') or Diabetes.__default_weight_unit,
