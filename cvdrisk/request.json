@@ -13,7 +13,7 @@
     },
     "demographics" : {
         "gender" : "F",
-        "age" : 30,
+        "age" : 50,
         "dob" : ["computed", "01/10/1987"],
         "occupation" : "office_worker",
         "monthly_income" : ""
@@ -23,8 +23,8 @@
         "weight" : [70.0, "kg"],
         "waist" : [99.0, "cm"],
         "hip" : [104.0, "cm"],
-        "sbp" : [139, "sitting"],
-        "dbp" : [80, "sitting"]
+        "sbp" : [145, "sitting"],
+        "dbp" : [91, "sitting"]
     },
     "smoking" : {
         "current" : 0,
@@ -43,7 +43,7 @@
     "family_history" : ["cvd"],
     "pathology" : {
         "bsl" : {
-            "type" : "random", "units" : "mg/dl", "value" : 240
+            "type" : "random", "units" : "mg/dl", "value" : 180
         },
         "cholesterol" : {
           "type" : "fasting", "units" : "mg/dl", "total_chol" : 320, "hdl" : 100, "ldl" : 240  

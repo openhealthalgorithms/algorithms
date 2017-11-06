@@ -31,7 +31,7 @@ def calculate_bmi(height, weight):
     return round(weight/(height*height), 1)
 
 def calculate_waist_hip_ratio(waist, hip):
-    return round((waist/hip), 1)
+    return round((waist/hip), 2)
 
 def convert_height_unit(value, from_unit, to_unit):
     if from_unit.lower() == to_unit.lower():
