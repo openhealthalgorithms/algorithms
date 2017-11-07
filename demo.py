@@ -1,5 +1,6 @@
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
+from OHA.HEARTS import HEARTS
 from OHA.WHO import WHO
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder as FPB
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
@@ -29,3 +30,7 @@ print('--> WHO:', params['region'], ' => ',  result)
 params = WPB().gender("M").age(70).sbp1(130).sbp2(145).chol(270, 'mg/dl').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ',  result)
+
+
+result = HEARTS().calculate()
+print('--> HEARTS: => ',  result)
