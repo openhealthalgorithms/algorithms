@@ -1,5 +1,7 @@
 import json
 
+import os
+
 from OHA.Diabetes import Diabetes
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
     has_condition, assess_diet, assess_physical_activity
@@ -101,39 +103,39 @@ class HEARTS(object):
 
     @staticmethod
     def load_messages():
-        file = 'guideline_content.json'
-        with open(file) as json_data:
+        filename = 'guideline_content.json'
+        file_path = ('%s/%s' % (
+            os.path.dirname(os.path.realpath(__file__)),
+            filename
+        ))
+        with open(file_path) as json_data:
             data = json.load(json_data)
 
         return data["body"]["messages"]
 
     @staticmethod
     def load_guidelines(guideline_key):
-        file = 'guideline_hearts.json'
-        with open(file) as json_data:
+        filename = 'guideline_hearts.json'
+        file_path = ('%s/%s' % (
+            os.path.dirname(os.path.realpath(__file__)),
+            filename
+        ))
+        with open(file_path) as json_data:
             data = json.load(json_data)
 
         return data
 
     @staticmethod
     def high_risk_condition_check(age, blood_pressure, conditions):
-
-        _assessment = ""
-        _assessment_code = ""
-        _target = ""
-        _target_message = ""
-
-        # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not been done)
+        # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not
+        #  been done)
         high_risk_conditions = ['CVD', 'CAD', 'AMI', 'HEART ATTACK', 'CVA', 'TIA', 'STROKE', 'CKD', 'PVD']
         # Return whether medical history contains any of these
 
         for condition in conditions:
             print(condition)
             if condition.upper() in high_risk_conditions:
-                # _assessment = True
-                # _assessment_message = 'Has High Risk Condition %s' % condition.upper()
-                # _assessment_code = ""
-                return (True, 'Has High Risk Condition %s' % condition.upper())
+                return True, 'Has High Risk Condition %s' % condition.upper()
 
         # check for other high risk states such as BP > 160 and age > 60 + diabetes (including newly suggested)
         # if (assessment[])
@@ -141,19 +143,13 @@ class HEARTS(object):
         sbp = blood_pressure['sbp'][0]
         dbp = blood_pressure['dbp'][0]
 
-        if ((sbp > 200) or (dbp > 120)):
-            # _assessment = True
-            # _assessment_code = "HRC-HTN"
-            return (True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately')
-        elif ((age < 40) and ((sbp >= 140) or (dbp >= 90))):
-            # _assessment = True
-            # _assessment_code = "HRC-AGE-BP"
+        if sbp > 200 or dbp > 120:
+            return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
+        elif age < 40 and (sbp >= 140 or dbp >= 90):
             return (
                 True, "HRC-AGE-BP",
                 'High blood pressure in under 40, should be investigated for secondary hypertension')
         else:
-            # _assessment = False
-            # _assessment = "No High Risk Condition"
             return False, "No High Risk Condition"
 
     @staticmethod
@@ -177,7 +173,12 @@ class HEARTS(object):
         messages = HEARTS.load_messages()
 
         # load in the response object
-        with open('request.json') as json_data:
+
+        file_path = ('%s/%s' % (
+            os.path.dirname(os.path.realpath(__file__)),
+            'request.json'
+        ))
+        with open(file_path) as json_data:
             data = json.load(json_data)
 
         # unpack the request, validate it and set up the params
@@ -240,20 +241,8 @@ class HEARTS(object):
 
         bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'], medications)
         assessment['blood_pressure'] = bp_assessment
-        '''
-        assessment['blood_pressure'] = {
-            'bp' : str(measurements['sbp'][0]) + "/" + str(measurements['dbp'][0]),
-            'assessment_code' : bp_assessment[0], 
-            'assessment' : bp_assessment[1],
-            'target' : bp_assessment[2],
-            'target_message' : bp_assessment[3]
-        }
-        '''
-
         diet = assess_diet(diet_history, medical_history['conditions'])
-
         exercise = assess_physical_activity(physical_activity)
-
         assessment['lifestyle'] = {
             'bmi': bmi,
             'whr': whr,
@@ -279,23 +268,22 @@ class HEARTS(object):
         # if not high_risk_condition[0]:
         if estimate_cvd_risk_calc[0]:
             # if not already at high risk then calculate CVD risk
-            print('do cvd check')
             # use the WHO model to do the cvd risk assessment
             cvd_risk = HEARTS.calc_cvd_risk(assessment)
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
-            print(cvd_risk)
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk[1]]
             # print(guidelines['cvd_risk'][assessment['cvd_risk'][1]])
         else:
             cvd_calc = estimate_cvd_risk_calc[1]
-            print(cvd_calc)
             # assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         # finally formualate guidelines
         print("--- Writing Your Results ----")
         with open('response.json', 'w') as fp:
             json.dump(assessment, fp)
+
+        return assessment
 
 
 if __name__ == "__main__":
