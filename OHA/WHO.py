@@ -6,6 +6,7 @@ import os
 
 import numpy as np
 
+from OHA.Defaults import Defaults
 from OHA.__helpers import format_params
 from OHA.__unit import convert_cholesterol_unit
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
@@ -30,8 +31,6 @@ class WHO(object):
         >>> print(result)
 
     """
-
-    __default_cholesterol_unit = 'mmol/l'
 
     @staticmethod
     def __convert_age(age):
@@ -125,8 +124,8 @@ class WHO(object):
         cholesterol = WHO.__convert_cholesterol(
             convert_cholesterol_unit(
                 params.get('cholesterol'),
-                params.get('cholesterol_unit') or WHO.__default_cholesterol_unit,
-                WHO.__default_cholesterol_unit
+                params.get('cholesterol_unit') or Defaults.cholesterol_unit,
+                Defaults.cholesterol_unit
             )
         ) if 'cholesterol' in params.keys() else 'uc'
         diabetes = params.get('has_diabetes')
