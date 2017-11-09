@@ -9,6 +9,7 @@ import numpy as np
 from OHA.Defaults import Defaults
 from OHA.__helpers import format_params
 from OHA.__unit import convert_cholesterol_unit
+from OHA.__utilities import cvd_risk_string
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
 __author__ = 'indrajit'
@@ -69,21 +70,6 @@ class WHO(object):
             return temp_cholesterol_index
         else:
             return 4
-
-    @staticmethod
-    def __convert_risk(cvd_risk):
-        if cvd_risk == 10:
-            return '<10%'
-        elif cvd_risk == 20:
-            return '10-20%'
-        elif cvd_risk == 30:
-            return '20-30%'
-        elif cvd_risk == 40:
-            return '30-40%'
-        elif cvd_risk == 50:
-            return '> 40%'
-        else:
-            return '> 40%'
 
     @staticmethod
     def calculate(params):
@@ -157,7 +143,7 @@ class WHO(object):
                 else data[sbp_index, cholesterol]
             return {
                 'risk': int(risk),
-                'risk_range': WHO.__convert_risk(int(risk))
+                'risk_range': cvd_risk_string(int(risk))
             }
         except IOError:
             return {
