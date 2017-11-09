@@ -157,25 +157,6 @@ class HEARTS(object):
             return False, "No High Risk Condition"
 
     @staticmethod
-    def calc_cvd_risk(inputParams):
-        """
-        Call the relevant WHO model and compute
-        """
-
-        # cvd_risk = (20, '10-20')
-        who_params = WhoParamsBuilder() \
-            .gender("M")\
-            .age(70)\
-            .sbp1(130)\
-            .sbp2(145)\
-            .chol(270, 'mg/dl')\
-            .smoker()\
-            .diabetic()\
-            .build()
-        cvd_risk = (30, '20-30')
-        return cvd_risk
-
-    @staticmethod
     def calculate():
         assessment = {}
 
@@ -289,7 +270,6 @@ class HEARTS(object):
                 .smoker(smoking['current']) \
                 .diabetic(diabetes_risk != "NA") \
                 .build()
-            # cvd_risk = HEARTS.calc_cvd_risk(assessment)
             cvd_risk = WHO.calculate(cvd_params)
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
