@@ -1,11 +1,15 @@
-import json
+#!/usr/bin/env python
+#  -*- coding: utf-8 -*-
 
+import json
 import os
 
 from OHA.Diabetes import Diabetes
+from OHA.WHO import WHO
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
-    has_condition, assess_diet, assess_physical_activity
+    assess_diet, assess_physical_activity
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
+from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
@@ -104,7 +108,7 @@ class HEARTS(object):
     @staticmethod
     def load_messages():
         filename = 'guideline_content.json'
-        file_path = ('%s/%s' % (
+        file_path = ('%s/guideline/%s' % (
             os.path.dirname(os.path.realpath(__file__)),
             filename
         ))
@@ -115,8 +119,8 @@ class HEARTS(object):
 
     @staticmethod
     def load_guidelines(guideline_key):
-        filename = 'guideline_hearts.json'
-        file_path = ('%s/%s' % (
+        filename = 'guideline_%s.json' % guideline_key
+        file_path = ('%s/guideline/%s' % (
             os.path.dirname(os.path.realpath(__file__)),
             filename
         ))
@@ -159,6 +163,15 @@ class HEARTS(object):
         """
 
         # cvd_risk = (20, '10-20')
+        who_params = WhoParamsBuilder() \
+            .gender("M")\
+            .age(70)\
+            .sbp1(130)\
+            .sbp2(145)\
+            .chol(270, 'mg/dl')\
+            .smoker()\
+            .diabetic()\
+            .build()
         cvd_risk = (30, '20-30')
         return cvd_risk
 
@@ -267,19 +280,26 @@ class HEARTS(object):
         # print('high risk output %s ' % assessment['high_risk'][0])
         # if not high_risk_condition[0]:
         if estimate_cvd_risk_calc[0]:
-            # if not already at high risk then calculate CVD risk
-            # use the WHO model to do the cvd risk assessment
-            cvd_risk = HEARTS.calc_cvd_risk(assessment)
+            cvd_params = WhoParamsBuilder() \
+                .gender(demographics['gender']) \
+                .age(age) \
+                .sbp1(blood_pressure['sbp'][0]) \
+                .sbp2(blood_pressure['sbp'][0]) \
+                .chol(pathology['cholesterol']['ldl'], pathology['cholesterol']['units']) \
+                .smoker(smoking['current']) \
+                .diabetic(diabetes_risk != "NA") \
+                .build()
+            # cvd_risk = HEARTS.calc_cvd_risk(assessment)
+            cvd_risk = WHO.calculate(cvd_params)
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
-            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk[1]]
+            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]
             # print(guidelines['cvd_risk'][assessment['cvd_risk'][1]])
         else:
             cvd_calc = estimate_cvd_risk_calc[1]
             # assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         # finally formualate guidelines
-        print("--- Writing Your Results ----")
         with open('response.json', 'w') as fp:
             json.dump(assessment, fp)
 
