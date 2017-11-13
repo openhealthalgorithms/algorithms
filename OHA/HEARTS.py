@@ -157,7 +157,7 @@ class HEARTS(object):
             return False, "No High Risk Condition"
 
     @staticmethod
-    def calculate():
+    def calculate(params):
         assessment = {}
 
         # load guidelines
@@ -166,23 +166,14 @@ class HEARTS(object):
         # load message
         messages = HEARTS.load_messages()
 
-        # load in the response object
-
-        file_path = ('%s/%s' % (
-            os.path.dirname(os.path.realpath(__file__)),
-            'request.json'
-        ))
-        with open(file_path) as json_data:
-            data = json.load(json_data)
-
         # unpack the request, validate it and set up the params
-        demographics = data['body']['demographics']
-        measurements = data['body']['measurements']
-        smoking = data['body']['smoking']
-        physical_activity = data['body']['physical_activity']
-        diet_history = data['body']['diet_history']
-        medical_history = data['body']['medical_history']
-        pathology = data['body']['pathology']
+        demographics = params['body']['demographics']
+        measurements = params['body']['measurements']
+        smoking = params['body']['smoking']
+        physical_activity = params['body']['physical_activity']
+        diet_history = params['body']['diet_history']
+        medical_history = params['body']['medical_history']
+        pathology = params['body']['pathology']
         medications = []
 
         print('--- Running lifestyle and risk factor assessment ---')
