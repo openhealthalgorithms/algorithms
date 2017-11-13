@@ -6,7 +6,7 @@ from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder 
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
 
-params = DBP()\
+params = DBP() \
     .gender("M").age(40).sbp(150).dbp(92).weight(92, 'kg').height(1.5, 'm').waist(50, 'cm').hip(90, 'cm').build()
 result = Diabetes().calculate(params)
 print('--> Diabetes:', result)
@@ -17,20 +17,73 @@ print('--> Framingham:', result)
 
 params = WPB().gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('SEARD').smoker().diabetic().build()
 result = WHO().calculate(params)
-print('--> WHO:', params['region'], ' => ',  result)
+print('--> WHO:', params['region'], ' => ', result)
 
 params = WPB().gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRD').smoker().diabetic().build()
 result = WHO().calculate(params)
-print('--> WHO:', params['region'], ' => ',  result)
+print('--> WHO:', params['region'], ' => ', result)
 
 params = WPB().gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRE').smoker().diabetic().build()
 result = WHO().calculate(params)
-print('--> WHO:', params['region'], ' => ',  result)
+print('--> WHO:', params['region'], ' => ', result)
 
 params = WPB().gender("M").age(70).sbp1(130).sbp2(145).chol(270, 'mg/dl').smoker().diabetic().build()
 result = WHO().calculate(params)
-print('--> WHO:', params['region'], ' => ',  result)
+print('--> WHO:', params['region'], ' => ', result)
 
+hearts_params = {
+    "request": {
+        "api_key": "4325872943oeqitrqet7",
+        "api_secret": "3459823jfweureitu",
+        "request_api": "https://developers.openhealthalgorithms.org/algos/hearts/",
+        "country_code": "D",
+        "response_type": "COMPLETE"
+    },
+    "body": {
+        "last_assessment": {
+            "assessment_date": "",
+            "cvd_risk": "20"
+        },
+        "demographics": {
+            "gender": "F",
+            "age": 50,
+            "dob": ["computed", "01/10/1987"],
+            "occupation": "office_worker",
+            "monthly_income": ""
+        },
+        "measurements": {
+            "height": [1.5, "m"],
+            "weight": [70.0, "kg"],
+            "waist": [99.0, "cm"],
+            "hip": [104.0, "cm"],
+            "sbp": [145, "sitting"],
+            "dbp": [91, "sitting"]
+        },
+        "smoking": {
+            "current": 0,
+            "ex_smoker": 1,
+            "quit_within_year": 0
+        },
+        "physical_activity": "120",
+        "diet_history": {
+            "fruit": 1, "veg": 6, "rice": 2, "oil": "olive"
+        },
+        "medical_history": {
+            "conditions": ["asthma", "tuberculosis"]
+        },
+        "allergies": {},
+        "medications": ["anti_hypertensive", "statin", "antiplatelet", "bronchodilator"],
+        "family_history": ["cvd"],
+        "pathology": {
+            "bsl": {
+                "type": "random", "units": "mg/dl", "value": 180
+            },
+            "cholesterol": {
+                "type": "fasting", "units": "mg/dl", "total_chol": 320, "hdl": 100, "ldl": 240
+            }
+        }
+    }
+}
 
-result = HEARTS().calculate()
-print('--> HEARTS: => ',  result)
+result = HEARTS().calculate(hearts_params)
+print('--> HEARTS: => ', result)
