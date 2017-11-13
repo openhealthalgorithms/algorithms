@@ -270,13 +270,4 @@ class HEARTS(object):
             cvd_calc = estimate_cvd_risk_calc[1]
             # assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
-        # finally formualate guidelines
-        with open('response.json', 'w') as fp:
-            json.dump(assessment, fp)
-
         return assessment
-
-
-if __name__ == "__main__":
-    print('---Starting Hearts Assessment----')
-    HEARTS().calculate()

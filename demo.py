@@ -1,3 +1,5 @@
+import json
+
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
@@ -87,3 +89,7 @@ hearts_params = {
 
 result = HEARTS().calculate(hearts_params)
 print('--> HEARTS: => ', result)
+# finally formualate guidelines
+with open('response.json', 'w') as fp:
+    json.dump(result, fp)
+
