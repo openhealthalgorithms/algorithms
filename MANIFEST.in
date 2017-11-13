@@ -1,4 +1,6 @@
 include LICENSE
 include README.rst
+include OHA/color_charts/*.txt
 include OHA/color_charts/**/*.txt
+include OHA/guideline/*.json
 include OHA/guideline/**/*.json
