@@ -8,6 +8,7 @@ from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity
+from OHA.__utilities import calculate_bmi
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
@@ -176,18 +177,15 @@ class HEARTS(object):
         pathology = params['body']['pathology']
         medications = []
 
-        print('--- Running lifestyle and risk factor assessment ---')
-        bmi = assess_bmi(measurements['weight'], measurements['height'])
-        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
-        smoker = assess_smoking_status(smoking)
+        bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]), messages)
+        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'], messages)
+        smoker = assess_smoking_status(smoking, messages)
 
         # assess diabetes status or risk
-        print('--- Check diabetes status---')
         diabetes_status = HEARTS.calculate_diabetes_status(
             medical_history, pathology['bsl']['type'], pathology['bsl']['units'], pathology['bsl']['value']
         )
 
-        print(diabetes_status)
         # If does not have diabetes
         if diabetes_status['assessment_code'] == 'DM-NONE':
             # calculate diabetes risk score
@@ -217,14 +215,12 @@ class HEARTS(object):
                         'status' : diabetes_status
                     }
                 '''
-        print('--- High Risk Condition Check ---')
         blood_pressure = {
             'sbp': measurements['sbp'],
             'dbp': measurements['dbp']
         }
-        print(blood_pressure)
 
-        bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'], medications)
+        bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'], medications, messages)
         assessment['blood_pressure'] = bp_assessment
         diet = assess_diet(diet_history, medical_history['conditions'])
         exercise = assess_physical_activity(physical_activity)
@@ -238,10 +234,9 @@ class HEARTS(object):
 
         age = demographics['age']
         # work out how to add in diabetes if newly diagnosed?
-        print(medical_history['conditions'])
-        high_risk_condition = HEARTS.high_risk_condition_check(demographics['age'], blood_pressure,
-                                                               medical_history['conditions'])
-        print(high_risk_condition)
+        high_risk_condition = HEARTS.high_risk_condition_check(
+            demographics['age'], blood_pressure, medical_history['conditions']
+        )
 
         assessment['cvd_assessment'] = {
             'high_risk_condition': high_risk_condition
@@ -268,6 +263,6 @@ class HEARTS(object):
             # print(guidelines['cvd_risk'][assessment['cvd_risk'][1]])
         else:
             cvd_calc = estimate_cvd_risk_calc[1]
-            # assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
+            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         return assessment
