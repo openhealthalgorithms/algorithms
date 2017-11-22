@@ -34,10 +34,9 @@ def has_condition(c, conditions):
     return False
 
 
-def assess_waist_hip_ratio(waist, hip, gender):
+def assess_waist_hip_ratio(waist, hip, gender, messages):
     _assessment_code = ""
     _target = ""
-    _target_message = ""
 
     whr = calculate_waist_hip_ratio(
         convert_height_unit(
@@ -49,14 +48,12 @@ def assess_waist_hip_ratio(waist, hip, gender):
     )
     if gender == "F":
         _target = 0.85
-        _target_message = "WHR for women is < 0.85"
         if whr >= 0.85:
             _assessment_code = "WHR-H"
         else:
             _assessment_code = "WHR-N"
     if gender == "M":
         _target = 0.9
-        _target_message = "WHR for men is < 0.9"
         if whr >= 0.9:
             _assessment_code = "WHR-H"
         else:
@@ -66,15 +63,14 @@ def assess_waist_hip_ratio(waist, hip, gender):
         'value': whr,
         'assessment_code': _assessment_code,
         'target': _target,
-        'target_message': _target_message
+        'target_message': messages['whr'][_assessment_code]
     }
 
     return whr_output
 
 
-def assess_smoking_status(smoking):
+def assess_smoking_status(smoking, messages):
     _target = 0
-    _target_message = "No smoking"
 
     if smoking['current'] == 1:
         _value = 1
@@ -93,17 +89,16 @@ def assess_smoking_status(smoking):
         'value': _value,
         'assessment_code': _assessment_code,
         'target': _target,
-        'target_message': _target_message
+        'target_message': messages['smoking'][_assessment_code]
     }
 
     return smoking_output
 
 
-def assess_blood_pressure(bp, conditions, medications):
+def assess_blood_pressure(bp, conditions, medications, messages):
     _assessment = ""
     _assessment_code = ""
     _target = ""
-    _target_message = ""
 
     _sbp = bp['sbp'][0]
     _dbp = bp['dbp'][0]
@@ -111,45 +106,38 @@ def assess_blood_pressure(bp, conditions, medications):
     if _sbp > 160:
         _assessment = "HIGH RISK"
         _assessment_code = "BP-HR-0"
-        _target_message = "Blood pressure is at high risk level. Seek Care"
 
     elif has_condition('diabetes', conditions):
         if _sbp > 130:
             _assessment = "OFF TARGET"
             _assessment_code = "BP-DM-0"
             _target = 130
-            _target_message = "Target set for patient with diabetes"
         else:
             _assessment = "ON TARGET"
             _assessment_code = "BP-DM-1"
             _target = 130
-            _target_message = "Target set for patient with diabetes"
     elif (_sbp < 140) and (_sbp >= 120):
         _assessment = "OFF TARGET, MILD"
         _assessment_code = "BP-NoHx-0"
         _target = 120
-        _target_message = "Target set for patient with no history or medications"
     elif _sbp > 140:
         _assessment = "OFF TARGET, ELEVATED"
         _assessment_code = "BP-NoHx-1"
         _target = 120
-        _target_message = "Target set for patient with no history or medications"
 
     bp_output = {
         'bp': str(_sbp) + "/" + str(_dbp),
         'assessment_code': _assessment_code,
         'assessment': _assessment,
         'target': _target,
-        'target_message': _target_message
+        'target_message': messages['blood_pressure'][_assessment_code]\
+                          if _assessment_code in messages['blood_pressure'].keys() else _assessment_code
     }
     return bp_output
 
 
-def assess_bmi(height, weight):
+def assess_bmi(bmi, messages):
     _target = "18.5 - 24.9"
-    _target_message = ""
-
-    bmi = calculate_bmi(weight[0], height[0])
 
     if bmi < 18.5:
         _assessment_code = "UW"
@@ -164,7 +152,7 @@ def assess_bmi(height, weight):
         'value': bmi,
         'assessment_code': _assessment_code,
         'target': _target,
-        'target_message': _target_message
+        'target_message': messages['bmi'][_assessment_code]
     }
 
     return bmi_output
@@ -190,27 +178,20 @@ def assess_diet(diet_history, conditions):
 
     if diet_history['fruit'] < targets['general']['fruit'] \
             and diet_history['veg'] < targets['general']['vegetables']:
-
         _assessment = "BOTH OFF TARGET"
         _assessment_code = 0
         _target_message = ""
-
     elif ((diet_history['fruit'] < targets['general']['fruit'])
           and (diet_history['veg'] >= targets['general']['vegetables'])):
-
         _assessment = "PARTIAL OFF TARGET"
         _assessment_code = 1
         _target_message = "Two serves of fruit and 5 serves of vegetables"
-
     elif ((diet_history['fruit'] > targets['general']['fruit'])
           and (diet_history['veg'] < targets['general']['vegetables'])):
-
         _assessment = "PARTIAL OFF TARGET"
         _assessment_code = 2
         _target_message = "Two serves of fruit and 5 serves of vegetables"
-
     else:
-
         _assessment = "ON TARGET"
         _assessment_code = 3
         _target_message = "Two serves of fruit and 5 serves of vegetables"
