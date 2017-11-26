@@ -28,15 +28,15 @@
           "follow_up_interval" : "3-6",
           "follow_up" : "Follow-up every 3-6 months"
       },
-      ">30" : {
-          "score" : ">30%",
+      "30-40" : {
+          "score" : ">30%-40%",
           "label" : "Medium",
           "advice" : ["Lifestyle", "Blood Pressure", "Statin"],
           "bp_target" : "130/80",
           "follow_up_interval" : "3",
           "follow_up" : "Follow-up every 3 months, if there is no reduction in cardiovascular risk after six months of follow up refer to next level"
       },
-      ">40" : {
+      "40+" : {
           "score" : ">40%",
           "label" : "High",
           "advice" : ["Lifestyle", "Blood Pressure", "Statin", "Refer"],
