@@ -513,7 +513,25 @@ def estimate_cvd_risk(age, high_risk_condition):
     else:
         return (True, "Continue")
     
-def generate_management_plan(assessment):
+def calculate_openhealth_score():
+
+    '''
+    Generate a score based on:
+    Diet
+    Exercise
+    CVD Risk
+    Blood Pressure
+    Diabetes
+    '''
+
+def prescribe_medications(age, gender, assessment):
+
+    if 'Blood Pressure' in assessment['advice']:
+        print('manage blood pressure')
+
+    return None
+
+def generate_management_plan(age, gender, conditions, medications, allergies, assessment):
     '''
     Calculate the specific targets, management advice, follow up, referrals based on the assessment
     General lifestyle
@@ -527,9 +545,49 @@ def generate_management_plan(assessment):
     Cholesterol
         - manage as per cvd risk unless very high
     '''
-    management = {}
+    rx_guidelines = {}
 
+    if 'Blood Pressure' in assessment['advice']:
+        print('managing blood pressure')
+        # Check existing medications against a list, for now assume none
+        # Should check to see that serum Cr and K have been checked
+        if age < 55:
+            # need to also check for women of child bearing age .. use a beta-blocker not ACE-I
+            if gender == "F" and age > 16 and age < 45:
+                bp_rx = {
+                    'message' : 'Recommend to start first line antihypertensive for woman in child bearing age',
+                    'medication' : 'Beta-blocker and/or thiazide diuretic',
+                    'warnings' : 'If age < 40, ensure assessment for secondary causes of hypertension',
+                    'side_effects' : ''
+                }
+            elif "ace-i" not in allergies:
+                bp_rx = {
+                    'message' : 'Recommend to start first line antihypertensive for age < 55 with no allergies',
+                    'medication' : 'Thiazide diuretic and/or ACE-I',
+                    'warnings' : 'If prescribing ACE-I or A2RB, Test serum creatinine and potassium',
+                    'side_effects' : ''
+                }
+            else:
+                bp_rx = {
+                    'message' : 'Recommend to start antihypertensive. Allergy to ACE-I identified',
+                    'medication' : 'Beta-blocker and/or thiazide diuretic',
+                    'warnings' : '',
+                    'side_effects' : ''
+                }
+        elif age > 55:
+            bp_rx = {
+                'message' : 'Recommend to start first line antihypertensive for age > 55 with no allergies',
+                'medication' : 'Calcium Channel Blocker and/or thiazide diuretic',
+                'warnings' : '',
+                'side_effects' : ''
+            }
 
-    return None
+    rx_guidelines = {
+        'BP': bp_rx
+    }
+
+    print(rx_guidelines)
+
+    return rx_guidelines
 
 
