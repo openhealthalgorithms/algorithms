@@ -17,7 +17,7 @@ def find_packages(*args, **kwargs):
 
 
 setup(
-    version='0.2.1.alpha.1',
+    version='0.2.1.alpha.2',
     long_description=long_description,
     packages=find_packages(),
     install_requires=[
