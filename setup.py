@@ -1,4 +1,6 @@
+import subprocess
 import sys
+import time
 from os import path
 
 from setuptools import setup
@@ -16,12 +18,22 @@ def find_packages(*args, **kwargs):
     return ['OHA', 'OHA.param_builders', 'tests']
 
 
+def version():
+    __version = '0.2.1'
+    __tag = 'git'
+    if path.exists('.git'):
+        __build = subprocess.check_output('git rev-list HEAD --count'.split()).decode().strip()
+    else:
+        __build = __tag
+    return '%s.%s.%s' % (__version, __tag, __build)
+
+
 setup(
-    version='0.2.1.alpha.2',
+    version=version(),
     long_description=long_description,
     packages=find_packages(),
     install_requires=[
         'numpy',
     ],
-    include_package_data = True
+    include_package_data=True
 )
