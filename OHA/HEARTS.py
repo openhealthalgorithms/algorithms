@@ -266,3 +266,7 @@ class HEARTS(object):
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         return assessment
+
+    @staticmethod
+    def get_messages():
+        return HEARTS.load_messages()
