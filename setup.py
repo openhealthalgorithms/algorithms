@@ -1,6 +1,5 @@
 import subprocess
 import sys
-import time
 from os import path
 
 from setuptools import setup
