@@ -1,7 +1,10 @@
+import sys
 from os import path
-from codecs import open
+
 from setuptools import setup
 
+if sys.version_info[:2] < (3, 0):
+    raise RuntimeError("Python version 3 required.")
 
 here = path.abspath(path.dirname(__file__))
 
@@ -12,32 +15,12 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 def find_packages(*args, **kwargs):
     return ['OHA', 'OHA.param_builders', 'tests']
 
+
 setup(
-    name='OpenHealthAlgorithms',
     version='0.2.1.alpha.1',
-    description='An implementation of health algorithms.',
     long_description=long_description,
-    url='https://github.com/openhealthalgorithms/openhealthalgorithms',
-    author='OpenHealthAlgorithms',
-    author_email='',
-    license='Apache',
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
-        'Intended Audience :: Healthcare Industry',
-        'Intended Audience :: Science/Research',
-        'Topic :: Scientific/Engineering :: Medical Science Apps.',
-        'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 2.7',
-    ],
     packages=find_packages(),
-    include_package_data=True,
     install_requires=[
         'numpy',
     ]
-    # entry_points={
-    #     'console_scripts': [
-    #         'spike=spikes:main',
-    #     ],
-    # },
 )
