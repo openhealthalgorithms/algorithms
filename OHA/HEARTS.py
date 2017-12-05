@@ -270,3 +270,35 @@ class HEARTS(object):
     @staticmethod
     def get_messages():
         return HEARTS.load_messages()
+
+    @staticmethod
+    def get_sample_params():
+        return dict(
+            request=dict(
+                api_key="4325872943oeqitrqet7",
+                api_secret="3459823jfweureitu",
+                request_api="https://developers.openhealthalgorithms.org/algos/hearts/",
+                country_code="D", response_type="COMPLETE"
+            ),
+            body=dict(
+                last_assessment=dict(assessment_date="", cvd_risk="20"),
+                demographics=dict(
+                    gender="F", age=50, dob=["computed", "01/10/1987"], occupation="office_worker", monthly_income=""
+                ),
+                measurements=dict(
+                    height=[1.5, "m"], weight=[70.0, "kg"], waist=[99.0, "cm"],
+                    hip=[104.0, "cm"], sbp=[145, "sitting"], dbp=[91, "sitting"]
+                ),
+                smoking=dict(current=0, ex_smoker=1, quit_within_year=0),
+                physical_activity="120",
+                diet_history=dict(fruit=1, veg=6, rice=2, oil="olive"),
+                medical_history=dict(conditions=["asthma", "tuberculosis"]),
+                allergies={},
+                medications=["anti_hypertensive", "statin", "antiplatelet", "bronchodilator"],
+                family_history=["cvd"],
+                pathology=dict(
+                    bsl=dict(type="random", units="mg/dl", value=180),
+                    cholesterol=dict(type="fasting", units="mg/dl", total_chol=320, hdl=100, ldl=240)
+                )
+            )
+        )
