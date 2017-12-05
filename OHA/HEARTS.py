@@ -275,10 +275,11 @@ class HEARTS(object):
     def get_sample_params():
         return dict(
             request=dict(
-                api_key="4325872943oeqitrqet7",
-                api_secret="3459823jfweureitu",
+                api_key="API_KEY",
+                api_secret="API_SECRET",
                 request_api="https://developers.openhealthalgorithms.org/algos/hearts/",
-                country_code="D", response_type="COMPLETE"
+                country_code="D",
+                response_type="COMPLETE"
             ),
             body=dict(
                 last_assessment=dict(assessment_date="", cvd_risk="20"),
