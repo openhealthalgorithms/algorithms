@@ -19,8 +19,9 @@ def find_packages(*args, **kwargs):
 
 def version():
     __version = '0.2.1'
-    __tag = 'git'
+    __tag = 'b'
     if path.exists('.git'):
+        __tag = 'git'
         __build = subprocess.check_output('git rev-list HEAD --count'.split()).decode().strip()
     else:
         __build = __tag
