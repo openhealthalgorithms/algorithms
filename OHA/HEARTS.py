@@ -35,73 +35,39 @@ class HEARTS(object):
 
     @staticmethod
     def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
-
-        # "assessment": "blood pressure off target",
-        # assessment_message
-        # "assessment_code" : ""
-        # "bp": "145/91",
-        # "target": 130,
-        # "target_message": "target set for patient with diabetes"
-
         _assessment = ""
         _assessment_code = ""
-        _assessment_message = ""
         _target = ""
-        _target_message = ""
 
-        diabetes_data = {}
         # move to a helper function
         if bsl_units == 'mg/dl':
             bsl_value = round(float(bsl_value) / 18, 1)
 
         for condition in conditions:
             if condition == "diabetes":
-                # return True
                 _assessment = True
-                _assessment_message = "History of Diabetes"
                 _assessment_code = 'BSL-R'
-                _target = '',
-                _target_message = ''
+                _target = ''
             else:
                 if bsl_type == "random":
-                    if bsl_value >= 11.1:
+                    if bsl_value > 11:
                         _assessment = True
-                        _assessment_message = "Looks like newly diagnosed diabetes"
                         _assessment_code = 'DM-NEW'
                         _target = ''
-                        _target_message = ''
-                        # diabetes_data['dx'] = True
-                        # diabetes_data['diagnosis_type'] = 'DM-New'
-                        # diabetes_data['code'] = 'BSL-R'
-                        # return (diabetes_data, "Looks like newly diagnosed diabetes")
                     elif bsl_value > 7:
                         _assessment = False
-                        _assessment_message = "You are at risk of developing Diabetes"
                         _assessment_code = 'DM-PRE'
                         _target = ''
-                        _target_message = ''
-                        # diabetes_data['dx'] = False
-                        # diabetes_data['diagnosis_type'] = 'DM-Pre'
-                        # diabetes_data['code'] = 'BSL-A'
-                        # return (diabetes_data, "You are at risk of developing diabetes")
                     else:
                         _assessment = False
-                        _assessment_message = "Normal Blood Sugar. No Diabetes"
                         _assessment_code = 'DM-NONE'
                         _target = ''
-                        _target_message = ''
-                        # diabetes_data['dx'] = False
-                        # diabetes_data['diagnosis_type'] = 'DM-NA'
-                        # diabetes_data['code'] = 'BSL-G'
-                        # return (diabetes_data, "BSL-G", "Blood sugar normal")
             # return False
             diabetes_output = {
                 'value': bsl_value,
                 'assessment': _assessment,
                 'assessment_code': _assessment_code,
-                'assessment_message': _assessment_message,
                 'target': _target,
-                'target_message': _target_message
             }
 
             return diabetes_output
@@ -164,9 +130,6 @@ class HEARTS(object):
         # load guidelines
         guidelines = HEARTS.load_guidelines('hearts')["body"]
 
-        # load message
-        messages = HEARTS.load_messages()
-
         # unpack the request, validate it and set up the params
         demographics = params['body']['demographics']
         measurements = params['body']['measurements']
@@ -177,9 +140,9 @@ class HEARTS(object):
         pathology = params['body']['pathology']
         medications = []
 
-        bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]), messages)
-        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'], messages)
-        smoker = assess_smoking_status(smoking, messages)
+        bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
+        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
+        smoker = assess_smoking_status(smoking)
 
         # assess diabetes status or risk
         diabetes_status = HEARTS.calculate_diabetes_status(
@@ -210,17 +173,12 @@ class HEARTS(object):
 
         diabetes_status['risk'] = diabetes_risk
         assessment['diabetes'] = diabetes_status
-        '''assessment['diabetes'] = {
-                        'risk' : diabetes_risk,
-                        'status' : diabetes_status
-                    }
-                '''
         blood_pressure = {
             'sbp': measurements['sbp'],
             'dbp': measurements['dbp']
         }
 
-        bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'], medications, messages)
+        bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'])
         assessment['blood_pressure'] = bp_assessment
         diet = assess_diet(diet_history, medical_history['conditions'])
         exercise = assess_physical_activity(physical_activity)

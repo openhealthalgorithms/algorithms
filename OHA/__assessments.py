@@ -34,7 +34,7 @@ def has_condition(c, conditions):
     return False
 
 
-def assess_waist_hip_ratio(waist, hip, gender, messages):
+def assess_waist_hip_ratio(waist, hip, gender):
     _assessment_code = ""
     _target = ""
 
@@ -62,14 +62,13 @@ def assess_waist_hip_ratio(waist, hip, gender, messages):
     whr_output = {
         'value': whr,
         'assessment_code': _assessment_code,
-        'target': _target,
-        'target_message': messages['whr'][_assessment_code]
+        'target': _target
     }
 
     return whr_output
 
 
-def assess_smoking_status(smoking, messages):
+def assess_smoking_status(smoking):
     _target = 0
 
     if smoking['current'] == 1:
@@ -88,14 +87,13 @@ def assess_smoking_status(smoking, messages):
     smoking_output = {
         'value': _value,
         'assessment_code': _assessment_code,
-        'target': _target,
-        'target_message': messages['smoking'][_assessment_code]
+        'target': _target
     }
 
     return smoking_output
 
 
-def assess_blood_pressure(bp, conditions, medications, messages):
+def assess_blood_pressure(bp, conditions):
     _assessment = ""
     _assessment_code = ""
     _target = ""
@@ -129,14 +127,12 @@ def assess_blood_pressure(bp, conditions, medications, messages):
         'bp': str(_sbp) + "/" + str(_dbp),
         'assessment_code': _assessment_code,
         'assessment': _assessment,
-        'target': _target,
-        'target_message': messages['blood_pressure'][_assessment_code]\
-                          if _assessment_code in messages['blood_pressure'].keys() else _assessment_code
+        'target': _target
     }
     return bp_output
 
 
-def assess_bmi(bmi, messages):
+def assess_bmi(bmi):
     _target = "18.5 - 24.9"
 
     if bmi < 18.5:
@@ -151,8 +147,7 @@ def assess_bmi(bmi, messages):
     bmi_output = {
         'value': bmi,
         'assessment_code': _assessment_code,
-        'target': _target,
-        'target_message': messages['bmi'][_assessment_code]
+        'target': _target
     }
 
     return bmi_output
@@ -215,19 +210,16 @@ def assess_diet(diet_history, conditions):
 
 def assess_physical_activity(active_time):
     if int(active_time) >= targets['general']['active_time']:
-        _assessment_code = ""
-        _target = ""
+        _assessment_code = "PAO"
+        _target = 150
         _target_message = "> 150 minutes weekly"
     else:
-        _assessment_code = ""
-        _target = ""
-        _target_message = "> 150 minutes weekly"
-
+        _assessment_code = "PAL"
+        _target = 150
     pa_output = {
         'value': active_time,
         'assessment_code': _assessment_code,
         'target': _target,
-        'target_message': _target_message
     }
 
     return pa_output
