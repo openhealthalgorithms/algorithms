@@ -60,7 +60,10 @@
             "DM-Dx-1" : "You told us you have diabetes. [Find a doctor to discuss]", 
             "BSL-G" : "Your blood sugar control is good. Maintain a healthy diet ...",
             "BSL-A" : "Your reading indicates a state called 'pre-diabetes'",
-            "BSL-R" : "Looks like you may habe diabetes. [Follow up]" 
+            "BSL-R" : "Looks like you may habe diabetes. [Follow up]" ,
+            "DM-NEW": "Looks like newly diagnosed diabetes",
+            "DM-PRE": "You are at risk of developing Diabetes",
+            "DM-NONE": "Normal Blood Sugar. No Diabetes"
         },
         "lipids" : {
         },
