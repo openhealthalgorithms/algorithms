@@ -104,7 +104,6 @@ class HEARTS(object):
         # Return whether medical history contains any of these
 
         for condition in conditions:
-            print(condition)
             if condition.upper() in high_risk_conditions:
                 return True, 'Has High Risk Condition %s' % condition.upper()
 
