@@ -133,6 +133,20 @@ class Framingham(object):
         return suggested_heart_age
 
     @staticmethod
+    def cvd_risk_level(cvd_risk):
+
+        if cvd_risk < 10:
+            return '<10'
+        elif cvd_risk < 20:
+            return '10-20'
+        elif cvd_risk < 30:
+            return '20-30'
+        elif cvd_risk < 40:
+            return '30-40'
+        else: 
+            return '>40'
+
+    @staticmethod
     def calculate(params):
         """
 
@@ -162,16 +176,19 @@ class Framingham(object):
         Returns
         -------
         dict
-           Framingham risk score and heart age
+           Framingham risk score and heart age and risk_range
         """
         params = format_params(params)
 
         cvd_risk = Framingham.calculate_fre_score(params)
         heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])
+        risk_range = Framingham.cvd_risk_level(cvd_risk)
 
         return {
-            'risk':      float('%.4f' % (round(cvd_risk, 4))),
+            'raw_risk' : float('%.4f' % (round(cvd_risk, 4))),
+            'risk':      round(cvd_risk * 100, 2),
             'heart_age': heart_age,
+            'risk_range' : risk_range
         }
 
     @staticmethod

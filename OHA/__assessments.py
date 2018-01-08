@@ -70,27 +70,27 @@ def assess_waist_hip_ratio(waist, hip, gender):
 
 def assess_smoking_status(smoking):
     _target = 0
+    smoking_status = None
 
     if smoking['current'] == 1:
-        _value = 1
-        _assessment_code = "SM-R"
+        smoking_status = 'SM-1'
     elif (smoking['ex_smoker']) & (smoking['quit_within_year']):
-        _value = 1
-        _assessment_code = "SM-A-1"
+        smoking_status = 'SM-2'
     elif smoking['ex_smoker']:
-        _value = 0
-        _assessment_code = "SM-A-2"
+        smoking_status = 'SM-3'
     else:
-        _value = 0
-        _assessment_code = "SM-G"
+       smoking_status = 'SM-4'
 
+    '''
     smoking_output = {
         'value': _value,
         'assessment_code': _assessment_code,
         'target': _target
     }
+    '''
 
-    return smoking_output
+    #return smoking_output
+    return smoking_status 
 
 
 def assess_blood_pressure(bp, conditions):

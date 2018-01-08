@@ -19,21 +19,19 @@
     },
     "messages" : {
         "smoking" : {
-            "SM-R" : "You will benefit from smoking cessation. For advice [go to]",
-            "SM-A-1" : "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor",
-            "SM-A-2" : "Good work quitting. It\"s the best thing you can do for your health. Stay strong",
-            "SM-G" : "Your lungs will thank you!"
+            "SM-1" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
+            "SM-2" : ["ex_smoker_quit_within_12_months", "Ex smoker, quit within the past 12 months", "AMBER", "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor"],
+            "SM-3" : ["ex_smoker", "Ex smoker, quit > 12 months ago", "GREEN", "Good work quitting. It\"s the best thing you can do for your health. Stay strong"],
+            "SM-4" : ["non-smoker", "Non Smoker", "GREEN", "Your lungs will thank you!"]
         },
-        "bmi" : {
-            "UW" : "You are underweight",
-            "NW" : "Normal weight",
-            "OW" : "Overweight",
-            "OB" : "Obese"
-        },
-        "whr" : {
-            "WHR-H" : "High WHR",
-            "WHR-M" : "Moderate WHR",
-            "WHR-N" : "Normal WHR"
+        "anthro" : {
+            "AN-1" : ["under_weight", "BMI < ", "AMBER", "You are underweight"],
+            "AN-2" : ["normal_weight", "BMI in healthy range", "GREEN", "You are in a healthy weight range"],
+            "AN-3" : ["overweight", "BMI above healthy range", "AMBER", "You are in the overweight range"],
+            "AN-4" : ["obese", "BMI in the obese range ", "RED", "You are in the obese range"],
+            "WH-1" : ["normal_whr", "Healthy WHR ", "GREEN", "You have normal Waist Hip Ratio for gender"],
+            "WH-2" : ["moderate_whr", "Elevated WHR", "AMBER", "You have an elevated WHR for gender"],
+            "WH-3" : ["high_whr", "Very elevated WHR", "RED", "You have a very elevated WHR"]
         },
         "nutrition" : {
             "FV-G" : "You are eating the recommended amount of fruit and vegetables. Keep it up",
