@@ -14,4 +14,3 @@ for development environment use the following command to install the dependencie
 similarly, for production environment use:
 
     pip install requirements/prod.txt
-

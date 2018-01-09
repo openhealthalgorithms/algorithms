@@ -46,4 +46,3 @@ class WhoTest(unittest.TestCase):
         params = WPB().gender("F").age(80).sbp1(160).sbp2(180).chol(9).smoker().diabetic().build()
         result = WHO().calculate(params)
         self.assertEqual(result['risk'], 50)
-

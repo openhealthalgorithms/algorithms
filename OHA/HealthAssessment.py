@@ -5,18 +5,14 @@ import json
 import os
 
 from OHA.Diabetes import Diabetes
-from OHA.WHO import WHO
 from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
-
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity
 from OHA.__utilities import calculate_bmi
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
-from OHA.param_builders.who_param_builder import WhoParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
-#from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
-#from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
+
 
 __author__ = 'fredhersch'
 __email__ = 'fredhersch@gmail.com'

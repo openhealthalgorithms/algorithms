@@ -7,4 +7,3 @@ PyYAML
 # testing
 nose
 coverage
-
