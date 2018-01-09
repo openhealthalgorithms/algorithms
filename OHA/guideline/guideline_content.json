@@ -18,11 +18,15 @@
         "follow_up" : "You should follow up in"
     },
     "messages" : {
+        // key: [return_code, context, status, message]
+        // for messages, provide different levels of detail
+        // L=1, L=2, L=3 ...
+        // Default to return the whole array
         "smoking" : {
-            "SM-R" : "You will benefit from smoking cessation. For advice [go to]",
-            "SM-A-1" : "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor",
-            "SM-A-2" : "Good work quitting. It\"s the best thing you can do for your health. Stay strong",
-            "SM-G" : "Your lungs will thank you!"
+            "SM-0" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
+            "SM-2" : ["ex_smoker_quit_within_12_months", "Ex smoker, quit within the past 12 months", "AMBER", "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor"],
+            "SM-3" : ["ex_smoker", "Ex smoker, quit > 12 months ago", "GREEN", "Good work quitting. It\"s the best thing you can do for your health. Stay strong"],
+            "SM-4" : ["non-smoker", "Non Smoker", "GREEN", "Your lungs will thank you!"]
         },
         "bmi" : {
             "UW" : "You are underweight",

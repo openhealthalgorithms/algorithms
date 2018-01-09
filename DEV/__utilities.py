@@ -48,40 +48,18 @@ def calculate_age(object):
 
 def assess_smoking_status(smoking):
 
-    _assessment = ""
-    _assessment_code = ""
-    _target = 0
-    _target_message = "No smoking"
+    smoking_status = None
 
     if smoking['current'] == 1:
-        _value = 1
-        _assessment = "Current Smoker"
-        _assessment_code = "SM-R"
-        #return (True, 'RED', 'SM-R', "Current Smoker")
+        smoking_status = 'SM-1'
     elif ((smoking['ex_smoker']) & (smoking['quit_within_year'])):
-        _value = 1
-        _assessment = "Ex-smoker, Quit within the year"
-        _assessment_code = "SM-A-1"
-        #return (True, 'AMBER', 'SM-A-1', "Ex-smoker, Quit within the year")
+        smoking_status = 'SM-2'
     elif ((smoking['ex_smoker'])):
-        _value = 0
-        _assessment = "Ex-smoker, Quit more than a year ago"
-        _assessment_code = "SM-A-2"
-        #return (False, 'YELLOW', 'SM-A-2', "Ex-smoker, Quit more than a year ago")
+        smoking_status = 'SM-3'
     else:
-        _value = 0
-        _assessment = "Non-Smoker"
-        _assessment_code = "SM-G"
-        #return (False, 'GREEN', 'SM-G', "Non-smoker")
-    
-    smoking_output = {
-        'value' : _value,
-        'assessment_code' : _assessment_code,
-        'target' : _target,
-        'target_message' : _target_message
-    }
+       smoking_status = 'SM-4'
 
-    return smoking_output
+    return smoking_status
         
 
 def assess_waist_hip_ratio(waist, hip, gender):
@@ -530,6 +508,49 @@ def prescribe_medications(age, gender, assessment):
         print('manage blood pressure')
 
     return None
+
+def load_guideline_content():
+    file = 'guideline_content.json'
+    with open(file) as json_data:
+        data = json.load(json_data) 
+
+    return data
+
+def load_guidelines(guideline_key):
+    file = 'guideline_hearts.json'
+    with open(file) as json_data:
+        data = json.load(json_data)
+    return data
+
+def output_messages(section, key, output_level=1):
+    ''' return the relevant message based on the section, key and output_level'''
+    ''' message is of the format key: [return_code, context, status, message] '''
+    ''' output_level = 0 // return the key only
+        output_level = 1 // return key and code
+        output_level = 2 // key, code, context
+        output_level = 3 // key, code, context, status
+        output_level = 4 // key, code, context, status, message
+    '''
+
+    #load message - shift this to a separate package
+    data = []
+    messages = load_guideline_content()["body"]["messages"]
+    content = messages[section]
+
+    if output_level == 0:
+        return key
+    elif output_level == 1:
+        data = [key, content[key][0]]
+        return data
+    elif output_level == 2:
+        data = [key, content[key][0:2]]
+        return data
+    elif output_level == 3:
+        data = [key, content[key][0:3]]
+        return data
+    elif output_level == 4:
+        data = [key, content[key][0:4]]
+        return data
 
 def generate_management_plan(age, gender, conditions, medications, allergies, assessment):
     '''

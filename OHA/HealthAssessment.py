@@ -6,19 +6,25 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
+from OHA.Framingham import Framingham
+from OHA.HEARTS import HEARTS
+
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity
 from OHA.__utilities import calculate_bmi
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
+from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
+#from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
+#from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
 
-__author__ = 'indrajit'
-__email__ = 'eendroroy@gmail.com'
+__author__ = 'fredhersch'
+__email__ = 'fredhersch@gmail.com'
 
 
-class HEARTS(object):
+class HealthAssessment(object):
     """
-
+        General Health Assessment
     """
 
     @staticmethod
@@ -126,11 +132,12 @@ class HEARTS(object):
     def calculate(params):
         assessment = {}
 
-        # load guidelines
-        guidelines = HEARTS.load_guidelines('hearts')["body"]
+        # load guidelines for SIMPLE algorithm model
+        guidelines = HealthAssessment.load_guidelines('health_assessment')["body"]
 
         # unpack the request, validate it and set up the params
         demographics = params['body']['demographics']
+        gender = demographics['gender']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
         physical_activity = params['body']['physical_activity']
@@ -144,7 +151,8 @@ class HEARTS(object):
         smoker = assess_smoking_status(smoking)
 
         # assess diabetes status or risk
-        diabetes_status = HEARTS.calculate_diabetes_status(
+        # // FH these functions should be in a general Assessment class
+        diabetes_status = HealthAssessment.calculate_diabetes_status(
             medical_history, pathology['bsl']['type'], pathology['bsl']['units'], pathology['bsl']['value']
         )
 
@@ -204,21 +212,26 @@ class HEARTS(object):
         # print('high risk output %s ' % assessment['high_risk'][0])
         # if not high_risk_condition[0]:
         if estimate_cvd_risk_calc[0]:
-            cvd_params = WhoParamsBuilder() \
-                .gender(demographics['gender']) \
+            cvd_params = FraminghamParamsBuilder() \
+                .gender(gender) \
                 .age(age) \
-                .sbp1(blood_pressure['sbp'][0]) \
-                .sbp2(blood_pressure['sbp'][0]) \
-                .chol(pathology['cholesterol']['ldl'], pathology['cholesterol']['units']) \
-                .smoker(smoking['current']) \
-                .diabetic(diabetes_risk != "NA") \
+                .t_chol(pathology['cholesterol']['total_chol'], pathology['cholesterol']['units']) \
+                .hdl_chol(pathology['cholesterol']['hdl'], pathology['cholesterol']['units']) \
+                .sbp(blood_pressure['sbp'][0]) \
                 .build()
-            cvd_risk = WHO.calculate(cvd_params)
-            print("--- WHO risk assessment %s " % cvd_risk)
+            print("cvd params --- %s " % cvd_params)
+            fre_result = Framingham().calculate(cvd_params)
+            print("--- FRE result %s " % fre_result)
+            cvd_risk = round(fre_result['risk'] * 100, 2)
+            heart_age = fre_result['heart_age']
+            print("cvd risk is %s " % cvd_risk)
+            print("heart age is %s " % heart_age)
+            risk_range = fre_result['risk_range']
+            
             # use the key to look up the guidelines output
-            assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
-            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]
-            # print(guidelines['cvd_risk'][assessment['cvd_risk'][1]])
+            assessment['cvd_assessment']['cvd_risk_result'] = fre_result
+            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]
+        
         else:
             cvd_calc = estimate_cvd_risk_calc[1]
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']

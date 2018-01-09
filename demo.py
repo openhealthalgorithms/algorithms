@@ -4,6 +4,7 @@ from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
 from OHA.WHO import WHO
+from OHA.HealthAssessment import HealthAssessment as HA
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder as FPB
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
@@ -89,6 +90,11 @@ hearts_params = {
 
 result = HEARTS().calculate(hearts_params)
 print('--> HEARTS: => ', result)
+
+result = HA().calculate(hearts_params)
+print('--> HealthAssessment ALGO: => ', result)
+
+
 # finally formualate guidelines
 with open('response.json', 'w') as fp:
     json.dump(result, fp)
