@@ -4,6 +4,8 @@
 ## auto environment files
 .env
 .out
+.env.in
+.env.out
 
 ## python version file
 .python-version
