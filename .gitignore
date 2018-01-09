@@ -1,3 +1,6 @@
+*~
+.DS_Store
+
 ## auto environment files
 .env
 .out
@@ -18,6 +21,8 @@ venv/
 build/
 dist/
 **.egg-info
+*.pyc
+**/__pycache__
 
 ## files
 OHA/response.json
