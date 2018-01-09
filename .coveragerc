@@ -1,8 +1,11 @@
 [paths]
 source =
-    OpenHealthAlgorithms/*
+    OHA/*
 
 [run]
 omit =
     venv/*
     tests/*
+    OHA/__*
+    OHA/**/__*
+    OHA/param_builders/*
