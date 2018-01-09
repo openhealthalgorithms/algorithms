@@ -12,3 +12,4 @@ doctests = True
 exclude =
     *.pyc
     venv/*
+    build/*
