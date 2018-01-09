@@ -137,7 +137,7 @@ class HEARTS(object):
         diet_history = params['body']['diet_history']
         medical_history = params['body']['medical_history']
         pathology = params['body']['pathology']
-        medications = []
+        # medications = []
 
         bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
         whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
@@ -220,7 +220,7 @@ class HEARTS(object):
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]
             # print(guidelines['cvd_risk'][assessment['cvd_risk'][1]])
         else:
-            cvd_calc = estimate_cvd_risk_calc[1]
+            # cvd_calc = estimate_cvd_risk_calc[1]
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         return assessment

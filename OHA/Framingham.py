@@ -54,33 +54,33 @@ class Framingham(object):
         has_diabetes = params.get('has_diabetes')
 
         risk_chol = (
-            Framingham.__get_co_efficient('logAge', gender)
-            * np.log(age)
-            + Framingham.__get_co_efficient('logTChol', gender)
-            * np.log(total_cholesterol)
-            - Framingham.__get_co_efficient('logHDLChol', gender)
-            * np.log(hdl_cholesterol)
+                Framingham.__get_co_efficient('logAge', gender)
+                * np.log(age)
+                + Framingham.__get_co_efficient('logTChol', gender)
+                * np.log(total_cholesterol)
+                - Framingham.__get_co_efficient('logHDLChol', gender)
+                * np.log(hdl_cholesterol)
         )
 
         # If on medication for BP
         if on_bp_medication:
             risk_systolic = (
-                Framingham.__get_co_efficient('logSBPRx', gender)
-                * np.log(systolic)
+                    Framingham.__get_co_efficient('logSBPRx', gender)
+                    * np.log(systolic)
             )
         else:
             risk_systolic = (
-                Framingham.__get_co_efficient('logSBPNonRx', gender)
-                * np.log(systolic)
+                    Framingham.__get_co_efficient('logSBPNonRx', gender)
+                    * np.log(systolic)
             )
 
         risk_smoking = (
-            Framingham.__get_co_efficient('logSmoking', gender)
-            * is_smoker
+                Framingham.__get_co_efficient('logSmoking', gender)
+                * is_smoker
         )
         risk_diabetes = (
-            Framingham.__get_co_efficient('logDM', gender)
-            * has_diabetes
+                Framingham.__get_co_efficient('logDM', gender)
+                * has_diabetes
         )
         total_risk = risk_chol + risk_systolic + risk_smoking + risk_diabetes
 
@@ -143,7 +143,7 @@ class Framingham(object):
             return '20-30'
         elif cvd_risk < 40:
             return '30-40'
-        else: 
+        else:
             return '>40'
 
     @staticmethod
@@ -185,18 +185,18 @@ class Framingham(object):
         risk_range = Framingham.cvd_risk_level(cvd_risk)
 
         return {
-            'raw_risk' : float('%.4f' % (round(cvd_risk, 4))),
-            'risk':      round(cvd_risk * 100, 2),
+            'raw_risk': float('%.4f' % (round(cvd_risk, 4))),
+            'risk': round(cvd_risk * 100, 2),
             'heart_age': heart_age,
-            'risk_range' : risk_range
+            'risk_range': risk_range
         }
 
     @staticmethod
     def get_sample_params():
         return FraminghamParamsBuilder() \
-            .gender("F")\
-            .age(40)\
-            .t_chol(170, 'mg/dl')\
-            .hdl_chol(45, 'mg/dl')\
-            .sbp(125)\
+            .gender("F") \
+            .age(40) \
+            .t_chol(170, 'mg/dl') \
+            .hdl_chol(45, 'mg/dl') \
+            .sbp(125) \
             .build()

@@ -13,7 +13,6 @@ from OHA.__utilities import calculate_bmi
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
-
 __author__ = 'fredhersch'
 __email__ = 'fredhersch@gmail.com'
 
@@ -140,7 +139,7 @@ class HealthAssessment(object):
         diet_history = params['body']['diet_history']
         medical_history = params['body']['medical_history']
         pathology = params['body']['pathology']
-        medications = []
+        # medications = []
 
         bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
         whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
@@ -222,14 +221,14 @@ class HealthAssessment(object):
             heart_age = fre_result['heart_age']
             print("cvd risk is %s " % cvd_risk)
             print("heart age is %s " % heart_age)
-            risk_range = fre_result['risk_range']
-            
+            # risk_range = fre_result['risk_range']
+
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = fre_result
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]
-        
+
         else:
-            cvd_calc = estimate_cvd_risk_calc[1]
+            # cvd_calc = estimate_cvd_risk_calc[1]
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         return assessment

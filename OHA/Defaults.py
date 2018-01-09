@@ -4,4 +4,3 @@ class Defaults(object):
     waist_unit = 'cm'
     hip_unit = 'cm'
     cholesterol_unit = 'mmol/l'
-

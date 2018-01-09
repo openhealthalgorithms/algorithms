@@ -1,6 +1,6 @@
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit
-from OHA.__utilities import calculate_waist_hip_ratio, calculate_bmi
+from OHA.__utilities import calculate_waist_hip_ratio
 
 targets = {
     'general': {
@@ -44,7 +44,7 @@ def assess_waist_hip_ratio(waist, hip, gender):
             waist[1] or Defaults.waist_unit,
             Defaults.waist_unit
         ),
-        convert_height_unit(hip[0],  hip[1] or Defaults.hip_unit, Defaults.hip_unit)
+        convert_height_unit(hip[0], hip[1] or Defaults.hip_unit, Defaults.hip_unit)
     )
     if gender == "F":
         _target = 0.85
@@ -69,8 +69,7 @@ def assess_waist_hip_ratio(waist, hip, gender):
 
 
 def assess_smoking_status(smoking):
-    _target = 0
-    smoking_status = None
+    # _target = 0
 
     if smoking['current'] == 1:
         smoking_status = 'SM-1'
@@ -79,7 +78,7 @@ def assess_smoking_status(smoking):
     elif smoking['ex_smoker']:
         smoking_status = 'SM-3'
     else:
-       smoking_status = 'SM-4'
+        smoking_status = 'SM-4'
 
     '''
     smoking_output = {
@@ -89,8 +88,8 @@ def assess_smoking_status(smoking):
     }
     '''
 
-    #return smoking_output
-    return smoking_status 
+    # return smoking_output
+    return smoking_status
 
 
 def assess_blood_pressure(bp, conditions):
@@ -212,7 +211,7 @@ def assess_physical_activity(active_time):
     if int(active_time) >= targets['general']['active_time']:
         _assessment_code = "PAO"
         _target = 150
-        _target_message = "> 150 minutes weekly"
+        # _target_message = "> 150 minutes weekly"
     else:
         _assessment_code = "PAL"
         _target = 150
