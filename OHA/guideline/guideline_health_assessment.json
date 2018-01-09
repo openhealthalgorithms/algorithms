@@ -1,8 +1,8 @@
 {
   "header" : {
-    "guideline_name" : "Health Tracker Demo",
+    "guideline_name" : "General Health Assessment Demo",
     "publisher" : "OHA",
-    "publication_date" : ""
+    "publication_date" : "08-01-2018"
   },
   "body" :  {  
     "cvd_risk" : {

@@ -18,13 +18,13 @@ from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 #from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
 #from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
 
-__author__ = 'indrajit'
-__email__ = 'eendroroy@gmail.com'
+__author__ = 'fredhersch'
+__email__ = 'fredhersch@gmail.com'
 
 
-class HT(object):
+class HealthAssessment(object):
     """
-
+        General Health Assessment
     """
 
     @staticmethod
@@ -132,8 +132,8 @@ class HT(object):
     def calculate(params):
         assessment = {}
 
-        # load guidelines for HT
-        guidelines = HEARTS.load_guidelines('ht')["body"]
+        # load guidelines for SIMPLE algorithm model
+        guidelines = HealthAssessment.load_guidelines('health_assessment')["body"]
 
         # unpack the request, validate it and set up the params
         demographics = params['body']['demographics']
@@ -151,7 +151,8 @@ class HT(object):
         smoker = assess_smoking_status(smoking)
 
         # assess diabetes status or risk
-        diabetes_status = HEARTS.calculate_diabetes_status(
+        # // FH these functions should be in a general Assessment class
+        diabetes_status = HealthAssessment.calculate_diabetes_status(
             medical_history, pathology['bsl']['type'], pathology['bsl']['units'], pathology['bsl']['value']
         )
 
