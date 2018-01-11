@@ -1,3 +1,5 @@
+import json
+
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
@@ -38,7 +40,7 @@ result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
-hearts_params = {
+input_params = {
     "request": {
         "api_key": "4325872943oeqitrqet7",
         "api_secret": "3459823jfweureitu",
@@ -92,10 +94,16 @@ hearts_params = {
     }
 }
 
-result = HEARTS().calculate(hearts_params)
+result = HEARTS().calculate(input_params)
 print('--> HEARTS: => ', result)
 print()
 
-result = HA().calculate(hearts_params)
+with open('response_hearts.json', 'w') as fp:
+        json.dump(result, fp)
+
+result = HA().calculate(input_params)
 print('--> HealthAssessment ALGO: => ', result)
 print()
+
+with open('response_healthassessment.json', 'w') as fp:
+        json.dump(result, fp)

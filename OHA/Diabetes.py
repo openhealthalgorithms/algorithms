@@ -102,6 +102,8 @@ class Diabetes(object):
 
         params = format_params(params)
 
+        #print("height param = %s " % params.get('height'))
+
         gender = params.get('gender')
         age = params.get('age')
         systolic_blood_pressure = params.get('systolic')
@@ -145,10 +147,16 @@ class Diabetes(object):
             diastolic_blood_pressure
         )
 
+        if risk_score >= 9:
+            result_code = "DM-1"
+        else:
+            result_code = "DM-0"
+
         return {
             'risk':            risk_score,
             'waist_hip_ratio': float('%.2f' % (round(waist_hip_ratio, 2))),
             'body_mass_index': float('%.2f' % (round(body_mass_index, 2))),
+            'code' :           result_code,
         }
 
     @staticmethod
