@@ -101,12 +101,12 @@ class HealthAssessment(object):
         return hrc_output   
     @staticmethod
     def output_messages(section, code, output_level):
-        #how do we check if this is already in memory?
+        # how do we check if this is already in memory?
         messages = HealthAssessment.load_messages()
         output = []
 
-        print("code = %s " % code)
-        #output["key"] = str(code)
+        # print("code = %s " % code)
+        # output["key"] = str(code)
 
         if output_level == 0:
             output = messages[section][code]
@@ -133,7 +133,7 @@ class HealthAssessment(object):
         # Should also get the targets from here
         high_risk_conditions = guidelines["high_risk_conditions"]
         targets = guidelines["targets"]
-        #print("targets = %s " % targets)        
+        # print("targets = %s " % targets)
         
         # unpack the request, validate it and set up the params
         demographics = params['body']['demographics']
@@ -184,7 +184,7 @@ class HealthAssessment(object):
             diabetes_risk = None
         
         # unpack the messages
-        #print("---- diabetes status = %s " % diabetes_status)
+        # print("---- diabetes status = %s " % diabetes_status)
         diabetes_status["output"] = HealthAssessment.output_messages("diabetes", diabetes_status["code"], output_level)
         assessment['diabetes'] = diabetes_status
 
@@ -224,7 +224,7 @@ class HealthAssessment(object):
         if estimate_cvd_risk_calc[0]:
             # check if on bp_medications
             on_bp_meds = check_medications('anti_hypertensive', medications)
-            print("\n--- on bp meds %s " % on_bp_meds)
+            # print("\n--- on bp meds %s " % on_bp_meds)
             # params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
             cvd_params = FraminghamParamsBuilder() \
                 .gender(gender) \
@@ -236,10 +236,10 @@ class HealthAssessment(object):
                 .smoker(smoker['smoking_calc']) \
                 .diabetic(diabetes_status['status']) \
                 .build()
-            print("\n---\n cvd assessment \n")
+            # print("\n---\n cvd assessment \n")
             fre_result = Framingham().calculate(cvd_params)
-            print("\n---\nFRE result %s " % fre_result)
-            print("\n---\n")
+            # print("\n---\nFRE result %s " % fre_result)
+            # print("\n---\n")
             
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = fre_result

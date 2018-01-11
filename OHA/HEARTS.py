@@ -57,15 +57,15 @@ class HEARTS(object):
 
         return data
 
-    #should be moved into a package
+    # should be moved into a package
     @staticmethod
     def output_messages(section, code, output_level):
-        #how do we check if this is already in memory?
+        # how do we check if this is already in memory?
         messages = HEARTS.load_messages()
         output = []
 
-        print("code = %s " % code)
-        #output["key"] = str(code)
+        # print("code = %s " % code)
+        # output["key"] = str(code)
 
         if output_level == 0:
             output = messages[section][code]
@@ -176,7 +176,7 @@ class HEARTS(object):
                 .sbp(measurements['sbp'][0]) \
                 .dbp(measurements['dbp'][0]) \
                 .build()
-            #print("diabetes params = %s " % diabetes_params)
+            # print("diabetes params = %s " % diabetes_params)
             diabetes_risk = Diabetes().calculate(diabetes_params)
             diabetes_status['risk'] = diabetes_risk['risk']
             diabetes_status['code'] = diabetes_risk['code']
@@ -232,7 +232,7 @@ class HEARTS(object):
                 .diabetic(diabetes_risk != "NA") \
                 .build()
             cvd_risk = WHO.calculate(cvd_params)
-            print("--- WHO risk assessment %s " % cvd_risk)
+            # print("--- WHO risk assessment %s " % cvd_risk)
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]

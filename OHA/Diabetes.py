@@ -102,7 +102,7 @@ class Diabetes(object):
 
         params = format_params(params)
 
-        #print("height param = %s " % params.get('height'))
+        # print("height param = %s " % params.get('height'))
 
         gender = params.get('gender')
         age = params.get('age')
