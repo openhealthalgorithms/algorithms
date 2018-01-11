@@ -4,7 +4,24 @@
     "publisher" : "World Health Organisation",
     "publication_date" : ""
   },
-  "body" :  {  
+  "body" :  {
+    "high_risk_conditions" : ["CVD", "CAD", "AMI", "HEART ATTACK", "CVA", "TIA", "STROKE", "CKD", "PVD"], 
+    "targets" : {
+      "general": {
+          "physical_activity" : {
+            "active_time": 150,
+            "activity_type": "moderate"  
+          },
+          "diet" : {
+            "fruit": 2,
+            "vegetables": 5
+          },
+          "blood_pressure" : {
+            "sbp": 140,
+            "dbp": 90
+          }
+      }
+    }, 
     "cvd_risk" : {
       "<10" : {
           "score" : "<10%",

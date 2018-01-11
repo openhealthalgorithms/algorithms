@@ -1,3 +1,5 @@
+import json
+
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
@@ -14,6 +16,11 @@ print('--> Diabetes:', result)
 print()
 
 params = FPB().gender("F").age(40).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).build()
+result = Framingham().calculate(params)
+print('--> Framingham:', result)
+print()
+
+params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 print()
@@ -38,7 +45,7 @@ result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
-hearts_params = {
+input_params = {
     "request": {
         "api_key": "4325872943oeqitrqet7",
         "api_secret": "3459823jfweureitu",
@@ -53,17 +60,17 @@ hearts_params = {
         },
         "demographics": {
             "gender": "F",
-            "age": 50,
+            "age": 55,
             "dob": ["computed", "01/10/1987"],
             "occupation": "office_worker",
             "monthly_income": ""
         },
         "measurements": {
             "height": [1.5, "m"],
-            "weight": [70.0, "kg"],
+            "weight": [60.0, "kg"],
             "waist": [99.0, "cm"],
             "hip": [104.0, "cm"],
-            "sbp": [145, "sitting"],
+            "sbp": [140, "sitting"],
             "dbp": [91, "sitting"]
         },
         "smoking": {
@@ -80,22 +87,28 @@ hearts_params = {
         },
         "allergies": {},
         "medications": ["anti_hypertensive", "statin", "antiplatelet", "bronchodilator"],
-        "family_history": ["cvd"],
+        "family_history": ["diabetes", "cvd"],
         "pathology": {
             "bsl": {
                 "type": "random", "units": "mg/dl", "value": 180
             },
             "cholesterol": {
-                "type": "fasting", "units": "mg/dl", "total_chol": 320, "hdl": 100, "ldl": 240
+                "type": "fasting", "units": "mg/dl", "total_chol": 300, "hdl": 100, "ldl": 240
             }
         }
     }
 }
 
-result = HEARTS().calculate(hearts_params)
+result = HEARTS().calculate(input_params)
 print('--> HEARTS: => ', result)
 print()
 
-result = HA().calculate(hearts_params)
+with open('response_hearts.json', 'w') as fp:
+        json.dump(result, fp)
+
+result = HA().calculate(input_params)
 print('--> HealthAssessment ALGO: => ', result)
 print()
+
+with open('response_healthassessment.json', 'w') as fp:
+        json.dump(result, fp)

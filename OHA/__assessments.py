@@ -2,30 +2,6 @@ from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit
 from OHA.__utilities import calculate_waist_hip_ratio
 
-targets = {
-    'general': {
-        'active_time': 150,
-        'activity_type': 'moderate',
-        'fruit': 2,
-        'vegetables': 5,
-        'sbp': 140,
-        'dbp': 90,
-    },
-    'diabetes': {
-        'sbp': 130,
-        'dbp': 80,
-        'soft_drinks': 0,
-        'added_sugar': 0,
-        'added_salt': 0
-    },
-    'hypertension': {
-        'sbp': 120,
-        'dbp': 80,
-        'added_salt': 0,
-    }
-}
-
-
 def has_condition(c, conditions):
     for condition in conditions:
         if condition == c:
@@ -33,10 +9,9 @@ def has_condition(c, conditions):
 
     return False
 
-
 def assess_waist_hip_ratio(waist, hip, gender):
-    _assessment_code = ""
-    _target = ""
+    #default is normal
+    result_code = "WHR-0" 
 
     whr = calculate_waist_hip_ratio(
         convert_height_unit(
@@ -47,112 +22,105 @@ def assess_waist_hip_ratio(waist, hip, gender):
         convert_height_unit(hip[0], hip[1] or Defaults.hip_unit, Defaults.hip_unit)
     )
     if gender == "F":
-        _target = 0.85
+        target = 0.85
         if whr >= 0.85:
-            _assessment_code = "WHR-H"
-        else:
-            _assessment_code = "WHR-N"
+            result_code = "WHR-1"
     if gender == "M":
-        _target = 0.9
+        target = 0.9
         if whr >= 0.9:
-            _assessment_code = "WHR-H"
-        else:
-            _assessment_code = "WHR-N"
+            result_code = "WHR-2"
 
     whr_output = {
         'value': whr,
-        'assessment_code': _assessment_code,
-        'target': _target
+        'code': result_code,
+        'target' : target
     }
 
     return whr_output
 
 
 def assess_smoking_status(smoking):
-    # _target = 0
+    is_smoker = False
+    smoking_calc = False
 
     if smoking['current'] == 1:
-        smoking_status = 'SM-1'
+        is_smoker = True
+        smoking_calc = True
+        result_code = 'SM-1'
     elif (smoking['ex_smoker']) & (smoking['quit_within_year']):
-        smoking_status = 'SM-2'
+        # quit within 1 year, considered smoker for calc
+        is_smoker = False
+        smoking_calc = True
+        result_code = 'SM-2'
     elif smoking['ex_smoker']:
-        smoking_status = 'SM-3'
+        is_smoker = False
+        result_code = 'SM-3'
     else:
-        smoking_status = 'SM-4'
+        is_smoker = False
+        result_code = 'SM-4'
 
-    '''
-    smoking_output = {
-        'value': _value,
-        'assessment_code': _assessment_code,
-        'target': _target
+    smoking_status = {
+        'code' : result_code,
+        'status' : is_smoker,
+        'smoking_calc' : smoking_calc,
     }
-    '''
 
-    # return smoking_output
     return smoking_status
 
-
 def assess_blood_pressure(bp, conditions):
-    _assessment = ""
-    _assessment_code = ""
-    _target = ""
-
+    
+    result_code = ""
+    
     _sbp = bp['sbp'][0]
     _dbp = bp['dbp'][0]
 
     if _sbp > 160:
-        _assessment = "HIGH RISK"
-        _assessment_code = "BP-HR-0"
+        result_code = "BP-2"
 
     elif has_condition('diabetes', conditions):
         if _sbp > 130:
-            _assessment = "OFF TARGET"
-            _assessment_code = "BP-DM-0"
-            _target = 130
+            result_code = "BP-3B"
+            target = "130/80"
         else:
-            _assessment = "ON TARGET"
-            _assessment_code = "BP-DM-1"
-            _target = 130
-    elif (_sbp < 140) and (_sbp >= 120):
-        _assessment = "OFF TARGET, MILD"
-        _assessment_code = "BP-NoHx-0"
-        _target = 120
+            result_code = "BP-3A"
+    elif (_sbp <= 140) and (_sbp >= 120):
+        result_code = "BP-1A"
+        target = "140/90"
     elif _sbp > 140:
-        _assessment = "OFF TARGET, ELEVATED"
-        _assessment_code = "BP-NoHx-1"
-        _target = 120
+        result_code = "BP-1B"
+        target = "140/90"
+    elif _sbp <= 120:
+        result_code = "BP-0"
+        target = "140/90"
 
     bp_output = {
         'bp': str(_sbp) + "/" + str(_dbp),
-        'assessment_code': _assessment_code,
-        'assessment': _assessment,
-        'target': _target
+        'code': result_code,
+        'target' : target
     }
     return bp_output
 
-
 def assess_bmi(bmi):
-    _target = "18.5 - 24.9"
+    target = "18.5 - 24.9"
 
     if bmi < 18.5:
-        _assessment_code = "UW"
+        result_code = "BMI-1"
     elif bmi < 25:
-        _assessment_code = "NW"
+        result_code = "BMI-0"
     elif bmi < 30:
-        _assessment_code = "OW"
+        result_code = "BMI-2"
     else:
-        _assessment_code = "OB"
+       result_code = "BMI-3"
 
     bmi_output = {
         'value': bmi,
-        'assessment_code': _assessment_code,
-        'target': _target
+        'code': result_code,
+        'target' : target
     }
 
     return bmi_output
 
-
-def assess_diet(diet_history, conditions):
+def assess_diet(diet_history, conditions, targets):
     """
     General Rules:
     - Aim for 50% fruit & vegetables (with specific targets for F&V), 25% lean protein, 25% carbohydrates
@@ -170,55 +138,94 @@ def assess_diet(diet_history, conditions):
     Step 3: Amount of soda or other added sugars
     """
 
-    if diet_history['fruit'] < targets['general']['fruit'] \
-            and diet_history['veg'] < targets['general']['vegetables']:
-        _assessment = "BOTH OFF TARGET"
-        _assessment_code = 0
-        _target_message = ""
-    elif ((diet_history['fruit'] < targets['general']['fruit'])
-          and (diet_history['veg'] >= targets['general']['vegetables'])):
-        _assessment = "PARTIAL OFF TARGET"
-        _assessment_code = 1
-        _target_message = "Two serves of fruit and 5 serves of vegetables"
-    elif ((diet_history['fruit'] > targets['general']['fruit'])
-          and (diet_history['veg'] < targets['general']['vegetables'])):
-        _assessment = "PARTIAL OFF TARGET"
-        _assessment_code = 2
-        _target_message = "Two serves of fruit and 5 serves of vegetables"
+    if diet_history['fruit'] < targets['general']['diet']['fruit'] \
+            and diet_history['veg'] < targets['general']['diet']['vegetables']:
+        # Both F&V off target
+        result_code = "NUT-3"
+    elif ((diet_history['fruit'] < targets['general']['diet']['fruit'])
+          and (diet_history['veg'] >= targets['general']['diet']['vegetables'])):
+       # Partial F&V off target
+        result_code = "NUT-2"
+    elif ((diet_history['fruit'] > targets['general']['diet']['fruit'])
+          and (diet_history['veg'] < targets['general']['diet']['vegetables'])):
+        # Partial F&V off target
+        result_code = "NUT-2"
     else:
-        _assessment = "ON TARGET"
-        _assessment_code = 3
-        _target_message = "Two serves of fruit and 5 serves of vegetables"
+        # Partial F&V ON target
+        result_code = "NUT-1"
 
     diet_output = {
         'values': {
             'fruit': diet_history['fruit'],
             'vegetables': diet_history['veg']
         },
-        'assessment_code': _assessment_code,
-        'assessment': _assessment,
-        'target': {
-            'fruit': targets['general']['fruit'],
-            'vegetables': targets['general']['vegetables']
-        },
-        'target_message': _target_message
+        'code': result_code
     }
 
     return diet_output
 
-
-def assess_physical_activity(active_time):
-    if int(active_time) >= targets['general']['active_time']:
-        _assessment_code = "PAO"
-        _target = 150
-        # _target_message = "> 150 minutes weekly"
+def assess_physical_activity(active_time, targets):
+    target = "150 minutes"
+    if int(active_time) >= targets['general']["physical_activity"]['active_time']:
+        # targets being met
+        result_code = "PA-1"  
     else:
-        _assessment_code = "PAL"
-        _target = 150
+        # targets not being met
+        result_code = "PA-2"
     pa_output = {
         'value': active_time,
-        'assessment_code': _assessment_code,
-        'target': _target,
+        'code': result_code,
+        'target': target
     }
 
     return pa_output
+
+def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
+        status = False
+        code = ""
+
+        # move to a helper function
+        if bsl_units == 'mg/dl':
+            bsl_value = round(float(bsl_value) / 18, 1)
+
+        for condition in conditions:
+            if condition == "diabetes":
+                status = True
+                code = 'DM-4'
+            else:
+                if bsl_type == "random":
+                    # for random BSL, BSL > 11.1 with symptoms is diagnostic
+                    if bsl_value >= 11.1:
+                        status = True
+                        # Possible new diagnosis
+                        code = 'DM-3'
+                elif bsl_type == "fasting":
+                    # if fasting, then BSL > 7 is diagnostic 
+                    if bsl_value > 7:
+                        status = True
+                        code = 'DM-3'
+                    elif bsl_value > 6.1:
+                        # if fasting, bsl 6.1-7 "prediabetes"
+                        status = True
+                        code = 'DM-2'
+                elif bsl_type == "hba1c":
+                    # if >= 6.5%, diagnostic
+                    if bsl_value >= 6.5:
+                        status = True
+
+            # return False
+            diabetes_output = {
+                'value': bsl_value,
+                'status': status,
+                'code': code
+            }
+
+            return diabetes_output    
+
+def check_medications(search, medications):
+
+    for medication in medications:
+        if str.upper(medication) == str.upper(search):
+            return True
+        else:
+            return False   
