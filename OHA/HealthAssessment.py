@@ -8,7 +8,7 @@ from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
-    assess_diet, assess_physical_activity, calculate_diabetes_status
+    assess_diet, assess_physical_activity, calculate_diabetes_status, check_medications
 from OHA.__utilities import calculate_bmi
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
@@ -144,7 +144,7 @@ class HealthAssessment(object):
         diet_history = params['body']['diet_history']
         medical_history = params['body']['medical_history']
         pathology = params['body']['pathology']
-        # medications = []
+        medications = params['body']['medications']
 
         bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
         bmi["output"] = HealthAssessment.output_messages("anthro", bmi["code"], output_level)        
@@ -222,16 +222,24 @@ class HealthAssessment(object):
         # print('high risk output %s ' % assessment['high_risk'][0])
         # if not high_risk_condition[0]:
         if estimate_cvd_risk_calc[0]:
+            # check if on bp_medications
+            on_bp_meds = check_medications('anti_hypertensive', medications)
+            print("\n--- on bp meds %s " % on_bp_meds)
+            # params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
             cvd_params = FraminghamParamsBuilder() \
                 .gender(gender) \
                 .age(age) \
                 .t_chol(pathology['cholesterol']['total_chol'], pathology['cholesterol']['units']) \
                 .hdl_chol(pathology['cholesterol']['hdl'], pathology['cholesterol']['units']) \
                 .sbp(blood_pressure['sbp'][0]) \
+                .bp_medication(on_bp_meds) \
+                .smoker(smoker['smoking_calc']) \
+                .diabetic(diabetes_status['status']) \
                 .build()
-            #print("cvd params --- %s " % cvd_params)
+            print("\n---\n cvd assessment \n")
             fre_result = Framingham().calculate(cvd_params)
-            #print("--- FRE result %s " % fre_result)
+            print("\n---\nFRE result %s " % fre_result)
+            print("\n---\n")
             
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = fre_result

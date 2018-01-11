@@ -48,11 +48,14 @@
         },
         "blood_pressure" : {
             "BP-0" : ["on_target", "Meeting BP targets", "GREEN", "You are on target. Keep it up"],
-            "BP-1" : ["off_target_mild", "Mildly Elevated BP", "YELLOW", "Your BP is a little on the high side. Follow lifestyle advice and ensure you get a review"],
-            "BP-2" : ["off_target_review", "Significantly Elevated BP", "AMBER", "At this level you need a review with a doctor"],
-            "BP-3" : ["refer", "Blood pressure is very high, needs referral", "RED", "Seek care now"],
-            "BP-4" : ["dx_htn", "History of high blood pressure", "AMBER", "You told us you have high blood pressure"],
-            "BP-5" : ["rx_htn", "Taking anti-hypertensives", "AMBER", "You are on medication for your blood pressure"]
+            "BP-1A" : ["off_target_mild", "Mildly Elevated BP", "YELLOW", "Your BP is a little on the high side. Follow lifestyle advice and ensure you get a review"],
+            "BP-1B" : ["off_target_moderate", "Moderately Elevated BP", "AMBER", "Your BP is on the high side. Follow lifestyle advice and ensure you get a review"],
+            "BP-2" : ["off_target_review", "Significantly Elevated BP", "RED", "At this level you need a review with a doctor"],
+            "BP-3A" : ["on_target_dm", "On target for patient with diabetes", "GREEN", "Good job"],
+            "BP-3B" : ["off_target_dm", "Off target for patient with diabetes", "AMBER", "Need to better control BP"],
+            "BP-4" : ["refer", "Blood pressure is very high, needs referral", "RED", "Seek care now"],
+            "BP-5" : ["dx_htn", "History of high blood pressure", "AMBER", "You told us you have high blood pressure"],
+            "BP-6" : ["rx_htn", "Taking anti-hypertensives", "AMBER", "You are on medication for your blood pressure"]
         },
         "blood_sugar" : {
             "BSL-0":  ["bsl_normal", "Normal blood sugar", "GREEN", "Normal Blood Sugar"],

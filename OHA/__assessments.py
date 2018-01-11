@@ -40,18 +40,29 @@ def assess_waist_hip_ratio(waist, hip, gender):
 
 
 def assess_smoking_status(smoking):
-    
+    is_smoker = False
+    smoking_calc = False
+
     if smoking['current'] == 1:
+        is_smoker = True
+        smoking_calc = True
         result_code = 'SM-1'
     elif (smoking['ex_smoker']) & (smoking['quit_within_year']):
+        # quit within 1 year, considered smoker for calc
+        is_smoker = False
+        smoking_calc = True
         result_code = 'SM-2'
     elif smoking['ex_smoker']:
+        is_smoker = False
         result_code = 'SM-3'
     else:
+        is_smoker = False
         result_code = 'SM-4'
 
     smoking_status = {
-        'code' : result_code
+        'code' : result_code,
+        'status' : is_smoker,
+        'smoking_calc' : smoking_calc,
     }
 
     return smoking_status
@@ -72,14 +83,14 @@ def assess_blood_pressure(bp, conditions):
             target = "130/80"
         else:
             result_code = "BP-3A"
-    elif (_sbp < 140) and (_sbp >= 120):
+    elif (_sbp <= 140) and (_sbp >= 120):
         result_code = "BP-1A"
         target = "140/90"
     elif _sbp > 140:
         result_code = "BP-1B"
         target = "140/90"
     elif _sbp <= 120:
-        result_code = "BP-1"
+        result_code = "BP-0"
         target = "140/90"
 
     bp_output = {
@@ -209,4 +220,12 @@ def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
                 'code': code
             }
 
-            return diabetes_output     
+            return diabetes_output    
+
+def check_medications(search, medications):
+
+    for medication in medications:
+        if str.upper(medication) == str.upper(search):
+            return True
+        else:
+            return False   
