@@ -136,7 +136,7 @@ class HEARTS(object):
         targets = guidelines["targets"]
         
         # unpack the request, validate it and set up the params
-        region = params['body']['region']
+        region = params['body']['region'] if 'region' in params['body'].keys() else 'SEARD'
         demographics = params['body']['demographics']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
