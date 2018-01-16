@@ -84,21 +84,22 @@ class HealthAssessment(object):
             dbp = blood_pressure['dbp'][0]
 
             if sbp > 200 or dbp > 120:
-                #return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
+                # return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
                 # Very elevated 
                 has_high_risk_condition = True
                 result_code = "HR-1"
             elif age < 40 and (sbp >= 140 or dbp >= 90):
-                #High blood pressure in under 40, should be investigated for secondary hypertension
+                # High blood pressure in under 40, should be investigated for secondary hypertension
                 result_code = "HR-2"
-            
+
         hrc_output = {
             'status': has_high_risk_condition,
-            'reason' : condition,
+            'reason': condition,
             'code': result_code
         }
 
-        return hrc_output   
+        return hrc_output
+
     @staticmethod
     def output_messages(section, code, output_level):
         # how do we check if this is already in memory?
@@ -118,9 +119,9 @@ class HealthAssessment(object):
             output = messages[section][code][0:3]
         elif output_level == 4:
             output = messages[section][code][0:4]
-        
+
         return output
-    
+
     @staticmethod
     def calculate(params):
         assessment = {}
@@ -134,7 +135,7 @@ class HealthAssessment(object):
         high_risk_conditions = guidelines["high_risk_conditions"]
         targets = guidelines["targets"]
         # print("targets = %s " % targets)
-        
+
         # unpack the request, validate it and set up the params
         demographics = params['body']['demographics']
         gender = demographics['gender']
@@ -147,11 +148,11 @@ class HealthAssessment(object):
         medications = params['body']['medications']
 
         bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
-        bmi["output"] = HealthAssessment.output_messages("anthro", bmi["code"], output_level)        
-        
+        bmi["output"] = HealthAssessment.output_messages("anthro", bmi["code"], output_level)
+
         whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
         whr["output"] = HealthAssessment.output_messages("anthro", whr["code"], output_level)
-        
+
         smoker = assess_smoking_status(smoking)
         smoker["output"] = HealthAssessment.output_messages("smoking", smoker["code"], output_level)
 
@@ -182,7 +183,7 @@ class HealthAssessment(object):
             conditions.append('diabetes')
             medical_history['conditions'] = conditions
             diabetes_risk = None
-        
+
         # unpack the messages
         # print("---- diabetes status = %s " % diabetes_status)
         diabetes_status["output"] = HealthAssessment.output_messages("diabetes", diabetes_status["code"], output_level)
@@ -194,9 +195,11 @@ class HealthAssessment(object):
         }
 
         bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'])
-        bp_assessment["output"] = HealthAssessment.output_messages("blood_pressure", bp_assessment["code"], output_level)
+        bp_assessment["output"] = HealthAssessment.output_messages(
+            "blood_pressure", bp_assessment["code"], output_level
+        )
         assessment['blood_pressure'] = bp_assessment
-        
+
         diet = assess_diet(diet_history, medical_history['conditions'], targets)
         exercise = assess_physical_activity(physical_activity, targets)
         assessment['lifestyle'] = {
@@ -240,7 +243,7 @@ class HealthAssessment(object):
             fre_result = Framingham().calculate(cvd_params)
             # print("\n---\nFRE result %s " % fre_result)
             # print("\n---\n")
-            
+
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = fre_result
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]

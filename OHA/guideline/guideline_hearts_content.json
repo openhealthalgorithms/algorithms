@@ -20,6 +20,7 @@
     "messages" : {
         "smoking" : {
             "SM-0" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
+            "SM-1" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
             "SM-2" : ["ex_smoker_quit_within_12_months", "Ex smoker, quit within the past 12 months", "AMBER", "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor"],
             "SM-3" : ["ex_smoker", "Ex smoker, quit > 12 months ago", "GREEN", "Good work quitting. It\"s the best thing you can do for your health. Stay strong"],
             "SM-4" : ["non-smoker", "Non Smoker", "GREEN", "Your lungs will thank you!"]
