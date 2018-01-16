@@ -136,6 +136,7 @@ class HEARTS(object):
         targets = guidelines["targets"]
         
         # unpack the request, validate it and set up the params
+        region = params['body']['region']
         demographics = params['body']['demographics']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
@@ -229,6 +230,7 @@ class HEARTS(object):
                 .sbp2(blood_pressure['sbp'][0]) \
                 .chol(pathology['cholesterol']['ldl'], pathology['cholesterol']['units']) \
                 .smoker(smoking['current']) \
+                .region(region) \
                 .diabetic(diabetes_risk != "NA") \
                 .build()
             cvd_risk = WHO.calculate(cvd_params)
@@ -258,6 +260,7 @@ class HEARTS(object):
                 response_type="COMPLETE"
             ),
             body=dict(
+                region='SEARD',
                 last_assessment=dict(assessment_date="", cvd_risk="20"),
                 demographics=dict(
                     gender="F", age=50, dob=["computed", "01/10/1987"], occupation="office_worker", monthly_income=""

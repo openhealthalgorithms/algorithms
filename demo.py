@@ -54,6 +54,7 @@ input_params = {
         "response_type": "COMPLETE"
     },
     "body": {
+        "region": "SEARD",
         "last_assessment": {
             "assessment_date": "",
             "cvd_risk": "20"
