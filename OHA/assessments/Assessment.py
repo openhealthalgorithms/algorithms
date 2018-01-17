@@ -16,4 +16,4 @@ class Assessment(abc.ABC):
 
     @abc.abstractmethod
     def assess(self):
-        pass
+        raise NotImplementedError('method not implemented')
