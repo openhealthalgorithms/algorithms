@@ -24,11 +24,3 @@ def assess_physical_activity(active_time, targets):
 
 def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
     raise NotImplementedError('"calculate_diabetes_status" method removed')
-
-
-def check_medications(search, medications):
-    for medication in medications:
-        if str.upper(medication) == str.upper(search):
-            return True
-        else:
-            return False

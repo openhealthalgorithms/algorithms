@@ -6,7 +6,6 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
-from OHA.__assessments import check_medications
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.DiabetesAssessment import DiabetesAssessment
@@ -61,6 +60,14 @@ class HealthAssessment(object):
             data = json.load(json_data)
 
         return data
+
+    @staticmethod
+    def check_medications(search, medications):
+        for medication in medications:
+            if str.upper(medication) == str.upper(search):
+                return True
+            else:
+                return False
 
     @staticmethod
     def high_risk_condition_check(age, blood_pressure, conditions, high_risk_conditions):
@@ -225,7 +232,7 @@ class HealthAssessment(object):
 
         estimate_cvd_risk_calc = HealthAssessment.estimate_cvd_risk(age, has_high_risk_condition)
         if estimate_cvd_risk_calc[0]:
-            on_bp_meds = check_medications('anti_hypertensive', medications)
+            on_bp_meds = HealthAssessment.check_medications('anti_hypertensive', medications)
             cvd_params = FraminghamParamsBuilder() \
                 .gender(gender) \
                 .age(age) \
