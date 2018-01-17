@@ -25,6 +25,7 @@ class BPAssessment(Assessment):
 
         _sbp = self.__bp()['sbp'][0]
         _dbp = self.__bp()['dbp'][0]
+        target = "%s/%s" % (_sbp, _dbp)
 
         if _sbp > 160:
             result_code = "BP-2"
@@ -45,4 +46,4 @@ class BPAssessment(Assessment):
             result_code = "BP-0"
             target = "140/90"
 
-        return dict(bp=str(_sbp) + "/" + str(_dbp), code=result_code, target=target)
+        return dict(bp="%s/%s" % (_sbp, _dbp), code=result_code, target=target)
