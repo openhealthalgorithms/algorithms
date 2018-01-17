@@ -24,7 +24,7 @@ class WHO(object):
     -------
         >>> from OHA.WHO import WHO
         >>> params = {
-        ...    'gender': "M", 'age': 30 ,'systolic_blood_pressure_1':  130,
+        ...    'gender': 'M', 'age': 30 ,'systolic_blood_pressure_1':  130,
         ...    'systolic_blood_pressure_2': 145, 'cholesterol': 7.0,
         ...    'is_smoker': True, 'has_diabetes': True
         ... }
@@ -85,7 +85,7 @@ class WHO(object):
         Example
         -------
             >>> params = {
-            ...    'gender':                     "M",
+            ...    'gender':                     'M',
             ...    'age':                        30,
             ...    'systolic_blood_pressure_1':  130,
             ...    'systolic_blood_pressure_2':  145,
@@ -155,7 +155,7 @@ class WHO(object):
     @staticmethod
     def get_sample_params():
         return WhoParamsBuilder() \
-            .gender("M")\
+            .gender('M')\
             .age(70)\
             .sbp1(130)\
             .sbp2(145)\

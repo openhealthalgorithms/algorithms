@@ -5,7 +5,7 @@ from os import path
 from setuptools import setup
 
 if sys.version_info[:2] < (3, 0):
-    raise RuntimeError("Python version 3 required.")
+    raise RuntimeError('Python version 3 required.')
 
 here = path.abspath(path.dirname(__file__))
 
@@ -14,7 +14,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 
 def find_packages(*args, **kwargs):
-    return ['OHA', 'OHA.param_builders', 'tests']
+    return ['OHA', 'OHA.param_builders', 'OHA.assessments', 'tests']
 
 
 def version():

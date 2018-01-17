@@ -102,7 +102,7 @@ class Diabetes(object):
 
         params = format_params(params)
 
-        # print("height param = %s " % params.get('height'))
+        # print('height param = %s ' % params.get('height'))
 
         gender = params.get('gender')
         age = params.get('age')
@@ -148,26 +148,26 @@ class Diabetes(object):
         )
 
         if risk_score >= 9:
-            result_code = "DM-1"
+            result_code = 'DM-1'
         else:
-            result_code = "DM-0"
+            result_code = 'DM-0'
 
         return {
-            'risk':            risk_score,
+            'risk': risk_score,
             'waist_hip_ratio': float('%.2f' % (round(waist_hip_ratio, 2))),
             'body_mass_index': float('%.2f' % (round(body_mass_index, 2))),
-            'code' :           result_code,
+            'code': result_code,
         }
 
     @staticmethod
     def get_sample_params():
-        return DiabetesParamsBuilder()\
-            .gender("M")\
-            .age(40)\
-            .sbp(150)\
-            .dbp(92)\
-            .weight(92, 'kg')\
-            .height(1.5, 'm')\
-            .waist(50, 'cm')\
-            .hip(90, 'cm')\
+        return DiabetesParamsBuilder() \
+            .gender('M') \
+            .age(40) \
+            .sbp(150) \
+            .dbp(92) \
+            .weight(92, 'kg') \
+            .height(1.5, 'm') \
+            .waist(50, 'cm') \
+            .hip(90, 'cm') \
             .build()

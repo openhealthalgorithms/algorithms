@@ -179,7 +179,7 @@ class Framingham(object):
            Framingham risk score and heart age and risk_range
         """
         params = format_params(params)
-        # print("fre params = %s " % params)
+        # print('fre params = %s ' % params)
 
         cvd_risk = Framingham.calculate_fre_score(params)
         heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])
@@ -195,7 +195,7 @@ class Framingham(object):
     @staticmethod
     def get_sample_params():
         return FraminghamParamsBuilder() \
-            .gender("F") \
+            .gender('F') \
             .age(40) \
             .t_chol(170, 'mg/dl') \
             .hdl_chol(45, 'mg/dl') \
