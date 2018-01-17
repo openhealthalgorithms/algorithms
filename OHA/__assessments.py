@@ -40,36 +40,7 @@ def assess_smoking_status(smoking):
 
 
 def assess_blood_pressure(bp, conditions):
-    result_code = ""
-
-    _sbp = bp['sbp'][0]
-    _dbp = bp['dbp'][0]
-
-    if _sbp > 160:
-        result_code = "BP-2"
-
-    elif has_condition('diabetes', conditions):
-        if _sbp > 130:
-            result_code = "BP-3B"
-            target = "130/80"
-        else:
-            result_code = "BP-3A"
-    elif (_sbp <= 140) and (_sbp >= 120):
-        result_code = "BP-1A"
-        target = "140/90"
-    elif _sbp > 140:
-        result_code = "BP-1B"
-        target = "140/90"
-    elif _sbp <= 120:
-        result_code = "BP-0"
-        target = "140/90"
-
-    bp_output = {
-        'bp': str(_sbp) + "/" + str(_dbp),
-        'code': result_code,
-        'target': target
-    }
-    return bp_output
+    raise NotImplementedError('"assess_blood_pressure" method removed')
 
 
 def assess_bmi(bmi):
