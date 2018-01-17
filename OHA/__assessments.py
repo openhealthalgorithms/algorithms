@@ -122,20 +122,7 @@ def assess_diet(diet_history, conditions, targets):
 
 
 def assess_physical_activity(active_time, targets):
-    target = "150 minutes"
-    if int(active_time) >= targets['general']["physical_activity"]['active_time']:
-        # targets being met
-        result_code = "PA-1"
-    else:
-        # targets not being met
-        result_code = "PA-2"
-    pa_output = {
-        'value': active_time,
-        'code': result_code,
-        'target': target
-    }
-
-    return pa_output
+    raise NotImplementedError('"assess_physical_activity" method removed')
 
 
 def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
