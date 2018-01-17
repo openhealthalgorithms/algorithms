@@ -6,9 +6,7 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
-from OHA.__assessments import assess_smoking_status, assess_blood_pressure, assess_bmi, \
-    assess_diet, assess_physical_activity, calculate_diabetes_status
-from OHA.__utilities import calculate_bmi
+from OHA.__assessments import assess_smoking_status, assess_blood_pressure, assess_diet, calculate_diabetes_status
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
