@@ -1,11 +1,3 @@
-def has_condition(c, conditions):
-    for condition in conditions:
-        if condition == c:
-            return True
-
-    return False
-
-
 def assess_waist_hip_ratio(waist, hip, gender):
     raise NotImplementedError('"assess_waist_hip_ratio" method removed')
 
