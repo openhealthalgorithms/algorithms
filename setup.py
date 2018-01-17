@@ -5,7 +5,7 @@ from os import path
 from setuptools import setup
 
 if sys.version_info[:2] < (3, 0):
-    raise RuntimeError("Python version 3 required.")
+    raise RuntimeError('Python version 3 required.')
 
 here = path.abspath(path.dirname(__file__))
 

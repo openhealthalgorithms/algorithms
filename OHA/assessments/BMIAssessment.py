@@ -22,17 +22,17 @@ class BMIAssessment(Assessment):
         return round(float(self.__weight() / (self.__height() * self.__height())), 2)
 
     def assess(self):
-        target = "18.5 - 24.9"
+        target = '18.5 - 24.9'
 
         bmi = self.__bmi()
         if bmi < 18.5:
-            result_code = "BMI-1"
+            result_code = 'BMI-1'
         elif bmi < 25:
-            result_code = "BMI-0"
+            result_code = 'BMI-0'
         elif bmi < 30:
-            result_code = "BMI-2"
+            result_code = 'BMI-2'
         else:
-            result_code = "BMI-3"
+            result_code = 'BMI-3'
 
         bmi_output = dict(value=bmi, code=result_code, target=target)
 

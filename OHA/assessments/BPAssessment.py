@@ -21,29 +21,29 @@ class BPAssessment(Assessment):
         return False
 
     def assess(self):
-        result_code = ""
+        result_code = ''
 
         _sbp = self.__bp()['sbp'][0]
         _dbp = self.__bp()['dbp'][0]
-        target = "%s/%s" % (_sbp, _dbp)
+        target = '%s/%s' % (_sbp, _dbp)
 
         if _sbp > 160:
-            result_code = "BP-2"
+            result_code = 'BP-2'
 
         elif self.__has_condition('diabetes'):
             if _sbp > 130:
-                result_code = "BP-3B"
-                target = "130/80"
+                result_code = 'BP-3B'
+                target = '130/80'
             else:
-                result_code = "BP-3A"
+                result_code = 'BP-3A'
         elif 140 >= _sbp >= 120:
-            result_code = "BP-1A"
-            target = "140/90"
+            result_code = 'BP-1A'
+            target = '140/90'
         elif _sbp > 140:
-            result_code = "BP-1B"
-            target = "140/90"
+            result_code = 'BP-1B'
+            target = '140/90'
         elif _sbp <= 120:
-            result_code = "BP-0"
-            target = "140/90"
+            result_code = 'BP-0'
+            target = '140/90'
 
-        return dict(bp="%s/%s" % (_sbp, _dbp), code=result_code, target=target)
+        return dict(bp='%s/%s' % (_sbp, _dbp), code=result_code, target=target)

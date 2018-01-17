@@ -9,7 +9,7 @@ __email__ = 'eendroroy@gmail.com'
 class WHRAssessment(Assessment):
     def __init__(self, input_data=None):
         if input_data is not None:
-            if input_data['gender'] not in ["F", "M"]:
+            if input_data['gender'] not in ['F', 'M']:
                 raise ValueError('gender value must be "F" or "M"')
         super().__init__(input_data)
 
@@ -28,13 +28,13 @@ class WHRAssessment(Assessment):
         return round(float(self.__waist() / self.__hip()), 2)
 
     def assess(self):
-        result_code = "WHR-0"
-        target = 0.85 if self.__gender() == "F" else 0.9
+        result_code = 'WHR-0'
+        target = 0.85 if self.__gender() == 'F' else 0.9
 
         whr = self.__whr()
-        if self.__gender() == "F" and whr >= 0.85:
-            result_code = "WHR-1"
-        elif self.__gender() == "M" and whr >= 0.9:
-            result_code = "WHR-2"
+        if self.__gender() == 'F' and whr >= 0.85:
+            result_code = 'WHR-1'
+        elif self.__gender() == 'M' and whr >= 0.9:
+            result_code = 'WHR-2'
 
         return dict(value=whr, code=result_code, target=target)

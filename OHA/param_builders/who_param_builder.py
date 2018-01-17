@@ -1,6 +1,6 @@
 class WhoParamsBuilder(object):
     def __init__(self):
-        self.__gender = "M"
+        self.__gender = 'M'
         self.__age = 40
         self.__sbp1 = 140
         self.__sbp2 = 160

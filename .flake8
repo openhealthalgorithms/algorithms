@@ -3,7 +3,7 @@
 max-complexity = 15
 max-line-length = 120
 inline-quotes = '
-multiline-quotes = '''
+multiline-quotes = """
 # author-attribute = required
 
 format = ${cyan}%(path)s${reset}:${yellow_bold}%(row)d${reset}:${green_bold}%(col)d${reset}: ${red_bold}%(code)s${reset} %(text)s

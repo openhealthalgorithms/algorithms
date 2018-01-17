@@ -102,7 +102,7 @@ class Diabetes(object):
 
         params = format_params(params)
 
-        # print("height param = %s " % params.get('height'))
+        # print('height param = %s ' % params.get('height'))
 
         gender = params.get('gender')
         age = params.get('age')
@@ -148,9 +148,9 @@ class Diabetes(object):
         )
 
         if risk_score >= 9:
-            result_code = "DM-1"
+            result_code = 'DM-1'
         else:
-            result_code = "DM-0"
+            result_code = 'DM-0'
 
         return {
             'risk': risk_score,
@@ -162,7 +162,7 @@ class Diabetes(object):
     @staticmethod
     def get_sample_params():
         return DiabetesParamsBuilder() \
-            .gender("M") \
+            .gender('M') \
             .age(40) \
             .sbp(150) \
             .dbp(92) \
