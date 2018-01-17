@@ -2,6 +2,7 @@
 # code quality
 radon
 flake8
+flake8-quotes
 PyYAML
 
 # testing
