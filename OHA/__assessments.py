@@ -64,46 +64,7 @@ def assess_physical_activity(active_time, targets):
 
 
 def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
-    status = False
-    code = ''
-
-    # move to a helper function
-    if bsl_units == 'mg/dl':
-        bsl_value = round(float(bsl_value) / 18, 1)
-
-    for condition in conditions:
-        if condition == 'diabetes':
-            status = True
-            code = 'DM-4'
-        else:
-            if bsl_type == 'random':
-                # for random BSL, BSL > 11.1 with symptoms is diagnostic
-                if bsl_value >= 11.1:
-                    status = True
-                    # Possible new diagnosis
-                    code = 'DM-3'
-            elif bsl_type == 'fasting':
-                # if fasting, then BSL > 7 is diagnostic
-                if bsl_value > 7:
-                    status = True
-                    code = 'DM-3'
-                elif bsl_value > 6.1:
-                    # if fasting, bsl 6.1-7 'prediabetes'
-                    status = True
-                    code = 'DM-2'
-            elif bsl_type == 'hba1c':
-                # if >= 6.5%, diagnostic
-                if bsl_value >= 6.5:
-                    status = True
-
-        # return False
-        diabetes_output = {
-            'value': bsl_value,
-            'status': status,
-            'code': code
-        }
-
-        return diabetes_output
+    raise NotImplementedError('"calculate_diabetes_status" method removed')
 
 
 def check_medications(search, medications):
