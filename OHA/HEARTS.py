@@ -42,7 +42,7 @@ class HEARTS(object):
         filename = 'guideline_hearts_content.json'
         file_path = ('%s/guideline/%s' % (
             os.path.dirname(os.path.realpath(__file__)),
-            filename
+            filename,
         ))
         with open(file_path) as json_data:
             data = json.load(json_data)
@@ -54,7 +54,7 @@ class HEARTS(object):
         filename = 'guideline_%s.json' % guideline_key
         file_path = ('%s/guideline/%s' % (
             os.path.dirname(os.path.realpath(__file__)),
-            filename
+            filename,
         ))
         with open(file_path) as json_data:
             data = json.load(json_data)
@@ -119,7 +119,7 @@ class HEARTS(object):
         hrc_output = {
             'status': has_high_risk_condition,
             'reason': hrc_value,
-            'code': result_code
+            'code': result_code,
         }
 
         return hrc_output
@@ -167,7 +167,7 @@ class HEARTS(object):
             'conditions': medical_history,
             'bsl_type': pathology['bsl']['type'],
             'bsl_units': pathology['bsl']['units'],
-            'bsl_value': pathology['bsl']['value']
+            'bsl_value': pathology['bsl']['value'],
         })
         diabetes_status = DSA.assess()
 
@@ -200,7 +200,7 @@ class HEARTS(object):
 
         blood_pressure = {
             'sbp': measurements['sbp'],
-            'dbp': measurements['dbp']
+            'dbp': measurements['dbp'],
         }
 
         BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
@@ -208,27 +208,27 @@ class HEARTS(object):
         assessment['blood_pressure'] = bp_assessment
         DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
         diet = DTA.assess()
-        PAA = PhysicalActivityAssessment(dict(
-            active_time=physical_activity,
-            targets_active_time=targets['general']['physical_activity']['active_time']
-        ))
+        PAA = PhysicalActivityAssessment({
+            'active_time': physical_activity,
+            'targets_active_time': targets['general']['physical_activity']['active_time'],
+        })
         exercise = PAA.assess()
         assessment['lifestyle'] = {
             'bmi': bmi,
             'whr': whr,
             'diet': diet,
             'exercise': exercise,
-            'smoking': smoker
+            'smoking': smoker,
         }
 
         age = demographics['age']
         # work out how to add in diabetes if newly diagnosed?
         has_high_risk_condition = HEARTS.high_risk_condition_check(
-            demographics['age'], blood_pressure, medical_history['conditions'], high_risk_conditions
+            demographics['age'], blood_pressure, medical_history['conditions'], high_risk_conditions,
         )
 
         assessment['cvd_assessment'] = {
-            'high_risk_condition': has_high_risk_condition
+            'high_risk_condition': has_high_risk_condition,
         }
 
         # Determine whether eligible for CVD risk assessment
@@ -270,17 +270,17 @@ class HEARTS(object):
                 api_secret='API_SECRET',
                 request_api='https://developers.openhealthalgorithms.org/algos/hearts/',
                 country_code='D',
-                response_type='COMPLETE'
+                response_type='COMPLETE',
             ),
             body=dict(
                 region='SEARD',
                 last_assessment=dict(assessment_date='', cvd_risk='20'),
                 demographics=dict(
-                    gender='F', age=50, dob=['computed', '01/10/1987'], occupation='office_worker', monthly_income=''
+                    gender='F', age=50, dob=['computed', '01/10/1987'], occupation='office_worker', monthly_income='',
                 ),
                 measurements=dict(
                     height=[1.5, 'm'], weight=[70.0, 'kg'], waist=[99.0, 'cm'],
-                    hip=[104.0, 'cm'], sbp=[145, 'sitting'], dbp=[91, 'sitting']
+                    hip=[104.0, 'cm'], sbp=[145, 'sitting'], dbp=[91, 'sitting'],
                 ),
                 smoking=dict(current=0, ex_smoker=1, quit_within_year=0),
                 physical_activity='120',
@@ -291,7 +291,7 @@ class HEARTS(object):
                 family_history=['cvd'],
                 pathology=dict(
                     bsl=dict(type='random', units='mg/dl', value=180),
-                    cholesterol=dict(type='fasting', units='mg/dl', total_chol=320, hdl=100, ldl=240)
-                )
-            )
+                    cholesterol=dict(type='fasting', units='mg/dl', total_chol=320, hdl=100, ldl=240),
+                ),
+            ),
         )

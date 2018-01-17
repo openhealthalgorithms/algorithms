@@ -52,20 +52,20 @@ input_params = {
         'api_secret': '3459823jfweureitu',
         'request_api': 'https://developers.openhealthalgorithms.org/algos/hearts/',
         'country_code': 'D',
-        'response_type': 'COMPLETE'
+        'response_type': 'COMPLETE',
     },
     'body': {
         'region': 'SEARD',
         'last_assessment': {
             'assessment_date': '',
-            'cvd_risk': '20'
+            'cvd_risk': '20',
         },
         'demographics': {
             'gender': 'F',
             'age': 55,
             'dob': ['computed', '01/10/1987'],
             'occupation': 'office_worker',
-            'monthly_income': ''
+            'monthly_income': '',
         },
         'measurements': {
             'height': [1.5, 'm'],
@@ -73,32 +73,32 @@ input_params = {
             'waist': [99.0, 'cm'],
             'hip': [104.0, 'cm'],
             'sbp': [140, 'sitting'],
-            'dbp': [91, 'sitting']
+            'dbp': [91, 'sitting'],
         },
         'smoking': {
             'current': 0,
             'ex_smoker': 1,
-            'quit_within_year': 0
+            'quit_within_year': 0,
         },
         'physical_activity': '120',
         'diet_history': {
-            'fruit': 1, 'veg': 6, 'rice': 2, 'oil': 'olive'
+            'fruit': 1, 'veg': 6, 'rice': 2, 'oil': 'olive',
         },
         'medical_history': {
-            'conditions': ['asthma', 'tuberculosis']
+            'conditions': ['asthma', 'tuberculosis'],
         },
         'allergies': {},
         'medications': ['anti_hypertensive', 'statin', 'antiplatelet', 'bronchodilator'],
         'family_history': ['diabetes', 'cvd'],
         'pathology': {
             'bsl': {
-                'type': 'random', 'units': 'mg/dl', 'value': 180
+                'type': 'random', 'units': 'mg/dl', 'value': 180,
             },
             'cholesterol': {
-                'type': 'fasting', 'units': 'mg/dl', 'total_chol': 300, 'hdl': 100, 'ldl': 240
-            }
-        }
-    }
+                'type': 'fasting', 'units': 'mg/dl', 'total_chol': 300, 'hdl': 100, 'ldl': 240,
+            },
+        },
+    },
 }
 
 result = HEARTS().calculate(input_params)
