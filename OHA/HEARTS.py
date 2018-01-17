@@ -6,9 +6,10 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
-from OHA.__assessments import assess_diet, calculate_diabetes_status
+from OHA.__assessments import assess_diet
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
+from OHA.assessments.DiabetesAssessment import DiabetesAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
@@ -162,9 +163,13 @@ class HEARTS(object):
         # smoker = assess_smoking_status(smoking)
 
         # assess diabetes status or risk
-        diabetes_status = calculate_diabetes_status(
-            medical_history, pathology['bsl']['type'], pathology['bsl']['units'], pathology['bsl']['value']
-        )
+        DSA = DiabetesAssessment({
+            'conditions': medical_history,
+            'bsl_type': pathology['bsl']['type'],
+            'bsl_units': pathology['bsl']['units'],
+            'bsl_value': pathology['bsl']['value']
+        })
+        diabetes_status = DSA.assess()
 
         # If does not have diabetes
         if not diabetes_status['status']:

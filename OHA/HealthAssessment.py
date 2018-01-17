@@ -6,9 +6,10 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
-from OHA.__assessments import assess_diet, calculate_diabetes_status, check_medications
+from OHA.__assessments import assess_diet, check_medications
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
+from OHA.assessments.DiabetesAssessment import DiabetesAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
@@ -153,9 +154,13 @@ class HealthAssessment(object):
         smoker = SMA.assess()
         smoker['output'] = HealthAssessment.output_messages('smoking', smoker['code'], output_level)
 
-        diabetes_status = calculate_diabetes_status(
-            medical_history, pathology['bsl']['type'], pathology['bsl']['units'], pathology['bsl']['value']
-        )
+        DSA = DiabetesAssessment({
+            'conditions': medical_history,
+            'bsl_type': pathology['bsl']['type'],
+            'bsl_units': pathology['bsl']['units'],
+            'bsl_value': pathology['bsl']['value']
+        })
+        diabetes_status = DSA.assess()
 
         if not diabetes_status['status']:
             diabetes_params = DiabetesParamsBuilder() \
