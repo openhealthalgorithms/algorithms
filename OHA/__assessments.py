@@ -73,24 +73,7 @@ def assess_blood_pressure(bp, conditions):
 
 
 def assess_bmi(bmi):
-    target = "18.5 - 24.9"
-
-    if bmi < 18.5:
-        result_code = "BMI-1"
-    elif bmi < 25:
-        result_code = "BMI-0"
-    elif bmi < 30:
-        result_code = "BMI-2"
-    else:
-        result_code = "BMI-3"
-
-    bmi_output = {
-        'value': bmi,
-        'code': result_code,
-        'target': target
-    }
-
-    return bmi_output
+    raise NotImplementedError('"assess_bmi" method removed')
 
 
 def assess_diet(diet_history, conditions, targets):
