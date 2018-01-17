@@ -24,9 +24,9 @@ class WHO(object):
     -------
         >>> from OHA.WHO import WHO
         >>> params = {
-        ...    'gender': "M", 'age': 30 ,'systolic_blood_pressure_1':  130,
+        ...    'gender': 'M', 'age': 30 ,'systolic_blood_pressure_1':  130,
         ...    'systolic_blood_pressure_2': 145, 'cholesterol': 7.0,
-        ...    'is_smoker': True, 'has_diabetes': True
+        ...    'is_smoker': True, 'has_diabetes': True,
         ... }
         >>> result = WHO().calculate(params)
         >>> print(result)
@@ -85,7 +85,7 @@ class WHO(object):
         Example
         -------
             >>> params = {
-            ...    'gender':                     "M",
+            ...    'gender':                     'M',
             ...    'age':                        30,
             ...    'systolic_blood_pressure_1':  130,
             ...    'systolic_blood_pressure_2':  145,
@@ -111,8 +111,8 @@ class WHO(object):
             convert_cholesterol_unit(
                 params.get('cholesterol'),
                 params.get('cholesterol_unit') or Defaults.cholesterol_unit,
-                Defaults.cholesterol_unit
-            )
+                Defaults.cholesterol_unit,
+            ),
         ) if 'cholesterol' in params.keys() else 'uc'
         diabetes = params.get('has_diabetes')
         gender = params.get('gender')
@@ -128,13 +128,13 @@ class WHO(object):
             'd' if diabetes else 'ud',
             str(gender).lower(),
             's' if smoker else 'ns',
-            str(age)
+            str(age),
         ))
 
         file_path = ('%s/color_charts/%s/%s' % (
             os.path.dirname(os.path.realpath(__file__)),
             region,
-            filename
+            filename,
         ))
 
         try:
@@ -143,19 +143,19 @@ class WHO(object):
                 else data[sbp_index, cholesterol]
             return {
                 'risk': int(risk),
-                'risk_range': cvd_risk_string(int(risk))
+                'risk_range': cvd_risk_string(int(risk)),
             }
         except IOError:
             return {
                 'risk': None,
                 'risk_range': None,
-                'exception': 'color chart not found.'
+                'exception': 'color chart not found.',
             }
 
     @staticmethod
     def get_sample_params():
         return WhoParamsBuilder() \
-            .gender("M")\
+            .gender('M')\
             .age(70)\
             .sbp1(130)\
             .sbp2(145)\

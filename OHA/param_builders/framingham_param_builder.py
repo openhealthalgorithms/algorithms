@@ -1,6 +1,6 @@
 class FraminghamParamsBuilder(object):
     def __init__(self):
-        self.__gender = "M"
+        self.__gender = 'M'
         self.__age = 40
         self.__sbp = 140
         self.__t_chol = None

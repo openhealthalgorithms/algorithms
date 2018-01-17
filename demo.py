@@ -10,94 +10,95 @@ from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder 
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
 
 params = DBP() \
-    .gender("M").age(40).sbp(150).dbp(92).weight(92, 'kg').height(1.5, 'm').waist(50, 'cm').hip(90, 'cm').build()
+    .gender('M').age(40).sbp(150).dbp(92).weight(92, 'kg').height(1.5, 'm').waist(50, 'cm').hip(90, 'cm').build()
 result = Diabetes().calculate(params)
 print('--> Diabetes:', result)
 print()
 
-params = FPB().gender("F").age(40).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).build()
+params = FPB().gender('F').age(40).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).build()
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 print()
 
-params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
+params = FPB().gender('M').age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl') \
+              .sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 print()
 
-params = WPB().gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('SEARD').smoker().diabetic().build()
+params = WPB().gender('M').age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('SEARD').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
-params = WPB().gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRD').smoker().diabetic().build()
+params = WPB().gender('M').age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRD').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
-params = WPB().gender("M").age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRE').smoker().diabetic().build()
+params = WPB().gender('M').age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRE').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
-params = WPB().gender("M").age(70).sbp1(130).sbp2(145).chol(270, 'mg/dl').smoker().diabetic().build()
+params = WPB().gender('M').age(70).sbp1(130).sbp2(145).chol(270, 'mg/dl').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
 input_params = {
-    "request": {
-        "api_key": "4325872943oeqitrqet7",
-        "api_secret": "3459823jfweureitu",
-        "request_api": "https://developers.openhealthalgorithms.org/algos/hearts/",
-        "country_code": "D",
-        "response_type": "COMPLETE"
+    'request': {
+        'api_key': '4325872943oeqitrqet7',
+        'api_secret': '3459823jfweureitu',
+        'request_api': 'https://developers.openhealthalgorithms.org/algos/hearts/',
+        'country_code': 'D',
+        'response_type': 'COMPLETE',
     },
-    "body": {
-        "region": "SEARD",
-        "last_assessment": {
-            "assessment_date": "",
-            "cvd_risk": "20"
+    'body': {
+        'region': 'SEARD',
+        'last_assessment': {
+            'assessment_date': '',
+            'cvd_risk': '20',
         },
-        "demographics": {
-            "gender": "F",
-            "age": 55,
-            "dob": ["computed", "01/10/1987"],
-            "occupation": "office_worker",
-            "monthly_income": ""
+        'demographics': {
+            'gender': 'F',
+            'age': 55,
+            'dob': ['computed', '01/10/1987'],
+            'occupation': 'office_worker',
+            'monthly_income': '',
         },
-        "measurements": {
-            "height": [1.5, "m"],
-            "weight": [60.0, "kg"],
-            "waist": [99.0, "cm"],
-            "hip": [104.0, "cm"],
-            "sbp": [140, "sitting"],
-            "dbp": [91, "sitting"]
+        'measurements': {
+            'height': [1.5, 'm'],
+            'weight': [60.0, 'kg'],
+            'waist': [99.0, 'cm'],
+            'hip': [104.0, 'cm'],
+            'sbp': [140, 'sitting'],
+            'dbp': [91, 'sitting'],
         },
-        "smoking": {
-            "current": 0,
-            "ex_smoker": 1,
-            "quit_within_year": 0
+        'smoking': {
+            'current': 0,
+            'ex_smoker': 1,
+            'quit_within_year': 0,
         },
-        "physical_activity": "120",
-        "diet_history": {
-            "fruit": 1, "veg": 6, "rice": 2, "oil": "olive"
+        'physical_activity': '120',
+        'diet_history': {
+            'fruit': 1, 'veg': 6, 'rice': 2, 'oil': 'olive',
         },
-        "medical_history": {
-            "conditions": ["asthma", "tuberculosis"]
+        'medical_history': {
+            'conditions': ['asthma', 'tuberculosis'],
         },
-        "allergies": {},
-        "medications": ["anti_hypertensive", "statin", "antiplatelet", "bronchodilator"],
-        "family_history": ["diabetes", "cvd"],
-        "pathology": {
-            "bsl": {
-                "type": "random", "units": "mg/dl", "value": 180
+        'allergies': {},
+        'medications': ['anti_hypertensive', 'statin', 'antiplatelet', 'bronchodilator'],
+        'family_history': ['diabetes', 'cvd'],
+        'pathology': {
+            'bsl': {
+                'type': 'random', 'units': 'mg/dl', 'value': 180,
             },
-            "cholesterol": {
-                "type": "fasting", "units": "mg/dl", "total_chol": 300, "hdl": 100, "ldl": 240
-            }
-        }
-    }
+            'cholesterol': {
+                'type': 'fasting', 'units': 'mg/dl', 'total_chol': 300, 'hdl': 100, 'ldl': 240,
+            },
+        },
+    },
 }
 
 result = HEARTS().calculate(input_params)

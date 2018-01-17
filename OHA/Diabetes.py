@@ -19,7 +19,7 @@ class Diabetes(object):
         >>> from OHA.Diabetes import Diabetes
         >>> params = {
         ...    'gender': 'M', 'age': 31, 'systolic': 139, 'diastolic': 90,
-        ...    'weight': 50.0, 'height': 2.0, 'waist': 50.0, 'hip': 90.0
+        ...    'weight': 50.0, 'height': 2.0, 'waist': 50.0, 'hip': 90.0,
         ... }
         >>> result = Diabetes().calculate(params)
         >>> print(result)
@@ -54,7 +54,7 @@ class Diabetes(object):
     def __adjust_risk_by_bp(
             risk_score,
             systolic_blood_pressure,
-            diastolic_blood_pressure
+            diastolic_blood_pressure,
     ):
         # ToDo:
         # need to clarify this is it AND or OR
@@ -102,7 +102,7 @@ class Diabetes(object):
 
         params = format_params(params)
 
-        # print("height param = %s " % params.get('height'))
+        # print('height param = %s ' % params.get('height'))
 
         gender = params.get('gender')
         age = params.get('age')
@@ -112,62 +112,62 @@ class Diabetes(object):
             convert_height_unit(
                 params.get('waist'),
                 params.get('waist_unit') or Defaults.waist_unit,
-                Defaults.waist_unit
+                Defaults.waist_unit,
             ),
             convert_height_unit(
                 params.get('hip'),
                 params.get('hip_unit') or Defaults.hip_unit,
-                Defaults.hip_unit
-            )
+                Defaults.hip_unit,
+            ),
         )
         body_mass_index = calculate_bmi(
             convert_weight_unit(
                 params.get('weight'),
                 params.get('weight_unit') or Defaults.weight_unit,
-                Defaults.weight_unit
+                Defaults.weight_unit,
             ),
             convert_height_unit(
                 params.get('height'),
                 params.get('height_unit') or Defaults.height_unit,
-                Defaults.height_unit
-            )
+                Defaults.height_unit,
+            ),
         )
 
         risk_score = 0
         risk_score = Diabetes.__adjust_risk_by_gender_and_whi(
             risk_score,
             gender,
-            waist_hip_ratio
+            waist_hip_ratio,
         )
         risk_score = Diabetes.__adjust_risk_by_age(risk_score, age)
         risk_score = Diabetes.__adjust_risk_by_bmi(risk_score, body_mass_index)
         risk_score = Diabetes.__adjust_risk_by_bp(
             risk_score,
             systolic_blood_pressure,
-            diastolic_blood_pressure
+            diastolic_blood_pressure,
         )
 
         if risk_score >= 9:
-            result_code = "DM-1"
+            result_code = 'DM-1'
         else:
-            result_code = "DM-0"
+            result_code = 'DM-0'
 
         return {
-            'risk':            risk_score,
+            'risk': risk_score,
             'waist_hip_ratio': float('%.2f' % (round(waist_hip_ratio, 2))),
             'body_mass_index': float('%.2f' % (round(body_mass_index, 2))),
-            'code' :           result_code,
+            'code': result_code,
         }
 
     @staticmethod
     def get_sample_params():
-        return DiabetesParamsBuilder()\
-            .gender("M")\
-            .age(40)\
-            .sbp(150)\
-            .dbp(92)\
-            .weight(92, 'kg')\
-            .height(1.5, 'm')\
-            .waist(50, 'cm')\
-            .hip(90, 'cm')\
+        return DiabetesParamsBuilder() \
+            .gender('M') \
+            .age(40) \
+            .sbp(150) \
+            .dbp(92) \
+            .weight(92, 'kg') \
+            .height(1.5, 'm') \
+            .waist(50, 'cm') \
+            .hip(90, 'cm') \
             .build()
