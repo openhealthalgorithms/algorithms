@@ -5,6 +5,7 @@ flake8
 flake8-author
 flake8-colors
 flake8-quotes
+flake8-strict
 PyYAML
 
 # testing
