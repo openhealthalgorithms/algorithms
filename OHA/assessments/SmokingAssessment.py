@@ -8,20 +8,33 @@ class SmokingAssessment(Assessment):
     def __init__(self, input_data=None):
         super().__init__(input_data)
 
+    @property
     def __smoking(self):
         return self._get_data()['smoking']
 
+    @property
+    def __current_smoker(self):
+        return self.__smoking['current']
+
+    @property
+    def __ex_smoker(self):
+        return self.__smoking['ex_smoker']
+
+    @property
+    def __quit_within_year(self):
+        return self.__smoking['quit_within_year']
+
     def assess(self):
-        is_smoker = self.__smoking()['current'] == 1
+        is_smoker = self.__current_smoker == 1
         smoking_calc = False
 
-        if self.__smoking()['current'] == 1:
+        if self.__current_smoker == 1:
             smoking_calc = True
             result_code = 'SM-1'
-        elif self.__smoking()['ex_smoker'] and self.__smoking()['quit_within_year']:
+        elif self.__ex_smoker and self.__quit_within_year:
             smoking_calc = True
             result_code = 'SM-2'
-        elif self.__smoking()['ex_smoker']:
+        elif self.__ex_smoker:
             result_code = 'SM-3'
         else:
             result_code = 'SM-4'

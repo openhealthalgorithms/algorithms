@@ -8,14 +8,16 @@ class BPAssessment(Assessment):
     def __init__(self, input_data=None):
         super().__init__(input_data)
 
+    @property
     def __bp(self):
         return self._get_data()['bp']
 
+    @property
     def __conditions(self):
         return self._get_data()['conditions']
 
     def __has_condition(self, c):
-        for condition in self.__conditions():
+        for condition in self.__conditions:
             if condition == c:
                 return True
         return False
@@ -23,8 +25,8 @@ class BPAssessment(Assessment):
     def assess(self):
         result_code = ''
 
-        _sbp = self.__bp()['sbp'][0]
-        _dbp = self.__bp()['dbp'][0]
+        _sbp = self.__bp['sbp'][0]
+        _dbp = self.__bp['dbp'][0]
         target = '%s/%s' % (_sbp, _dbp)
 
         if _sbp > 160:
