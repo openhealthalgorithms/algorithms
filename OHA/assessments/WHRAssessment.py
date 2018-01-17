@@ -35,4 +35,3 @@ class WHRAssessment(Assessment):
             result_code = "WHR-2"
 
         return dict(value=whr, code=result_code, target=target)
-

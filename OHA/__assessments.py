@@ -1,8 +1,3 @@
-from OHA.Defaults import Defaults
-from OHA.__unit import convert_height_unit
-from OHA.__utilities import calculate_waist_hip_ratio
-
-
 def has_condition(c, conditions):
     for condition in conditions:
         if condition == c:

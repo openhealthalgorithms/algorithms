@@ -6,7 +6,7 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
-from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
+from OHA.__assessments import assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity, calculate_diabetes_status
 from OHA.__utilities import calculate_bmi
 from OHA.assessments.WHRAssessment import WHRAssessment
@@ -32,7 +32,7 @@ class HEARTS(object):
         elif high_risk_condition["status"]:
             return False, "Has High Risk Condition"
         else:
-            return True, "Continue"    
+            return True, "Continue"
 
     @staticmethod
     def load_messages():
@@ -65,9 +65,6 @@ class HEARTS(object):
         messages = HEARTS.load_messages()
         output = []
 
-        # print("code = %s " % code)
-        # output["key"] = str(code)
-
         if output_level == 0:
             output = messages[section][code]
         elif output_level == 1:
@@ -78,26 +75,27 @@ class HEARTS(object):
             output = messages[section][code][0:3]
         elif output_level == 4:
             output = messages[section][code][0:4]
-        
+
         return output
-    
+
     @staticmethod
     def high_risk_condition_check(age, blood_pressure, conditions, high_risk_conditions):
         # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not
-        #  been done)
-        #  Pull this in from the configuration file
-        # high_risk_conditions = 
+        # been done)
+        # Pull this in from the configuration file
+        # high_risk_conditions =
         # Return whether medical history contains any of these
         has_high_risk_condition = False
         result_code = ""
 
+        hrc_value = None
         for condition in conditions:
             if condition.upper() in high_risk_conditions:
                 has_high_risk_condition = True
                 result_code = "HR-0"
                 hrc_value = condition
             else:
-                condition = None
+                hrc_value = None
 
         if not has_high_risk_condition:
             # check for other high risk states such as BP > 160 and age > 60 + diabetes (including newly suggested)
@@ -107,21 +105,21 @@ class HEARTS(object):
             dbp = blood_pressure['dbp'][0]
 
             if sbp > 200 or dbp > 120:
-                #return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
-                # Very elevated 
+                # return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
+                # Very elevated
                 has_high_risk_condition = True
                 result_code = "HR-1"
             elif age < 40 and (sbp >= 140 or dbp >= 90):
-                #High blood pressure in under 40, should be investigated for secondary hypertension
+                # High blood pressure in under 40, should be investigated for secondary hypertension
                 result_code = "HR-2"
-            
+
         hrc_output = {
             'status': has_high_risk_condition,
-            'reason' : condition,
+            'reason': hrc_value,
             'code': result_code
         }
 
-        return hrc_output   
+        return hrc_output
 
     @staticmethod
     def calculate(params):
@@ -135,7 +133,7 @@ class HEARTS(object):
         # Should also get the targets from here
         high_risk_conditions = guidelines["high_risk_conditions"]
         targets = guidelines["targets"]
-        
+
         # unpack the request, validate it and set up the params
         region = params['body']['region'] if 'region' in params['body'].keys() else 'SEARD'
         demographics = params['body']['demographics']
@@ -145,21 +143,19 @@ class HEARTS(object):
         diet_history = params['body']['diet_history']
         medical_history = params['body']['medical_history']
         pathology = params['body']['pathology']
-        # medications = []
-        # 
         bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
-        bmi["output"] = HEARTS.output_messages("anthro", bmi["code"], output_level)        
+        bmi["output"] = HEARTS.output_messages("anthro", bmi["code"], output_level)
 
         WHRA = WHRAssessment(dict(waist=measurements['waist'], hip=measurements['hip'], gender=demographics['gender']))
         whr = WHRA.assess()
         whr["output"] = HEARTS.output_messages("anthro", whr["code"], output_level)
-        
+
         smoker = assess_smoking_status(smoking)
         smoker["output"] = HEARTS.output_messages("smoking", smoker["code"], output_level)
 
-        #bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
-        #whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
-        #smoker = assess_smoking_status(smoking)
+        # bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
+        # whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
+        # smoker = assess_smoking_status(smoking)
 
         # assess diabetes status or risk
         diabetes_status = calculate_diabetes_status(
@@ -189,7 +185,7 @@ class HEARTS(object):
             conditions.append('diabetes')
             medical_history['conditions'] = conditions
             diabetes_risk = None
- 
+
         diabetes_status["output"] = HEARTS.output_messages("diabetes", diabetes_status["code"], output_level)
         assessment['diabetes'] = diabetes_status
 

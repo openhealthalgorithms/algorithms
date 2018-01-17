@@ -6,8 +6,7 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
-from OHA.HEARTS import HEARTS
-from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
+from OHA.__assessments import assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity, calculate_diabetes_status, check_medications
 from OHA.__utilities import calculate_bmi
 from OHA.assessments.WHRAssessment import WHRAssessment
@@ -62,20 +61,21 @@ class HealthAssessment(object):
     @staticmethod
     def high_risk_condition_check(age, blood_pressure, conditions, high_risk_conditions):
         # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not
-        #  been done)
-        #  Pull this in from the configuration file
-        # high_risk_conditions = 
+        # been done)
+        # Pull this in from the configuration file
+        # high_risk_conditions =
         # Return whether medical history contains any of these
         has_high_risk_condition = False
         result_code = ""
 
+        hrc_value = None
         for condition in conditions:
             if condition.upper() in high_risk_conditions:
                 has_high_risk_condition = True
                 result_code = "HR-0"
                 hrc_value = condition
             else:
-                condition = None
+                hrc_value = None
 
         if not has_high_risk_condition:
             # check for other high risk states such as BP > 160 and age > 60 + diabetes (including newly suggested)
@@ -86,7 +86,7 @@ class HealthAssessment(object):
 
             if sbp > 200 or dbp > 120:
                 # return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
-                # Very elevated 
+                # Very elevated
                 has_high_risk_condition = True
                 result_code = "HR-1"
             elif age < 40 and (sbp >= 140 or dbp >= 90):
@@ -95,7 +95,7 @@ class HealthAssessment(object):
 
         hrc_output = {
             'status': has_high_risk_condition,
-            'reason': condition,
+            'reason': hrc_value,
             'code': result_code
         }
 
@@ -106,9 +106,6 @@ class HealthAssessment(object):
         # how do we check if this is already in memory?
         messages = HealthAssessment.load_messages()
         output = []
-
-        # print("code = %s " % code)
-        # output["key"] = str(code)
 
         if output_level == 0:
             output = messages[section][code]
@@ -128,16 +125,10 @@ class HealthAssessment(object):
         assessment = {}
         output_level = 2
 
-        # load guidelines for SIMPLE algorithm model
         guidelines = HealthAssessment.load_guidelines('healthassessment')["body"]
-        # Unpack some of the configurations
-        # List of high risk conditions
-        # Should also get the targets from here
         high_risk_conditions = guidelines["high_risk_conditions"]
         targets = guidelines["targets"]
-        # print("targets = %s " % targets)
 
-        # unpack the request, validate it and set up the params
         demographics = params['body']['demographics']
         gender = demographics['gender']
         measurements = params['body']['measurements']
@@ -158,14 +149,11 @@ class HealthAssessment(object):
         smoker = assess_smoking_status(smoking)
         smoker["output"] = HealthAssessment.output_messages("smoking", smoker["code"], output_level)
 
-        # assess diabetes status or risk
         diabetes_status = calculate_diabetes_status(
             medical_history, pathology['bsl']['type'], pathology['bsl']['units'], pathology['bsl']['value']
         )
 
-        # If does not have diabetes OR impaired status
         if not diabetes_status['status']:
-            # calculate diabetes risk score
             diabetes_params = DiabetesParamsBuilder() \
                 .gender(demographics['gender']) \
                 .age(demographics['age']) \
@@ -180,14 +168,11 @@ class HealthAssessment(object):
             diabetes_status['risk'] = diabetes_risk['risk']
             diabetes_status['code'] = diabetes_risk['code']
         else:
-            # newly diagnosed diabetes, add to existing conditions list
             conditions = medical_history['conditions']
             conditions.append('diabetes')
             medical_history['conditions'] = conditions
             diabetes_risk = None
 
-        # unpack the messages
-        # print("---- diabetes status = %s " % diabetes_status)
         diabetes_status["output"] = HealthAssessment.output_messages("diabetes", diabetes_status["code"], output_level)
         assessment['diabetes'] = diabetes_status
 
@@ -213,7 +198,6 @@ class HealthAssessment(object):
         }
 
         age = demographics['age']
-        # work out how to add in diabetes if newly diagnosed?
         has_high_risk_condition = HealthAssessment.high_risk_condition_check(
             demographics['age'], blood_pressure, medical_history['conditions'], high_risk_conditions
         )
@@ -222,15 +206,9 @@ class HealthAssessment(object):
             'high_risk_condition': has_high_risk_condition
         }
 
-        # Determine whether eligible for CVD risk assessment
         estimate_cvd_risk_calc = HealthAssessment.estimate_cvd_risk(age, has_high_risk_condition)
-        # print('high risk output %s ' % assessment['high_risk'][0])
-        # if not high_risk_condition[0]:
         if estimate_cvd_risk_calc[0]:
-            # check if on bp_medications
             on_bp_meds = check_medications('anti_hypertensive', medications)
-            # print("\n--- on bp meds %s " % on_bp_meds)
-            # params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
             cvd_params = FraminghamParamsBuilder() \
                 .gender(gender) \
                 .age(age) \
@@ -241,24 +219,19 @@ class HealthAssessment(object):
                 .smoker(smoker['smoking_calc']) \
                 .diabetic(diabetes_status['status']) \
                 .build()
-            # print("\n---\n cvd assessment \n")
             fre_result = Framingham().calculate(cvd_params)
-            # print("\n---\nFRE result %s " % fre_result)
-            # print("\n---\n")
 
-            # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = fre_result
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]
 
         else:
-            # cvd_calc = estimate_cvd_risk_calc[1]
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         return assessment
 
     @staticmethod
     def get_messages():
-        return HA.load_messages()
+        return HealthAssessment.load_messages()
 
     @staticmethod
     def get_sample_params():
