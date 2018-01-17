@@ -8,6 +8,9 @@ __email__ = 'eendroroy@gmail.com'
 
 class WHRAssessment(Assessment):
     def __init__(self, input_data=None):
+        if input_data is not None:
+            if input_data['gender'] not in ["F", "M"]:
+                raise ValueError('gender value must be "F" or "M"')
         super().__init__(input_data)
 
     def __waist(self):
