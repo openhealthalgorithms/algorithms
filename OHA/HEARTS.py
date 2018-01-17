@@ -9,6 +9,7 @@ from OHA.WHO import WHO
 from OHA.__assessments import assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity, calculate_diabetes_status
 from OHA.__utilities import calculate_bmi
+from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
@@ -143,7 +144,8 @@ class HEARTS(object):
         diet_history = params['body']['diet_history']
         medical_history = params['body']['medical_history']
         pathology = params['body']['pathology']
-        bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
+        BMIA = BMIAssessment({'weight': measurements['weight'], 'height': measurements['height']})
+        bmi = BMIA.assess()
         bmi["output"] = HEARTS.output_messages("anthro", bmi["code"], output_level)
 
         WHRA = WHRAssessment(dict(waist=measurements['waist'], hip=measurements['hip'], gender=demographics['gender']))
