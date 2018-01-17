@@ -10,6 +10,7 @@ from OHA.HEARTS import HEARTS
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity, calculate_diabetes_status, check_medications
 from OHA.__utilities import calculate_bmi
+from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
@@ -150,7 +151,8 @@ class HealthAssessment(object):
         bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
         bmi["output"] = HealthAssessment.output_messages("anthro", bmi["code"], output_level)
 
-        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
+        WHRA = WHRAssessment(dict(waist=measurements['waist'], hip=measurements['hip'], gender=demographics['gender']))
+        whr = WHRA.assess()
         whr["output"] = HealthAssessment.output_messages("anthro", whr["code"], output_level)
 
         smoker = assess_smoking_status(smoking)
