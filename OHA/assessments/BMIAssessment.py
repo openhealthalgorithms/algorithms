@@ -2,6 +2,9 @@ from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit, convert_weight_unit
 from OHA.assessments.Assessment import Assessment
 
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
 
 class BMIAssessment(Assessment):
     def __init__(self, input_data=None):
