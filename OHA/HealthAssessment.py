@@ -10,6 +10,7 @@ from OHA.__assessments import assess_smoking_status, assess_blood_pressure, asse
     assess_diet, assess_physical_activity, calculate_diabetes_status, check_medications
 from OHA.__utilities import calculate_bmi
 from OHA.assessments.BMIAssessment import BMIAssessment
+from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
@@ -190,7 +191,11 @@ class HealthAssessment(object):
         assessment['blood_pressure'] = bp_assessment
 
         diet = assess_diet(diet_history, medical_history['conditions'], targets)
-        exercise = assess_physical_activity(physical_activity, targets)
+        PAA = PhysicalActivityAssessment(dict(
+            active_time=physical_activity,
+            targets_active_time=targets['general']["physical_activity"]['active_time']
+        ))
+        exercise = PAA.assess()
         assessment['lifestyle'] = {
             'bmi': bmi,
             'whr': whr,
