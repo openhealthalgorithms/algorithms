@@ -18,7 +18,7 @@ def find_packages(*args, **kwargs):
 
 
 def version():
-    __version = '0.2.1'
+    __version = '0.2.2'
     __tag = 'b'
     if path.exists('.git'):
         __tag = 'git'
