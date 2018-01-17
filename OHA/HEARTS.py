@@ -6,8 +6,9 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
-from OHA.__assessments import assess_smoking_status, assess_blood_pressure, assess_diet, calculate_diabetes_status
+from OHA.__assessments import assess_smoking_status, assess_diet, calculate_diabetes_status
 from OHA.assessments.BMIAssessment import BMIAssessment
+from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
@@ -195,7 +196,8 @@ class HEARTS(object):
             'dbp': measurements['dbp']
         }
 
-        bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'])
+        BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
+        bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
         diet = assess_diet(diet_history, medical_history['conditions'], targets)
         PAA = PhysicalActivityAssessment(dict(
