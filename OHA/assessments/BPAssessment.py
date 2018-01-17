@@ -35,7 +35,7 @@ class BPAssessment(Assessment):
                 target = "130/80"
             else:
                 result_code = "BP-3A"
-        elif (_sbp <= 140) and (_sbp >= 120):
+        elif 140 >= _sbp >= 120:
             result_code = "BP-1A"
             target = "140/90"
         elif _sbp > 140:
@@ -46,4 +46,3 @@ class BPAssessment(Assessment):
             target = "140/90"
 
         return dict(bp=str(_sbp) + "/" + str(_dbp), code=result_code, target=target)
-

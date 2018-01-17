@@ -20,7 +20,8 @@ result = Framingham().calculate(params)
 print('--> Framingham:', result)
 print()
 
-params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
+params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl') \
+              .sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 print()
