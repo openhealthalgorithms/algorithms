@@ -2,6 +2,7 @@ from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit
 from OHA.__utilities import calculate_waist_hip_ratio
 
+
 def has_condition(c, conditions):
     for condition in conditions:
         if condition == c:
@@ -9,34 +10,9 @@ def has_condition(c, conditions):
 
     return False
 
+
 def assess_waist_hip_ratio(waist, hip, gender):
-    #default is normal
-    result_code = "WHR-0" 
-
-    whr = calculate_waist_hip_ratio(
-        convert_height_unit(
-            waist[0],
-            waist[1] or Defaults.waist_unit,
-            Defaults.waist_unit
-        ),
-        convert_height_unit(hip[0], hip[1] or Defaults.hip_unit, Defaults.hip_unit)
-    )
-    if gender == "F":
-        target = 0.85
-        if whr >= 0.85:
-            result_code = "WHR-1"
-    if gender == "M":
-        target = 0.9
-        if whr >= 0.9:
-            result_code = "WHR-2"
-
-    whr_output = {
-        'value': whr,
-        'code': result_code,
-        'target' : target
-    }
-
-    return whr_output
+    raise NotImplementedError('"assess_waist_hip_ratio" method removed')
 
 
 def assess_smoking_status(smoking):
@@ -60,17 +36,17 @@ def assess_smoking_status(smoking):
         result_code = 'SM-4'
 
     smoking_status = {
-        'code' : result_code,
-        'status' : is_smoker,
-        'smoking_calc' : smoking_calc,
+        'code': result_code,
+        'status': is_smoker,
+        'smoking_calc': smoking_calc,
     }
 
     return smoking_status
 
+
 def assess_blood_pressure(bp, conditions):
-    
     result_code = ""
-    
+
     _sbp = bp['sbp'][0]
     _dbp = bp['dbp'][0]
 
@@ -96,9 +72,10 @@ def assess_blood_pressure(bp, conditions):
     bp_output = {
         'bp': str(_sbp) + "/" + str(_dbp),
         'code': result_code,
-        'target' : target
+        'target': target
     }
     return bp_output
+
 
 def assess_bmi(bmi):
     target = "18.5 - 24.9"
@@ -110,15 +87,16 @@ def assess_bmi(bmi):
     elif bmi < 30:
         result_code = "BMI-2"
     else:
-       result_code = "BMI-3"
+        result_code = "BMI-3"
 
     bmi_output = {
         'value': bmi,
         'code': result_code,
-        'target' : target
+        'target': target
     }
 
     return bmi_output
+
 
 def assess_diet(diet_history, conditions, targets):
     """
@@ -144,7 +122,7 @@ def assess_diet(diet_history, conditions, targets):
         result_code = "NUT-3"
     elif ((diet_history['fruit'] < targets['general']['diet']['fruit'])
           and (diet_history['veg'] >= targets['general']['diet']['vegetables'])):
-       # Partial F&V off target
+        # Partial F&V off target
         result_code = "NUT-2"
     elif ((diet_history['fruit'] > targets['general']['diet']['fruit'])
           and (diet_history['veg'] < targets['general']['diet']['vegetables'])):
@@ -164,11 +142,12 @@ def assess_diet(diet_history, conditions, targets):
 
     return diet_output
 
+
 def assess_physical_activity(active_time, targets):
     target = "150 minutes"
     if int(active_time) >= targets['general']["physical_activity"]['active_time']:
         # targets being met
-        result_code = "PA-1"  
+        result_code = "PA-1"
     else:
         # targets not being met
         result_code = "PA-2"
@@ -180,52 +159,53 @@ def assess_physical_activity(active_time, targets):
 
     return pa_output
 
+
 def calculate_diabetes_status(conditions, bsl_type, bsl_units, bsl_value):
-        status = False
-        code = ""
+    status = False
+    code = ""
 
-        # move to a helper function
-        if bsl_units == 'mg/dl':
-            bsl_value = round(float(bsl_value) / 18, 1)
+    # move to a helper function
+    if bsl_units == 'mg/dl':
+        bsl_value = round(float(bsl_value) / 18, 1)
 
-        for condition in conditions:
-            if condition == "diabetes":
-                status = True
-                code = 'DM-4'
-            else:
-                if bsl_type == "random":
-                    # for random BSL, BSL > 11.1 with symptoms is diagnostic
-                    if bsl_value >= 11.1:
-                        status = True
-                        # Possible new diagnosis
-                        code = 'DM-3'
-                elif bsl_type == "fasting":
-                    # if fasting, then BSL > 7 is diagnostic 
-                    if bsl_value > 7:
-                        status = True
-                        code = 'DM-3'
-                    elif bsl_value > 6.1:
-                        # if fasting, bsl 6.1-7 "prediabetes"
-                        status = True
-                        code = 'DM-2'
-                elif bsl_type == "hba1c":
-                    # if >= 6.5%, diagnostic
-                    if bsl_value >= 6.5:
-                        status = True
+    for condition in conditions:
+        if condition == "diabetes":
+            status = True
+            code = 'DM-4'
+        else:
+            if bsl_type == "random":
+                # for random BSL, BSL > 11.1 with symptoms is diagnostic
+                if bsl_value >= 11.1:
+                    status = True
+                    # Possible new diagnosis
+                    code = 'DM-3'
+            elif bsl_type == "fasting":
+                # if fasting, then BSL > 7 is diagnostic
+                if bsl_value > 7:
+                    status = True
+                    code = 'DM-3'
+                elif bsl_value > 6.1:
+                    # if fasting, bsl 6.1-7 "prediabetes"
+                    status = True
+                    code = 'DM-2'
+            elif bsl_type == "hba1c":
+                # if >= 6.5%, diagnostic
+                if bsl_value >= 6.5:
+                    status = True
 
-            # return False
-            diabetes_output = {
-                'value': bsl_value,
-                'status': status,
-                'code': code
-            }
+        # return False
+        diabetes_output = {
+            'value': bsl_value,
+            'status': status,
+            'code': code
+        }
 
-            return diabetes_output    
+        return diabetes_output
+
 
 def check_medications(search, medications):
-
     for medication in medications:
         if str.upper(medication) == str.upper(search):
             return True
         else:
-            return False   
+            return False
