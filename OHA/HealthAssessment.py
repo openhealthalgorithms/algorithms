@@ -6,10 +6,11 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
-from OHA.__assessments import assess_smoking_status, assess_diet, calculate_diabetes_status, check_medications
+from OHA.__assessments import assess_diet, calculate_diabetes_status, check_medications
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
+from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
@@ -148,7 +149,8 @@ class HealthAssessment(object):
         whr = WHRA.assess()
         whr['output'] = HealthAssessment.output_messages('anthro', whr['code'], output_level)
 
-        smoker = assess_smoking_status(smoking)
+        SMA = SmokingAssessment({'smoking': smoking})
+        smoker = SMA.assess()
         smoker['output'] = HealthAssessment.output_messages('smoking', smoker['code'], output_level)
 
         diabetes_status = calculate_diabetes_status(

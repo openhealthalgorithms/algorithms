@@ -6,10 +6,11 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
-from OHA.__assessments import assess_smoking_status, assess_diet, calculate_diabetes_status
+from OHA.__assessments import assess_diet, calculate_diabetes_status
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
+from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
@@ -152,7 +153,8 @@ class HEARTS(object):
         whr = WHRA.assess()
         whr['output'] = HEARTS.output_messages('anthro', whr['code'], output_level)
 
-        smoker = assess_smoking_status(smoking)
+        SMA = SmokingAssessment({'smoking': smoking})
+        smoker = SMA.assess()
         smoker['output'] = HEARTS.output_messages('smoking', smoker['code'], output_level)
 
         # bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
