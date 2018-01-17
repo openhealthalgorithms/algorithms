@@ -6,10 +6,10 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
-from OHA.__assessments import assess_diet
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.DiabetesAssessment import DiabetesAssessment
+from OHA.assessments.DietAssessment import DietAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
@@ -206,7 +206,8 @@ class HEARTS(object):
         BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
         bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
-        diet = assess_diet(diet_history, medical_history['conditions'], targets)
+        DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
+        diet = DTA.assess()
         PAA = PhysicalActivityAssessment(dict(
             active_time=physical_activity,
             targets_active_time=targets['general']['physical_activity']['active_time']

@@ -6,10 +6,11 @@ import os
 
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
-from OHA.__assessments import assess_diet, check_medications
+from OHA.__assessments import check_medications
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.DiabetesAssessment import DiabetesAssessment
+from OHA.assessments.DietAssessment import DietAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
@@ -198,7 +199,8 @@ class HealthAssessment(object):
         )
         assessment['blood_pressure'] = bp_assessment
 
-        diet = assess_diet(diet_history, medical_history['conditions'], targets)
+        DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
+        diet = DTA.assess()
         PAA = PhysicalActivityAssessment(dict(
             active_time=physical_activity,
             targets_active_time=targets['general']['physical_activity']['active_time']
