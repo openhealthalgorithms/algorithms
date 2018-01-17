@@ -14,7 +14,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 
 def find_packages(*args, **kwargs):
-    return ['OHA', 'OHA.param_builders', 'tests']
+    return ['OHA', 'OHA.param_builders', 'OHA.assessments', 'tests']
 
 
 def version():
