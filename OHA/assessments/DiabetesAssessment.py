@@ -6,7 +6,7 @@ __email__ = 'eendroroy@gmail.com'
 
 class DiabetesAssessment(Assessment):
     def __init__(self, input_data=None):
-        super().__init__(input_data)
+        super(DiabetesAssessment, self).__init__(input_data)
 
     @property
     def __conditions(self):
