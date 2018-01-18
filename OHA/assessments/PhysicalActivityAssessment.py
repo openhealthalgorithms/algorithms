@@ -6,7 +6,7 @@ __email__ = 'eendroroy@gmail.com'
 
 class PhysicalActivityAssessment(Assessment):
     def __init__(self, input_data=None):
-        super().__init__(input_data)
+        super(PhysicalActivityAssessment, self).__init__(input_data)
 
     @property
     def __active_time(self):
