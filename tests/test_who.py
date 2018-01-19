@@ -6,7 +6,6 @@ import unittest
 from OHA.WHO import WHO
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
 
-
 class WhoTest(unittest.TestCase):
 
     def test_should_produce_exception(self):

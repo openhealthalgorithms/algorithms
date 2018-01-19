@@ -121,6 +121,7 @@ class WHO(object):
         sbp1 = params.get('systolic_blood_pressure_1')
         sbp2 = params.get('systolic_blood_pressure_2')
         sbp_index = WHO.__convert_sbp((sbp1 + sbp2) / 2)
+        print(sbp_index)
         region = params.get('region') if 'region' in params.keys() else 'SEARD'
 
         filename = ('%s_%s_%s_%s_%s.txt' % (
