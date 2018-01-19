@@ -1,0 +1,137 @@
+{
+  "header" : {
+    "guideline_name" : "Singapore Health Assessment",
+    "publisher" : "OpenHealth Algorithms",
+    "publication_date" : "11-01-2018"
+  },
+  "body" :  { 
+    "high_risk_conditions" : ["CVD", "CAD", "AMI", "HEART ATTACK", "CVA", "TIA", "STROKE", "CKD", "PVD"], 
+    "family_history_conditions" : ["CVD", "Diabetes", "Familial Hypercholesterolaemia", "Familial Hyperlipidemia"],
+    "targets" : {
+      "general": {
+          "bmi" : {
+            "east-asian" :  ["<18.5", "18.5:22.9", "23:27.4", "27.5:32.4", "32.5:37.4", ">37.5"],
+            "other" :       ["<18.5", "18.5:24.9", "25:29.9", "30:34.9", "35:39.9", ">40"],       
+          },
+          "whr" : {
+            "male" : {
+              "east-asian" :  90,
+              "other" :       102 
+            },
+            "female" : {
+              "east-asian" :  80,
+              "other" :       88 
+            }
+          },
+          "physical_activity" : {
+            "active_time": 150,
+            "activity_type": "moderate"  
+          },
+          "diet" : {
+            "fruit": 2,
+            "vegetables": 2,
+            "carbohydrates" : 4,
+            "protein" : 2
+          },
+          "blood_pressure" : {
+            "sbp": 140,
+            "dbp": 90
+          }
+      }
+    }, 
+    "cvd_risk" : {
+      "<10" : {
+        "score" : "<10%",
+        "label" : "Low 10 year risk <10%",
+        "advice" : ["Lifestyle-General"],
+        "follow_up_interval" : "12",
+        "follow_up_message" : "You're risk is low. You should have another check up in 12 months"
+      },
+      "10-20" : {
+        "score" : "10-20%",
+        "label" : "Low-Moderate",
+        "advice" : ["Lifestyle-General", "Review-Targets"],
+        "follow_up_interval" : "3",
+        "follow_up" : "Every 3 months until targets are met, then 6-9 months thereafter"
+      },
+      "20-30" : {
+        "score" : "20-30%",
+        "label" : "Moderate",
+        "advice" : ["Lifestyle", "Blood Pressure", "Lipids"],
+        "bp_target" : "140/90",
+        "follow_up_interval" : "3-6",
+        "follow_up" : "Follow-up every 3-6 months"
+      },
+      "30-40" : {
+        "score" : "30-40%",
+        "label" : "Medium",
+        "advice" : ["Lifestyle", "Blood Pressure", "Statin"],
+        "bp_target" : "130/80",
+        "follow_up_interval" : "3",
+        "follow_up" : "Follow-up every 3 months, if there is no reduction in cardiovascular risk after six months of follow up refer to next level"
+      },
+      ">40" : {
+        "score" : ">40%",
+        "label" : "High",
+        "advice" : ["Lifestyle", "Blood Pressure", "Statin", "Refer"],
+        "bp_target" : "130/80",
+        "follow_up_interval" : "0",
+        "follow_up" : "As per higher level of care"
+      },
+      "Refer" : {
+        "criteria" : {},
+        "label" : "Referral",
+        "advice" : [
+          "Refer"
+        ],
+        "follow_up" : "For referral to higher level of care. Seek specialist appointment ASAP"
+      }
+    },
+    "diabetes" : {
+      "DM-CURRENT" : {
+        "advice" : [
+          "Important to maintain good glycaemic control",
+          "Work towards targets",
+          "Referral to Diabetes Education Programme",
+          "Regular Check-ups"
+        ],
+        "targets" : {
+          "simple" : {
+            "HBA1C" : "7",
+            "fasting" : "6",
+            "post-prandial" : "10",
+            "units" : "mmol/L"
+          },
+          "complex" : {
+            "HBA1C" : "8"
+          },
+          "blood_pressure" : {
+            "SBP" : "130",
+            "DBP" : "80"
+          }
+        },
+        "follow_up" : {
+          "simple" : {
+            "interval" : "3 months",
+            "level_of_care" : "Primary",
+            "additional" : "Yearly check up with Opthalmologist"
+          },
+          "complex" : {
+            "interval" : "As per specialist",
+            "level_of_care" : "Specialist",
+            "additional" : "Check for complications: eye, feet, wounds"
+          }
+        }
+      },
+      "DM-PRE" : {
+        "advice" : [
+          "At risk of developing diabetes",
+          "With diet and exercise you may be able to prevent diabetes",
+          "Talk to your healthcare professional"
+        ]
+      },
+      "DM-NONE" : {},
+      "DM-RISK" : {} 
+    }
+  }
+}

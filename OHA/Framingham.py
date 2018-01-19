@@ -147,6 +147,15 @@ class Framingham(object):
             return '>40'
 
     @staticmethod
+    def calculate_singapore_fre(params, gender):
+        '''
+            Modified FRE for calculating 10 year risk of CHD
+            Based on SG MoH Guidelines for CVD, 2011
+            Allocate points based on person’s age, total_cholesterol and HDL cholesterol levels, smoking status
+            and systolic blood pressure (BP). Check the total points against Table 2 for estimate of that person’s 10-year CHD risk.
+        '''
+
+    @staticmethod
     def calculate(params):
         """
 
@@ -179,11 +188,10 @@ class Framingham(object):
            Framingham risk score and heart age and risk_range
         """
         params = format_params(params)
-        # print("fre params = %s " % params)
-
+    
         cvd_risk = Framingham.calculate_fre_score(params)
         heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])
-        risk_range = Framingham.cvd_risk_level(cvd_risk)
+        risk_range = Framingham.cvd_risk_level(cvd_risk*100)
 
         return {
             'raw_risk': float('%.4f' % (round(cvd_risk, 4))),
