@@ -144,6 +144,10 @@ class WHO(object):
             return {
                 'risk': int(risk),
                 'risk_range': cvd_risk_string(int(risk)),
+                'debug': {
+                    'matrix': data.tolist(),
+                    'index': '%s,%s' % (sbp_index, cholesterol)
+                }
             }
         except IOError:
             return {
@@ -155,11 +159,11 @@ class WHO(object):
     @staticmethod
     def get_sample_params():
         return WhoParamsBuilder() \
-            .gender('M')\
-            .age(70)\
-            .sbp1(130)\
-            .sbp2(145)\
-            .chol(270, 'mg/dl')\
-            .smoker()\
-            .diabetic()\
+            .gender('M') \
+            .age(70) \
+            .sbp1(130) \
+            .sbp2(145) \
+            .chol(270, 'mg/dl') \
+            .smoker() \
+            .diabetic() \
             .build()
