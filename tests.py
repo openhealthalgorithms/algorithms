@@ -1,4 +1,6 @@
 import json
+import time
+
 import pandas as pd
 
 #from OHA.Diabetes import Diabetes
@@ -33,11 +35,19 @@ tests_df = pd.read_csv(filename)
 #print(tests_df.head())
 
 tests_df['calculated'] = tests_df.apply(calculate_hearts_risk, axis=1)
-tests_df['result'] = tests_df.apply(lambda x: 'equal' if x['cvd_risk'] == x['calculated'] else 'error', axis=1)
+tests_df['result'] = tests_df.apply(lambda x: True if x['cvd_risk'] == x['calculated'] else False, axis=1)
+print(tests_df)
+
+df_filtered = tests_df.query('result == True')
+
+total_tests = tests_df['result'].count()
+successful_tests = df_filtered['result'].count()
+success_percentage = round(((int(successful_tests) / int(total_tests)) * 100), 2)
 
 # add the date-time to the filname
-filename = 'OHA/tests/who_tests_processed.csv'
-print('---> completed tests ---')
+timestr = time.strftime("%Y%m%d-%H%M%S")
+filename = 'OHA/tests/who_tests_processed_' + timestr + '.csv'
+print('---> completed tests ---, %s' %success_percentage , '% correct --- outputting to file', filename)
 tests_df.to_csv(filename)
 
 

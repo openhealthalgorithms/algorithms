@@ -147,15 +147,6 @@ class Framingham(object):
             return '>40'
 
     @staticmethod
-    def calculate_singapore_fre(params, gender):
-        '''
-            Modified FRE for calculating 10 year risk of CHD
-            Based on SG MoH Guidelines for CVD, 2011
-            Allocate points based on person’s age, total_cholesterol and HDL cholesterol levels, smoking status
-            and systolic blood pressure (BP). Check the total points against Table 2 for estimate of that person’s 10-year CHD risk.
-        '''
-
-    @staticmethod
     def calculate(params):
         """
 
