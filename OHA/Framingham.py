@@ -24,7 +24,7 @@ class Framingham(object):
         'logSBPRx': {'F': 2.82263, 'M': 1.99881},
         'logSmoking': {'F': 0.52873, 'M': 0.65451},
         'logDM': {'F': 0.69154, 'M': 0.57367},
-        'calc_mean': {'F': 26.1931, 'M': 23.9802}
+        'calc_mean': {'F': 26.1931, 'M': 23.9802},
     }
 
     __default_cholesterol_unit = 'mg/dl'
@@ -41,12 +41,12 @@ class Framingham(object):
         total_cholesterol = convert_cholesterol_unit(
             params.get('total_cholesterol'),
             params.get('total_cholesterol_unit') or Framingham.__default_cholesterol_unit,
-            Framingham.__default_cholesterol_unit
+            Framingham.__default_cholesterol_unit,
         )
         hdl_cholesterol = convert_cholesterol_unit(
             params.get('hdl_cholesterol'),
             params.get('hdl_cholesterol_unit') or Framingham.__default_cholesterol_unit,
-            Framingham.__default_cholesterol_unit
+            Framingham.__default_cholesterol_unit,
         )
         on_bp_medication = params.get('on_bp_medication')
         systolic = params.get('systolic')
@@ -86,10 +86,7 @@ class Framingham(object):
 
         framingham_risk_score = 1 - np.power(
             Framingham.__get_co_efficient('so10', gender),
-            np.exp(
-                total_risk
-                - Framingham.__get_co_efficient('calc_mean', gender)
-            )
+            np.exp(total_risk - Framingham.__get_co_efficient('calc_mean', gender)),
         )
 
         return framingham_risk_score
@@ -179,7 +176,6 @@ class Framingham(object):
            Framingham risk score and heart age and risk_range
         """
         params = format_params(params)
-    
         cvd_risk = Framingham.calculate_fre_score(params)
         heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])
         risk_range = Framingham.cvd_risk_level(cvd_risk*100)
@@ -188,13 +184,13 @@ class Framingham(object):
             'raw_risk': float('%.4f' % (round(cvd_risk, 4))),
             'risk': round(cvd_risk * 100, 2),
             'heart_age': heart_age,
-            'risk_range': risk_range
+            'risk_range': risk_range,
         }
 
     @staticmethod
     def get_sample_params():
         return FraminghamParamsBuilder() \
-            .gender("F") \
+            .gender('F') \
             .age(40) \
             .t_chol(170, 'mg/dl') \
             .hdl_chol(45, 'mg/dl') \

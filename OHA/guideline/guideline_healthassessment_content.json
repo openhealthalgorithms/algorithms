@@ -20,6 +20,7 @@
     "messages" : {
         "smoking" : {
             "SM-0" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
+            "SM-1" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
             "SM-2" : ["ex_smoker_quit_within_12_months", "Ex smoker, quit within the past 12 months", "AMBER", "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor"],
             "SM-3" : ["ex_smoker", "Ex smoker, quit > 12 months ago", "GREEN", "Good work quitting. It\"s the best thing you can do for your health. Stay strong"],
             "SM-4" : ["non-smoker", "Non Smoker", "GREEN", "Your lungs will thank you!"]
@@ -42,9 +43,12 @@
             "NUT-6" : ["off_target", "Review diet", "RED", "Its time to look at what you are eating .. "]
         },
         "physical_activity" : {
+            "PH-1" : ["on_target", "Meeting PA targets", "GREEN", "You are meeting the recommended amount of exercise (150 minutes per week). Keep it up. [Looking for a community?]"],
             "PA-1" : ["on_target", "Meeting PA targets", "GREEN", "You are meeting the recommended amount of exercise (150 minutes per week). Keep it up. [Looking for a community?]"],
             "PH-2" : ["off_target_mild", "Off target, but trying", "AMBER", "Keep moving. Remember every bit counts. Aim for 150 minutes of moderate intensity exercsie per week. [Learn more]"],
-            "PH-3" : ["off_target", "Off Target", "RED", "Regular exercise is essential. Aim for 150 minutes per week. Start slow and build up gradually. [Need support?]"]
+            "PH-3" : ["off_target", "Off Target", "RED", "Regular exercise is essential. Aim for 150 minutes per week. Start slow and build up gradually. [Need support?]"],
+            "PA-2" : ["off_target_mild", "Off target, but trying", "AMBER", "Keep moving. Remember every bit counts. Aim for 150 minutes of moderate intensity exercsie per week. [Learn more]"],
+            "PA-3" : ["off_target", "Off Target", "RED", "Regular exercise is essential. Aim for 150 minutes per week. Start slow and build up gradually. [Need support?]"]
         },
         "blood_pressure" : {
             "BP-0" : ["on_target", "Meeting BP targets", "GREEN", "You are on target. Keep it up"],
