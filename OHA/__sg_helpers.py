@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 '''
 	__sg_helpers
+    Formulas derived from the 2011 Guidelines from the SG MoH
 '''
 def find_age_index(age, age_brackets):
     
@@ -87,9 +88,7 @@ def calculate_cholesterol_points(gender, age, total_cholesterol, hdl_cholesterol
 
     # look up the value from the df
     # looking up with keys 
-    print("look up with row index %s " % chol_range)
     cholesterol_points = tchol_points_df[age_index][chol_range]
-    print("chol points %s " % cholesterol_points)
     
     if hdl_cholesterol < 1.0:
         hdl_points = +2
@@ -99,9 +98,7 @@ def calculate_cholesterol_points(gender, age, total_cholesterol, hdl_cholesterol
         hdl_points = 0
     elif hdl_cholesterol >= 1.6:
         hdl_points = -1
-        
-    print('hdl points %s ' % hdl_points)
-        
+                
     cholesterol_points = cholesterol_points + hdl_points
     
     return cholesterol_points
@@ -117,7 +114,6 @@ def calculate_bp_points(gender, sbp, sbp_rx):
     	sbp_points = np.array([[0,0], [1,3], [2,4], [3,5], [4,6]])
 
     bp_df = pd.DataFrame(sbp_points, index=row_names, columns=col_names)
-    #print(bp_df)  
     
     if sbp < 120:
         spb_index = '<120'
@@ -148,9 +144,7 @@ def calculate_fre_score(gender, ethnicity, points):
     	filename = 'OHA/sg_risk/sg_10year_risk_female.csv'
     
     fre_pd = pd.read_csv(filename, header=0, index_col=0)
-    #print(fre_pd)
     fre_risk = fre_pd[col_names]
-    #print(fre_risk)
     
     # look up the risk score based on the dataframe
     fre_risk_score = fre_risk[ethnicity][points]
