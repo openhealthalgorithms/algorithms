@@ -12,6 +12,7 @@ from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, ass
 from OHA.__utilities import calculate_bmi
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
+from OHA.__sg_helpers import def calculate_fre_score
 
 __author__ = 'fredhersch'
 __email__ = 'fred@openhealthalgorithms.org'

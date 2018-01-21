@@ -100,7 +100,9 @@ class HEARTS(object):
         targets = guidelines['targets']
 
         # unpack the request, validate it and set up the params
+        # @indrajit otherwise pull the default from a config file
         region = params['body']['region'] if 'region' in params['body'].keys() else 'SEARD'
+        
         demographics = params['body']['demographics']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
@@ -146,7 +148,6 @@ class HEARTS(object):
                 .sbp(measurements['sbp'][0]) \
                 .dbp(measurements['dbp'][0]) \
                 .build()
-            # print('diabetes params = %s ' % diabetes_params)
             diabetes_risk = Diabetes().calculate(diabetes_params)
             diabetes_status['risk'] = diabetes_risk['risk']
             diabetes_status['code'] = diabetes_risk['code']
@@ -161,6 +162,8 @@ class HEARTS(object):
         print(diabetes_status)
         assessment['diabetes'] = diabetes_status
 
+        #print("\n\n ----- Diabetes status is %s ------\n\n" % diabetes_status)
+
         blood_pressure = {
             'sbp': measurements['sbp'],
             'dbp': measurements['dbp'],
@@ -169,8 +172,10 @@ class HEARTS(object):
         BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
         bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
+        
         DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
         diet = DTA.assess()
+        
         PAA = PhysicalActivityAssessment({
             'active_time': physical_activity,
             'targets_active_time': targets['general']['physical_activity']['active_time'],
@@ -196,11 +201,12 @@ class HEARTS(object):
         assessment['cvd_assessment'] = {
             'high_risk_condition': has_high_risk_condition,
         }
+ 
+        #print("\n\n---- Diabetes Risk is %s ------\n\n" % diabetes_risk)
 
         # Determine whether eligible for CVD risk assessment
         estimate_cvd_risk_calc = HEARTS.estimate_cvd_risk(age, has_high_risk_condition)
-        # print('high risk output %s ' % assessment['high_risk'][0])
-        # if not high_risk_condition[0]:
+    
         if estimate_cvd_risk_calc[0]:
 
             if smoking['current'] == 0:
@@ -218,7 +224,7 @@ class HEARTS(object):
                 .region(region) \
                 .diabetic(diabetes_status['status']) \
                 .build()
-            #print("\n---- passing in %s " % cvd_params)
+            #print("\n\n---- CVD Params are %s ------\n\n" % cvd_params)
             cvd_risk = WHO.calculate(cvd_params)
             #print('--- WHO risk assessment %s ' % cvd_risk)
             # use the key to look up the guidelines output
