@@ -34,6 +34,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'numpy',
+        'pandas',
     ],
     include_package_data=True,
 )
