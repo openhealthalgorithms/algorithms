@@ -95,18 +95,18 @@ class Framingham(object):
     @staticmethod
     def __calculate_heart_age(cvd_risk, gender, age):
 
-        '''
+        """
             return the ideal heart age which is the heart age based on age and gender with no risk factors
             also approximate the heart age given the cvd_risk
-        '''
+        """
 
         standard_params = {
-            'age' : age,
+            'age': age,
             'gender': gender,
             'total_cholesterol': 120,
-            'total_cholesterol_unit' : 'mg/dl',
+            'total_cholesterol_unit': 'mg/dl',
             'hdl_cholesterol': 60,
-            'hdl_cholesterol_unit' : 'mg/dl',
+            'hdl_cholesterol_unit': 'mg/dl',
             'systolic': 120,
             'on_bp_medication': False,
             'is_smoker': False,
@@ -115,17 +115,17 @@ class Framingham(object):
 
         standard_cvd_risk = round(Framingham.calculate_fre_score(standard_params) * 100, 2)
         cvd_risk = round(cvd_risk * 100, 2)
- 
+
         # run a binary search to estimate heart age
         # to calculate the heart age, search for the age that would give ideal_cvd_risk == cvd_risk
         # if the cvd_risk is > than the ideal .. then we are looking for an age greater
         # otherwise, looking for an age lower
-        
-        heart_age = age
+
+        # heart_age = age
         search_age = 30
         if cvd_risk > standard_cvd_risk:
             search_age = age
-        
+
         while search_age <= 100:
             standard_params['age'] = search_age
             calc_risk = round(Framingham.calculate_fre_score(standard_params) * 100, 2)
@@ -133,12 +133,12 @@ class Framingham(object):
                 heart_age = search_age
                 break
             else:
-                search_age = search_age+1
+                search_age = search_age + 1
         else:
             heart_age = search_age
-        
+
         return float(standard_cvd_risk), heart_age
-        
+
     @staticmethod
     def cvd_risk_level(cvd_risk):
 
@@ -189,12 +189,12 @@ class Framingham(object):
         params = ParamFormatter(params).formatted
         cvd_risk = Framingham.calculate_fre_score(params)
         heart_age_calc = Framingham.__calculate_heart_age(cvd_risk, params['gender'], params['age'])
-        risk_range = Framingham.cvd_risk_level(cvd_risk*100)
+        risk_range = Framingham.cvd_risk_level(cvd_risk * 100)
 
         return {
             'raw_risk': float('%.4f' % (round(cvd_risk, 4))),
             'risk': round(cvd_risk * 100, 2),
-            'normal_risk' : heart_age_calc[0],
+            'normal_risk': heart_age_calc[0],
             'heart_age': heart_age_calc[1],
             'risk_range': risk_range,
         }

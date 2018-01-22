@@ -121,7 +121,7 @@ class WHO(object):
         sbp1 = params.get('systolic_blood_pressure_1')
         sbp2 = params.get('systolic_blood_pressure_2')
         sbp_index = WHO.__convert_sbp((sbp1 + sbp2) / 2)
-        
+
         region = params.get('region') if 'region' in params.keys() else 'SEARD'
 
         filename = ('%s_%s_%s_%s_%s.txt' % (
@@ -147,8 +147,8 @@ class WHO(object):
                 'risk_range': cvd_risk_string(int(risk)),
                 'debug': {
                     'matrix': data.tolist(),
-                    'index': '%s,%s' % (sbp_index, cholesterol)
-                }
+                    'index': '%s,%s' % (sbp_index, cholesterol),
+                },
             }
         except IOError:
             return {

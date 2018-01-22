@@ -103,7 +103,7 @@ class HEARTS(object):
 
         # unpack the request, validate it and set up the params
         region = params['body']['region'] if 'region' in params['body'].keys() else Defaults.region
-        
+
         demographics = params['body']['demographics']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
@@ -171,10 +171,10 @@ class HEARTS(object):
         BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
         bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
-        
+
         DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
         diet = DTA.assess()
-        
+
         PAA = PhysicalActivityAssessment({
             'active_time': physical_activity,
             'targets_active_time': targets['general']['physical_activity']['active_time'],
@@ -200,10 +200,10 @@ class HEARTS(object):
         assessment['cvd_assessment'] = {
             'high_risk_condition': has_high_risk_condition,
         }
- 
+
         # Determine whether eligible for CVD risk assessment
         estimate_cvd_risk_calc = HEARTS.estimate_cvd_risk(age, has_high_risk_condition)
-    
+
         if estimate_cvd_risk_calc[0]:
 
             if smoking['current'] == 0:

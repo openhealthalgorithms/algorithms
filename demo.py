@@ -31,7 +31,7 @@ print('--> Framingham:', result)
 print()
 
 print('--- WHO/ISH Risk Demos ---\n')
-params = WPB().gender("M").age(50).sbp1(120).sbp2(140).chol(5.2, 'mmol/l').region('SEARD').smoker().diabetic().build()
+params = WPB().gender('M').age(50).sbp1(120).sbp2(140).chol(5.2, 'mmol/l').region('SEARD').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
@@ -41,7 +41,7 @@ result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
-params = WPB().gender('M').age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRE').smoker().diabetic().build()
+params = WPB().gender('M').age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRE').smoker(False).diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
@@ -129,7 +129,17 @@ with open('response_healthassessment.json', 'w') as fp:
         json.dump(result, fp)
 
 print(' --- Singapore CVD FRE demo ---\n')
-params = SGFPB().gender('m').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
+params = SGFPB()\
+    .gender('m')\
+    .age(60)\
+    .ethnicity('indian')\
+    .t_chol(4.6, 'mmol/L')\
+    .hdl_chol(1.8, 'mmol/L')\
+    .sbp(125)\
+    .smoker(True)\
+    .diabetic(True)\
+    .bp_medication(False)\
+    .build()
 result = SgFramingham().calculate(params)
 print('--> Sg Framingham:', result)
 print()
