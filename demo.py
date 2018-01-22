@@ -2,30 +2,35 @@ import json
 
 from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
+from OHA.SgFramingham import SgFramingham
 from OHA.HEARTS import HEARTS
 from OHA.HealthAssessment import HealthAssessment as HA
 from OHA.WHO import WHO
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder as FPB
 from OHA.param_builders.who_param_builder import WhoParamsBuilder as WPB
+from OHA.param_builders.sg_framingham_param_builder import SGFraminghamParamsBuilder as SGFPB
 
+print('--- Diabetes Risk Demo ---\n')
 params = DBP() \
     .gender('M').age(40).sbp(150).dbp(92).weight(92, 'kg').height(1.5, 'm').waist(50, 'cm').hip(90, 'cm').build()
 result = Diabetes().calculate(params)
 print('--> Diabetes:', result)
 print()
 
-params = FPB().gender('F').age(40).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).build()
+print('--- Framingham Risk Demos ---\n')
+params = FPB().gender('M').age(50).t_chol(300, 'mg/dl').hdl_chol(60, 'mg/dl') \
+              .sbp(110).smoker(True).diabetic(False).bp_medication(False).build()
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 print()
 
-params = FPB().gender('M').age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl') \
-              .sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
+params = FPB().gender('F').age(70).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).build()
 result = Framingham().calculate(params)
 print('--> Framingham:', result)
 print()
 
+print('--- WHO/ISH Risk Demos ---\n')
 params = WPB().gender("M").age(50).sbp1(120).sbp2(140).chol(5.2, 'mmol/l').region('SEARD').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
@@ -101,6 +106,7 @@ input_params = {
     },
 }
 
+print('--- HEARTS Package Demo ---\n')
 result = HEARTS().calculate(input_params)
 print('--> HEARTS: => ', result)
 print()
@@ -108,9 +114,16 @@ print()
 with open('response_hearts.json', 'w') as fp:
         json.dump(result, fp)
 
+print('--- General Health Assessment using FRE Demo ---\n')
 result = HA().calculate(input_params)
 print('--> HealthAssessment ALGO: => ', result)
 print()
 
 with open('response_healthassessment.json', 'w') as fp:
         json.dump(result, fp)
+
+print(' --- Singapore CVD FRE demo ---\n')
+params = SGFPB().gender('male').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
+result = SgFramingham().calculate(params)
+print('--> Sg Framingham:', result)
+print()

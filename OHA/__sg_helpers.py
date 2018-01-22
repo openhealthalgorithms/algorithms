@@ -6,13 +6,12 @@ import pandas as pd
 	__sg_helpers
     Formulas derived from the 2011 Guidelines from the SG MoH
 '''
-def find_age_index(age, age_brackets):
-    
+
+def find_age_index(age, age_brackets):    
     for age_range in age_brackets:
         min, max = age_range.split('-')
         if ((age > int(min)) & (age < int(max))):
             age_index = age_range
-            print("age index is %s " % age_index)
             return age_index
     
 def age_modifier_fre_points(age, gender):
@@ -24,43 +23,43 @@ def age_modifier_fre_points(age, gender):
     } 
 
     index = 0
-    value = 0
-    for age_range in age_brackets:
-        print("---- age range = %s " % age_range)
-        min, max = age_range.split('-')
-        if (age >= min) & (age <= max):
-            value = age_points[gender][index]
-        else:
-            index = index+1
+    value = None
 
-    print('returning %s ' % value)
+    bracket = find_age_index(age, age_brackets)
+    index = age_brackets.index(bracket)
+    
+    if index >= 0:
+        value = age_points[gender][index]
+    
     return value          
     
-def calculate_smoking_points(gender, age):
+def calculate_smoking_points(age, gender):
 
     age_brackets = ['20-39', '40-49', '50-59', '60-69', '70-79']
-    #smoking_points = np.array('male', 'female')
-    smoking_points = {}
-    smoking_points['male'] = [8, 5, 3, 1, 0]
-    smoking_points['female'] = [9, 7, 4, 2, 1]
+    smoking_points = {
+        "male" : [8, 5, 3, 1, 0],
+        "female" : [9, 7, 4, 2, 1]
+    }
 
     # Based on the age, look up the index
     # For the given index in the points array return the value
     
     index = 0
-    for age_range in age_brackets:
-        
-        min, max = age_range.split('-')
-        
-        if ((age > int(min)) & (age < int(max))):
-            
-            return smoking_points[gender][index]
-        else:
-            index=index+1
+    value = None
 
-def calculate_cholesterol_points(gender, age, total_cholesterol, hdl_cholesterol):
+    bracket = find_age_index(age, age_brackets)
+    index = age_brackets.index(bracket)
+    # should check we have a valid index
+    if index >= 0:
+        value = smoking_points[gender][index]
+        print(value)
+    
+    return value    
+
+def calculate_cholesterol_points(age, gender, total_cholesterol, hdl_cholesterol):
     
     age_brackets = ['20-39', '40-49', '50-59', '60-69', '70-79']
+    
     if gender == 'male':
     	chol_points = np.array([[0, 0, 0, 0, 0], [4, 3, 2, 1, 0], [7, 5, 3, 1, 0], [9, 6, 4, 2, 1], [11, 8, 5, 3, 1]])
     elif gender == 'female':
