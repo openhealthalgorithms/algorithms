@@ -50,7 +50,7 @@ class DiabetesParamsBuilder(object):
         return self
 
     def build(self):
-        params = {
+        return {
             'gender': self.__gender,
             'age': self.__age,
             'systolic': self.__sbp,
@@ -64,5 +64,3 @@ class DiabetesParamsBuilder(object):
             'hip': self.__hip,
             'hip_unit': self.__hip_unit,
         }
-
-        return params

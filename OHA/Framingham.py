@@ -2,8 +2,9 @@
 #  -*- coding: utf-8 -*-
 
 import numpy as np
-from OHA.__helpers import format_params
+
 from OHA.__unit import convert_cholesterol_unit
+from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
 __author__ = 'indrajit'
@@ -92,42 +93,51 @@ class Framingham(object):
         return framingham_risk_score
 
     @staticmethod
-    def __calculate_heart_age(cvd_risk, gender):
+    def __calculate_heart_age(cvd_risk, gender, age):
+
+        """
+            return the ideal heart age which is the heart age based on age and gender with no risk factors
+            also approximate the heart age given the cvd_risk
+        """
 
         standard_params = {
+            'age': age,
             'gender': gender,
-            'total_cholesterol': 180,
-            'hdl_cholesterol': 45,
-            'systolic': 125,
+            'total_cholesterol': 120,
+            'total_cholesterol_unit': 'mg/dl',
+            'hdl_cholesterol': 60,
+            'hdl_cholesterol_unit': 'mg/dl',
+            'systolic': 120,
             'on_bp_medication': False,
             'is_smoker': False,
             'has_diabetes': False,
         }
 
+        standard_cvd_risk = round(Framingham.calculate_fre_score(standard_params) * 100, 2)
+        cvd_risk = round(cvd_risk * 100, 2)
+
         # run a binary search to estimate heart age
-        min_heart_age = 10
-        max_heart_age = 200
-        suggested_heart_age = int((min_heart_age + max_heart_age) / 2)
+        # to calculate the heart age, search for the age that would give ideal_cvd_risk == cvd_risk
+        # if the cvd_risk is > than the ideal .. then we are looking for an age greater
+        # otherwise, looking for an age lower
 
-        while min_heart_age <= max_heart_age:
-            standard_params['age'] = suggested_heart_age
-            age_risk = Framingham.calculate_fre_score(standard_params)
+        # heart_age = age
+        search_age = 30
+        if cvd_risk > standard_cvd_risk:
+            search_age = age
 
-            # print 'age range ->', min_heart_age, max_heart_age, \
-            #     '| approx. age:', suggested_heart_age, \
-            #     '| age risk:', age_risk, \
-            #     '| cvd risk', cvd_risk
-
-            if round(age_risk, 6) == round(cvd_risk, 6):
+        while search_age <= 100:
+            standard_params['age'] = search_age
+            calc_risk = round(Framingham.calculate_fre_score(standard_params) * 100, 2)
+            if calc_risk >= cvd_risk:
+                heart_age = search_age
                 break
-            elif round(age_risk, 6) > round(cvd_risk, 6):
-                max_heart_age = suggested_heart_age - 1
-                suggested_heart_age = int((min_heart_age + max_heart_age) / 2)
-            elif round(age_risk, 6) < round(cvd_risk, 6):
-                min_heart_age = suggested_heart_age + 1
-                suggested_heart_age = int((min_heart_age + max_heart_age) / 2)
+            else:
+                search_age = search_age + 1
+        else:
+            heart_age = search_age
 
-        return suggested_heart_age
+        return float(standard_cvd_risk), heart_age
 
     @staticmethod
     def cvd_risk_level(cvd_risk):
@@ -175,17 +185,17 @@ class Framingham(object):
         dict
            Framingham risk score and heart age and risk_range
         """
-        params = format_params(params)
-        # print('fre params = %s ' % params)
 
+        params = ParamFormatter(params).formatted
         cvd_risk = Framingham.calculate_fre_score(params)
-        heart_age = Framingham.__calculate_heart_age(cvd_risk, params['gender'])
-        risk_range = Framingham.cvd_risk_level(cvd_risk)
+        heart_age_calc = Framingham.__calculate_heart_age(cvd_risk, params['gender'], params['age'])
+        risk_range = Framingham.cvd_risk_level(cvd_risk * 100)
 
         return {
             'raw_risk': float('%.4f' % (round(cvd_risk, 4))),
             'risk': round(cvd_risk * 100, 2),
-            'heart_age': heart_age,
+            'normal_risk': heart_age_calc[0],
+            'heart_age': heart_age_calc[1],
             'risk_range': risk_range,
         }
 

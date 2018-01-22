@@ -1,15 +1,21 @@
-class FraminghamParamsBuilder(object):
+class SGFraminghamParamsBuilder(object):
     def __init__(self):
-        self.__gender = 'M'
+        self.__gender = 'male'
+        self.__ethnicity = 'chinese'
         self.__age = 40
         self.__sbp = 140
         self.__t_chol = None
         self.__t_chol_unit = 'mg/dl'
+        self.__chol_unit = 'mmol/L'
         self.__hdl_chol = None
         self.__hdl_chol_unit = 'mg/dl'
         self.__bp_medication = False
         self.__smoker = False
         self.__diabetic = False
+
+    def ethnicity(self, ethnicity):
+        self.__ethnicity = ethnicity
+        return self
 
     def gender(self, gender):
         self.__gender = gender
@@ -49,6 +55,7 @@ class FraminghamParamsBuilder(object):
         return {
             'gender': self.__gender,
             'age': self.__age,
+            'ethnicity': self.__ethnicity,
             'total_cholesterol': self.__t_chol,
             'total_cholesterol_unit': self.__t_chol_unit,
             'hdl_cholesterol': self.__hdl_chol,

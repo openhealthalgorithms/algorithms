@@ -1,5 +1,6 @@
 def format_params(params):
-    return {
-        key: float(value) if type(value) is int else value
-        for key, value in params.items()
-    }
+    raise NotImplementedError('Use "ParamFormatter"')
+
+
+def find_age_index(age, age_brackets):
+    raise NotImplementedError('method "find_age_index" removed.')

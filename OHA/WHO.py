@@ -7,9 +7,9 @@ import os
 import numpy as np
 
 from OHA.Defaults import Defaults
-from OHA.__helpers import format_params
 from OHA.__unit import convert_cholesterol_unit
 from OHA.__utilities import cvd_risk_string
+from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
 __author__ = 'indrajit'
@@ -105,7 +105,7 @@ class WHO(object):
 
         # ToDo: add parameter validations
 
-        params = format_params(params)
+        params = ParamFormatter(params).formatted
 
         cholesterol = WHO.__convert_cholesterol(
             convert_cholesterol_unit(
@@ -121,6 +121,7 @@ class WHO(object):
         sbp1 = params.get('systolic_blood_pressure_1')
         sbp2 = params.get('systolic_blood_pressure_2')
         sbp_index = WHO.__convert_sbp((sbp1 + sbp2) / 2)
+
         region = params.get('region') if 'region' in params.keys() else 'SEARD'
 
         filename = ('%s_%s_%s_%s_%s.txt' % (
@@ -144,6 +145,10 @@ class WHO(object):
             return {
                 'risk': int(risk),
                 'risk_range': cvd_risk_string(int(risk)),
+                'debug': {
+                    'matrix': data.tolist(),
+                    'index': '%s,%s' % (sbp_index, cholesterol),
+                },
             }
         except IOError:
             return {
@@ -155,11 +160,11 @@ class WHO(object):
     @staticmethod
     def get_sample_params():
         return WhoParamsBuilder() \
-            .gender('M')\
-            .age(70)\
-            .sbp1(130)\
-            .sbp2(145)\
-            .chol(270, 'mg/dl')\
-            .smoker()\
-            .diabetic()\
+            .gender('M') \
+            .age(70) \
+            .sbp1(130) \
+            .sbp2(145) \
+            .chol(270, 'mg/dl') \
+            .smoker() \
+            .diabetic() \
             .build()

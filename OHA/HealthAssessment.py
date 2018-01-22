@@ -10,6 +10,7 @@ from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.DiabetesAssessment import DiabetesAssessment
 from OHA.assessments.DietAssessment import DietAssessment
+from OHA.assessments.HighRiskConditionAssessment import HighRiskConditionAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
@@ -71,46 +72,7 @@ class HealthAssessment(object):
 
     @staticmethod
     def high_risk_condition_check(age, blood_pressure, conditions, high_risk_conditions):
-        # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not
-        # been done)
-        # Pull this in from the configuration file
-        # high_risk_conditions =
-        # Return whether medical history contains any of these
-        has_high_risk_condition = False
-        result_code = ''
-
-        hrc_value = None
-        for condition in conditions:
-            if condition.upper() in high_risk_conditions:
-                has_high_risk_condition = True
-                result_code = 'HR-0'
-                hrc_value = condition
-            else:
-                hrc_value = None
-
-        if not has_high_risk_condition:
-            # check for other high risk states such as BP > 160 and age > 60 + diabetes (including newly suggested)
-            # if (assessment[])
-            # blood pressure [value, observation_type]
-            sbp = blood_pressure['sbp'][0]
-            dbp = blood_pressure['dbp'][0]
-
-            if sbp > 200 or dbp > 120:
-                # return True, 'HRC-HTN', 'Severely high blood pressure. Seek emergency care immediately'
-                # Very elevated
-                has_high_risk_condition = True
-                result_code = 'HR-1'
-            elif age < 40 and (sbp >= 140 or dbp >= 90):
-                # High blood pressure in under 40, should be investigated for secondary hypertension
-                result_code = 'HR-2'
-
-        hrc_output = {
-            'status': has_high_risk_condition,
-            'reason': hrc_value,
-            'code': result_code,
-        }
-
-        return hrc_output
+        raise NotImplementedError('Use "HighRiskConditionAssessment"')
 
     @staticmethod
     def output_messages(section, code, output_level):
@@ -222,9 +184,13 @@ class HealthAssessment(object):
         }
 
         age = demographics['age']
-        has_high_risk_condition = HealthAssessment.high_risk_condition_check(
-            demographics['age'], blood_pressure, medical_history['conditions'], high_risk_conditions,
-        )
+        HRCA = HighRiskConditionAssessment({
+            'age': age,
+            'bp': blood_pressure,
+            'conditions': medical_history['conditions'],
+            'hrc': high_risk_conditions,
+        })
+        has_high_risk_condition = HRCA.assess()
 
         assessment['cvd_assessment'] = {
             'high_risk_condition': has_high_risk_condition,
