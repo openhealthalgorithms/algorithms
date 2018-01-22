@@ -62,7 +62,7 @@ class WHO(object):
     @staticmethod
     def __convert_cholesterol(cholesterol):
         _cholesterol = float(cholesterol)
-        temp_cholesterol_index = math.ceil(_cholesterol) - 4
+        temp_cholesterol_index = math.floor(_cholesterol) - 4
 
         if temp_cholesterol_index < 1:
             return 0
