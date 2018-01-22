@@ -22,8 +22,6 @@ def find_packages(*args, **kwargs):
         'OHA.helpers.formatters',
         'OHA.helpers.measurements',
         'OHA.param_builders',
-        'tests',
-        'tests.helpers',
     ]
 
 
