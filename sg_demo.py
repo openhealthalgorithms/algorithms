@@ -1,12 +1,7 @@
-from OHA.__sg_helpers import age_modifier_fre_points, calculate_smoking_points, calculate_cholesterol_points, calculate_bp_points, calculate_fre_score
-from OHA.Framingham import Framingham
 from OHA.SgFramingham import SgFramingham
-from OHA.HEARTS import HEARTS
-from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
-from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder as FPB
 from OHA.param_builders.sg_framingham_param_builder import SGFraminghamParamsBuilder as SGFPB
 
-'''
+"""
 ethnicities = ['malay', 'chinese', 'indian']
 ethnicity = 'malay'
 gender = 'female'
@@ -18,9 +13,20 @@ sbp = 160
 sbp_rx = False
 is_smoker = True
 has_diabetes = False
-'''
+"""
 
-params = SGFPB().gender('male').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
+params = SGFPB()\
+    .gender('m')\
+    .age(60)\
+    .ethnicity('indian')\
+    .t_chol(4.6, 'mmol/L')\
+    .hdl_chol(1.8, 'mmol/L')\
+    .sbp(125)\
+    .smoker()\
+    .diabetic(True)\
+    .bp_medication(False)\
+    .build()
+
 print(params)
 result = SgFramingham().calculate(params)
 print('--> Sg Framingham:', result)
@@ -33,7 +39,7 @@ if ethnicity in ethnicities:
         smoking_points = calculate_smoking_points(age, gender)
     else:
         smoking_points = 0
-    
+
     cholesterol_points = calculate_cholesterol_points(age, gender, t_chol, hdl)
 
     sbp_points = calculate_bp_points(gender, sbp, sbp_rx)
@@ -51,7 +57,7 @@ elif ethnicity == 'caucasian':
         gender = "F"
     else:
         gender = "M"
-        
+
     params = FPB().gender(gender).age(age).t_chol(t_chol, chol_units).hdl_chol(hdl, chol_units) \
               .sbp(sbp).smoker(is_smoker).diabetic(has_diabetes).bp_medication(sbp_rx).build()
     result = Framingham().calculate(params)
@@ -63,4 +69,3 @@ else:
     # define which to use here
     print("Not Calculated")
 """
-
