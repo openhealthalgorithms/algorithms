@@ -241,10 +241,10 @@ class HEARTS(object):
                 .age(age) \
                 .sbp1(blood_pressure['sbp'][0]) \
                 .sbp2(blood_pressure['sbp'][0]) \
-                .chol(pathology['cholesterol']['ldl'], pathology['cholesterol']['units']) \
+                .chol(pathology['cholesterol']['total_chol'], pathology['cholesterol']['units']) \
                 .smoker(smoking['current']) \
                 .region(region) \
-                .diabetic(diabetes_risk != 'NA') \
+                .diabetic(diabetes_status) \
                 .build()
             cvd_risk = WHO.calculate(cvd_params)
             # print('--- WHO risk assessment %s ' % cvd_risk)

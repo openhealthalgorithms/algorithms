@@ -61,8 +61,8 @@ input_params = {
             'cvd_risk': '20',
         },
         'demographics': {
-            'gender': 'F',
-            'age': 55,
+            'gender': 'M',
+            'age': 40,
             'dob': ['computed', '01/10/1987'],
             'occupation': 'office_worker',
             'monthly_income': '',
@@ -72,7 +72,7 @@ input_params = {
             'weight': [60.0, 'kg'],
             'waist': [99.0, 'cm'],
             'hip': [104.0, 'cm'],
-            'sbp': [140, 'sitting'],
+            'sbp': [160, 'sitting'],
             'dbp': [91, 'sitting'],
         },
         'smoking': {
@@ -92,10 +92,10 @@ input_params = {
         'family_history': ['diabetes', 'cvd'],
         'pathology': {
             'bsl': {
-                'type': 'random', 'units': 'mg/dl', 'value': 180,
+                'type': 'random', 'units': 'mmol/L', 'value': 5,
             },
             'cholesterol': {
-                'type': 'fasting', 'units': 'mg/dl', 'total_chol': 300, 'hdl': 100, 'ldl': 240,
+                'type': 'fasting', 'units': 'mmol/L', 'total_chol': 6.2, 'hdl': 100, 'ldl': 240,
             },
         },
     },
