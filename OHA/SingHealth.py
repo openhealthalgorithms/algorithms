@@ -9,7 +9,7 @@ from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
 from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
     assess_diet, assess_physical_activity, calculate_diabetes_status, check_medications
-from OHA.__utilities import calculate_bmi
+from OHA.__utilities import calculate_bmi, calculate_caloric_intake
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 from OHA.__sg_helpers import def calculate_fre_score
@@ -20,7 +20,7 @@ __email__ = 'fred@openhealthalgorithms.org'
 
 class SingHealth(object):
     """
-        General Health Assessment
+        Lifestyle assessment based on SG Guidelines
     """
 
     @staticmethod
@@ -121,6 +121,43 @@ class SingHealth(object):
             output = messages[section][code][0:4]
         
         return output
+    
+    @staticmethod
+    def calculate_lifestyle_assessment(params):
+        '''
+            For the Lifestyle Assessment we just want to calculate:
+            params include:
+                age, gender, ethnicity
+                ht, wt, hip (optional), waist (optional)
+                fruit, vege, carbos, protein, fats (optional)
+                physical_activity
+            Assess for risk factors:
+                - Weight / Central Adiposity via BMI, WHR
+                - Smoking and Alcohol
+            Assess diet and return calorie goals
+            Assess physical activity
+            Generate recommendations based on the above
+        '''
+
+        demographics = params['body']['demographics']
+        gender = demographics['gender']
+        measurements = params['body']['measurements']
+        smoking = params['body']['smoking']
+        physical_activity = params['body']['physical_activity']
+        diet_history = params['body']['diet_history']
+        
+        bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
+        bmi["output"] = HealthAssessment.output_messages("anthro", bmi["code"], output_level)        
+        
+        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
+        whr["output"] = HealthAssessment.output_messages("anthro", whr["code"], output_level)
+        
+        smoker = assess_smoking_status(smoking)
+        smoker["output"] = HealthAssessment.output_messages("smoking", smoker["code"], output_level)
+
+
+
+
     
     @staticmethod
     def calculate(params):

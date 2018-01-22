@@ -25,13 +25,13 @@ def cvd_risk_string(cvd_risk):
     else:
         return '>40'
 
-'''
 def calculate_caloric_intake(gender, weight, height, age, physical_activity_level):
     
-        Using the Revised Harris-Benedict Equation 
-        Men BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) - (5.677 x age in years)
-        Women BMR = 447.593 + (9.247 x weight in kg) + (3.098 x height in cm) - (4.330 x age in years)
-
+    '''
+    Using the Revised Harris-Benedict Equation 
+    Men BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) - (5.677 x age in years)
+    Women BMR = 447.593 + (9.247 x weight in kg) + (3.098 x height in cm) - (4.330 x age in years)
+    '''
    
     # ensure the height, weight are in the correct units
     # currently assuming so
@@ -70,5 +70,3 @@ def calculate_caloric_intake(gender, weight, height, age, physical_activity_leve
     caloric_intake = bmr*activity_multiplier
 
     return caloric_intake
-
-'''
