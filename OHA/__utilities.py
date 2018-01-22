@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
+
 def calculate_bmi(weight, height):
-    body_mass_index = round(float(weight / (height * height)), 2)
-    return body_mass_index
+    raise NotImplementedError('Use "helpers.measurements.BMI"')
 
 
 def calculate_waist_hip_ratio(waist, hip):
-    waist_hip_ratio = round(float(waist / hip), 2)
-    return waist_hip_ratio
+    raise NotImplementedError('Use "helpers.measurements.WaistHipRatio"')
 
 
 def cvd_risk_string(cvd_risk):
@@ -25,23 +24,23 @@ def cvd_risk_string(cvd_risk):
     else:
         return '>40'
 
+
 def calculate_caloric_intake(gender, weight, height, age, physical_activity_level):
-    
     '''
     Using the Revised Harris-Benedict Equation 
     Men BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) - (5.677 x age in years)
     Women BMR = 447.593 + (9.247 x weight in kg) + (3.098 x height in cm) - (4.330 x age in years)
     '''
-   
+
     # ensure the height, weight are in the correct units
     # currently assuming so
 
     if gender == "M":
         bmr = 88.362 + (13.397 * weight) + (4.7999 * height) - (5.677 * age)
     elif gender == "F":
-        bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)        
+        bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)
 
-    # apply physical activity level
+        # apply physical activity level
     # mutiply by
     # level = 0 = sedentary / little to no exercise
     #           => Daily kilocalories needed = BMR x 1.2
@@ -53,7 +52,7 @@ def calculate_caloric_intake(gender, weight, height, age, physical_activity_leve
     #           => Daily kilocalories needed = BMR x 1.725
     # level = 4 = very heavy exercise (twice per day, extra heavy workouts)
     #           => Daily kilocalories needed = BMR x 1.9
-    
+
     activity_multiplier = 1.0
 
     if physical_activity_level == 0:
@@ -67,6 +66,6 @@ def calculate_caloric_intake(gender, weight, height, age, physical_activity_leve
     elif physical_activity_level == 4:
         activity_multiplier = 1.9
 
-    caloric_intake = bmr*activity_multiplier
+    caloric_intake = bmr * activity_multiplier
 
     return caloric_intake

@@ -5,6 +5,8 @@ from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit, convert_weight_unit
 from OHA.__utilities import calculate_bmi, calculate_waist_hip_ratio
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
+from OHA.helpers.measurements.BMI import BMI
+from OHA.helpers.measurements.WaistHipRatio import WaistHipRatio
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 
 __author__ = 'indrajit'
@@ -109,7 +111,7 @@ class Diabetes(object):
         age = params.get('age')
         systolic_blood_pressure = params.get('systolic')
         diastolic_blood_pressure = params.get('diastolic')
-        waist_hip_ratio = calculate_waist_hip_ratio(
+        waist_hip_ratio = WaistHipRatio(
             convert_height_unit(
                 params.get('waist'),
                 params.get('waist_unit') or Defaults.waist_unit,
@@ -120,8 +122,8 @@ class Diabetes(object):
                 params.get('hip_unit') or Defaults.hip_unit,
                 Defaults.hip_unit,
             ),
-        )
-        body_mass_index = calculate_bmi(
+        ).whr
+        body_mass_index = BMI(
             convert_weight_unit(
                 params.get('weight'),
                 params.get('weight_unit') or Defaults.weight_unit,
@@ -132,7 +134,7 @@ class Diabetes(object):
                 params.get('height_unit') or Defaults.height_unit,
                 Defaults.height_unit,
             ),
-        )
+        ).bmi
 
         risk_score = 0
         risk_score = Diabetes.__adjust_risk_by_gender_and_whi(
