@@ -46,6 +46,12 @@ result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
+params = WPB().gender('M').age(40).sbp1(162).sbp2(160).chol(5.2, 'mmol/L').build()
+result = WHO().calculate(params)
+print('--> WHO:', params, ' => ', result)
+print()
+
+
 input_params = {
     'request': {
         'api_key': '4325872943oeqitrqet7',
@@ -72,7 +78,7 @@ input_params = {
             'weight': [60.0, 'kg'],
             'waist': [99.0, 'cm'],
             'hip': [104.0, 'cm'],
-            'sbp': [160, 'sitting'],
+            'sbp': [161, 'sitting'],
             'dbp': [91, 'sitting'],
         },
         'smoking': {
@@ -95,7 +101,7 @@ input_params = {
                 'type': 'random', 'units': 'mmol/L', 'value': 5,
             },
             'cholesterol': {
-                'type': 'fasting', 'units': 'mmol/L', 'total_chol': 6.2, 'hdl': 100, 'ldl': 240,
+                'type': 'fasting', 'units': 'mmol/L', 'total_chol': 5.2, 'hdl': 1.6, 'ldl': 2.4,
             },
         },
     },

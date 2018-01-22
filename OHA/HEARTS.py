@@ -196,6 +196,7 @@ class HEARTS(object):
             diabetes_risk = None
 
         diabetes_status['output'] = HEARTS.output_messages('diabetes', diabetes_status['code'], output_level)
+        print(diabetes_status)
         assessment['diabetes'] = diabetes_status
 
         blood_pressure = {
@@ -236,18 +237,25 @@ class HEARTS(object):
         # print('high risk output %s ' % assessment['high_risk'][0])
         # if not high_risk_condition[0]:
         if estimate_cvd_risk_calc[0]:
+
+            if smoking['current'] == 0:
+                is_smoker = False
+            else:
+                is_smoker = True
+
             cvd_params = WhoParamsBuilder() \
                 .gender(demographics['gender']) \
                 .age(age) \
                 .sbp1(blood_pressure['sbp'][0]) \
                 .sbp2(blood_pressure['sbp'][0]) \
                 .chol(pathology['cholesterol']['total_chol'], pathology['cholesterol']['units']) \
-                .smoker(smoking['current']) \
+                .smoker(is_smoker) \
                 .region(region) \
-                .diabetic(diabetes_status) \
+                .diabetic(diabetes_status['status']) \
                 .build()
+            #print("\n---- passing in %s " % cvd_params)
             cvd_risk = WHO.calculate(cvd_params)
-            # print('--- WHO risk assessment %s ' % cvd_risk)
+            #print('--- WHO risk assessment %s ' % cvd_risk)
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]
