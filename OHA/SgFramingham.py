@@ -4,8 +4,9 @@
 import numpy as np
 import pandas as pd
 
-from OHA.__helpers import format_params, find_age_index
+from OHA.__helpers import find_age_index
 from OHA.__unit import convert_cholesterol_unit
+from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
 __author__ = 'indrajit'
@@ -255,7 +256,7 @@ class SgFramingham(object):
         dict
            Framingham risk score and heart age and risk_range
         """
-        params = format_params(params)
+        params = ParamFormatter(params).formatted
         print(params)
 
         cvd_risk = int(SgFramingham().calculate_fre_score(params))

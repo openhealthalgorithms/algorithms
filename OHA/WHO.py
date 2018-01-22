@@ -7,9 +7,9 @@ import os
 import numpy as np
 
 from OHA.Defaults import Defaults
-from OHA.__helpers import format_params
 from OHA.__unit import convert_cholesterol_unit
 from OHA.__utilities import cvd_risk_string
+from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
 __author__ = 'indrajit'
@@ -105,7 +105,7 @@ class WHO(object):
 
         # ToDo: add parameter validations
 
-        params = format_params(params)
+        params = ParamFormatter(params).formatted
 
         cholesterol = WHO.__convert_cholesterol(
             convert_cholesterol_unit(

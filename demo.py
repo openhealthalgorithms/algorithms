@@ -129,7 +129,7 @@ with open('response_healthassessment.json', 'w') as fp:
         json.dump(result, fp)
 
 print(' --- Singapore CVD FRE demo ---\n')
-params = SGFPB().gender('male').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
+params = SGFPB().gender('m').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
 result = SgFramingham().calculate(params)
 print('--> Sg Framingham:', result)
 print()

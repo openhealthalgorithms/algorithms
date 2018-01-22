@@ -2,8 +2,9 @@
 #  -*- coding: utf-8 -*-
 
 import numpy as np
-from OHA.__helpers import format_params
+
 from OHA.__unit import convert_cholesterol_unit
+from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
 __author__ = 'indrajit'
@@ -184,8 +185,8 @@ class Framingham(object):
         dict
            Framingham risk score and heart age and risk_range
         """
-        params = format_params(params)
 
+        params = ParamFormatter(params).formatted
         cvd_risk = Framingham.calculate_fre_score(params)
         heart_age_calc = Framingham.__calculate_heart_age(cvd_risk, params['gender'], params['age'])
         risk_range = Framingham.cvd_risk_level(cvd_risk*100)

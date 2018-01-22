@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
+
 from OHA.Defaults import Defaults
-from OHA.__helpers import format_params
 from OHA.__unit import convert_height_unit, convert_weight_unit
 from OHA.__utilities import calculate_bmi, calculate_waist_hip_ratio
+from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 
 __author__ = 'indrajit'
@@ -100,7 +101,7 @@ class Diabetes(object):
 
         # ToDo: add parameter validations
 
-        params = format_params(params)
+        params = ParamFormatter(params).formatted
 
         # print('height param = %s ' % params.get('height'))
 
