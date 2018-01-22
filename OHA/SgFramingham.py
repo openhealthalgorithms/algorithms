@@ -4,13 +4,12 @@
 import numpy as np
 import pandas as pd
 
-from OHA.__helpers import find_age_index
 from OHA.__unit import convert_cholesterol_unit
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
-__author__ = 'indrajit'
-__email__ = 'eendroroy@gmail.com'
+__author__ = 'fredhersch'
+__email__ = 'fredhersch@gmail.com'
 
 
 class SgFramingham(object):
@@ -38,6 +37,14 @@ class SgFramingham(object):
         return SgFramingham.__co_efficients[key][gender]
 
     @staticmethod
+    def find_age_index(age, age_brackets):
+        for age_range in age_brackets:
+            _min, _max = age_range.split('-')
+            if int(_min) <= age <= int(_max):
+                age_index = age_range
+                return age_index
+
+    @staticmethod
     def age_modifier_fre_points(age, gender):
 
         age_brackets = ['20-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79']
@@ -47,7 +54,7 @@ class SgFramingham(object):
         }
 
         value = None
-        bracket = find_age_index(age, age_brackets)
+        bracket = SgFramingham.find_age_index(age, age_brackets)
         index = age_brackets.index(bracket)
 
         if index >= 0:
@@ -66,7 +73,7 @@ class SgFramingham(object):
 
         value = None
 
-        bracket = find_age_index(age, age_brackets)
+        bracket = SgFramingham.find_age_index(age, age_brackets)
         index = age_brackets.index(bracket)
         if index >= 0:
             value = smoking_points[gender][index]
@@ -105,7 +112,7 @@ class SgFramingham(object):
             chol_range = '>=7.3'
 
         # then return the column index based on age range
-        age_index = find_age_index(age, age_brackets)
+        age_index = SgFramingham.find_age_index(age, age_brackets)
 
         # look up the value from the df
         # looking up with keys
