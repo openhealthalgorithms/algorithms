@@ -22,7 +22,7 @@ class WhoTest(unittest.TestCase):
         self.assertEqual(result['exception'], 'color chart not found.')
 
     @parameterized.expand(DataHelper.who_test_data())
-    def test_sequence(self, region, age, gender, bp, total_chol, smoker, diabetes, cvd_risk):
+    def test_who_algorithm(self, region, age, gender, bp, total_chol, smoker, diabetes, cvd_risk):
         params = WhoParamsBuilder() \
             .region(region) \
             .gender(gender). \
