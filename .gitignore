@@ -1,5 +1,6 @@
 *~
 .DS_Store
+!**/.gitkeep
 
 ## auto environment files
 .env
@@ -27,9 +28,6 @@ dist/
 **/__pycache__
 
 ## files
-OHA/response.json
-response.json
-rereview-hearts-outputsponse_hearts.json
-response_healthassessment.json
-response_hearts.json
+tmp/**
+response*.json
 

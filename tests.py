@@ -46,7 +46,7 @@ success_percentage = round(((int(successful_tests) / int(total_tests)) * 100), 2
 
 # add the date-time to the filname
 timestr = time.strftime("%Y%m%d-%H%M%S")
-filename = 'OHA/tests/who_tests_processed_' + timestr + '.csv'
+filename = 'tmp/test_results/who_tests_processed_' + timestr + '.csv'
 print('---> completed tests ---, %s' %success_percentage , '% correct --- outputting to file', filename)
 tests_df.to_csv(filename)
 
