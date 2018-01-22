@@ -2,8 +2,10 @@
 #  -*- coding: utf-8 -*-
 
 import json
+
 import os
 
+from OHA.Defaults import Defaults
 from OHA.Diabetes import Diabetes
 from OHA.WHO import WHO
 from OHA.assessments.BMIAssessment import BMIAssessment
@@ -100,8 +102,7 @@ class HEARTS(object):
         targets = guidelines['targets']
 
         # unpack the request, validate it and set up the params
-        # @indrajit otherwise pull the default from a config file
-        region = params['body']['region'] if 'region' in params['body'].keys() else 'SEARD'
+        region = params['body']['region'] if 'region' in params['body'].keys() else Defaults.region
         
         demographics = params['body']['demographics']
         measurements = params['body']['measurements']
@@ -161,8 +162,6 @@ class HEARTS(object):
         diabetes_status['output'] = HEARTS.output_messages('diabetes', diabetes_status['code'], output_level)
         assessment['diabetes'] = diabetes_status
 
-        #print("\n\n ----- Diabetes status is %s ------\n\n" % diabetes_status)
-
         blood_pressure = {
             'sbp': measurements['sbp'],
             'dbp': measurements['dbp'],
@@ -201,8 +200,6 @@ class HEARTS(object):
             'high_risk_condition': has_high_risk_condition,
         }
  
-        #print("\n\n---- Diabetes Risk is %s ------\n\n" % diabetes_risk)
-
         # Determine whether eligible for CVD risk assessment
         estimate_cvd_risk_calc = HEARTS.estimate_cvd_risk(age, has_high_risk_condition)
     
@@ -217,15 +214,10 @@ class HEARTS(object):
                 .region(region) \
                 .diabetic(diabetes_status['status']) \
                 .build()
-            #print("\n\n---- CVD Params are %s ------\n\n" % cvd_params)
             cvd_risk = WHO.calculate(cvd_params)
-            # print('--- WHO risk assessment %s ' % cvd_risk)
-            # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]
-            # print(guidelines['cvd_risk'][assessment['cvd_risk'][1]])
         else:
-            # cvd_calc = estimate_cvd_risk_calc[1]
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
 
         return assessment
