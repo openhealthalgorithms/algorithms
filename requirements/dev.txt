@@ -8,4 +8,5 @@ PyYAML
 
 # testing
 nose
+parameterized
 coverage
