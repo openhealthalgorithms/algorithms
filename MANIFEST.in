@@ -6,3 +6,5 @@ include OHA/guideline/*.json
 include OHA/guideline/**/*.json
 include OHA/sg_risk/*.csv
 include OHA/sg_risk/**/*.csv
+include OHA/data/*.csv
+include OHA/data/**/*.csv
