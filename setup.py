@@ -18,6 +18,7 @@ def find_packages(*args, **kwargs):
         'OHA',
         'OHA.assessments',
         'OHA.helpers',
+        'OHA.helpers.calculators',
         'OHA.helpers.formatters',
         'OHA.helpers.measurements',
         'OHA.param_builders',
