@@ -50,13 +50,13 @@ class WHO(object):
 
     @staticmethod
     def __convert_sbp(systolic_blood_pressure):
-        if systolic_blood_pressure <= 140:
+        if systolic_blood_pressure < 140:
             return 3
-        elif 140 < systolic_blood_pressure <= 160:
+        elif 140 <= systolic_blood_pressure < 160:
             return 2
-        elif 160 < systolic_blood_pressure <= 180:
+        elif 160 <= systolic_blood_pressure < 180:
             return 1
-        elif systolic_blood_pressure > 180:
+        elif systolic_blood_pressure >= 180:
             return 0
 
     @staticmethod
