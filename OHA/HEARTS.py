@@ -103,7 +103,6 @@ class HEARTS(object):
 
         # unpack the request, validate it and set up the params
         region = params['body']['region'] if 'region' in params['body'].keys() else Defaults.region
-        
         demographics = params['body']['demographics']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
@@ -160,6 +159,7 @@ class HEARTS(object):
             diabetes_risk = None
 
         diabetes_status['output'] = HEARTS.output_messages('diabetes', diabetes_status['code'], output_level)
+        print(diabetes_status)
         assessment['diabetes'] = diabetes_status
 
         blood_pressure = {
@@ -170,10 +170,10 @@ class HEARTS(object):
         BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
         bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
-        
+
         DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
         diet = DTA.assess()
-        
+
         PAA = PhysicalActivityAssessment({
             'active_time': physical_activity,
             'targets_active_time': targets['general']['physical_activity']['active_time'],
@@ -202,15 +202,20 @@ class HEARTS(object):
  
         # Determine whether eligible for CVD risk assessment
         estimate_cvd_risk_calc = HEARTS.estimate_cvd_risk(age, has_high_risk_condition)
-    
         if estimate_cvd_risk_calc[0]:
+
+            if smoking['current'] == 0:
+                is_smoker = False
+            else:
+                is_smoker = True
+
             cvd_params = WhoParamsBuilder() \
                 .gender(demographics['gender']) \
                 .age(age) \
                 .sbp1(blood_pressure['sbp'][0]) \
                 .sbp2(blood_pressure['sbp'][0]) \
                 .chol(pathology['cholesterol']['total_chol'], pathology['cholesterol']['units']) \
-                .smoker(smoking['current']) \
+                .smoker(is_smoker) \
                 .region(region) \
                 .diabetic(diabetes_status['status']) \
                 .build()

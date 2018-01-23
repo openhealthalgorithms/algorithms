@@ -6,6 +6,7 @@ import pandas as pd
 from OHA.__helpers import format_params, find_age_index
 from OHA.__unit import convert_cholesterol_unit
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
+from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
@@ -27,8 +28,8 @@ class SgFramingham(object):
 
         age_brackets = ['20-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79']
         age_points = {
-            "male" : [-9, -4, 0, 3, 6, 8, 10, 11, 12, 13],
-            "female" : [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16]
+            "m" : [-9, -4, 0, 3, 6, 8, 10, 11, 12, 13],
+            "f" : [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16]
         } 
 
         index = 0
@@ -46,8 +47,8 @@ class SgFramingham(object):
 
         age_brackets = ['20-39', '40-49', '50-59', '60-69', '70-79']
         smoking_points = {
-            "male" : [8, 5, 3, 1, 0],
-            "female" : [9, 7, 4, 2, 1]
+            "m" : [8, 5, 3, 1, 0],
+            "f" : [9, 7, 4, 2, 1]
         }
 
         # Based on the age, look up the index
@@ -69,9 +70,9 @@ class SgFramingham(object):
     
         age_brackets = ['20-39', '40-49', '50-59', '60-69', '70-79']
         
-        if gender == 'male':
+        if gender == 'm':
             chol_points = np.array([[0, 0, 0, 0, 0], [4, 3, 2, 1, 0], [7, 5, 3, 1, 0], [9, 6, 4, 2, 1], [11, 8, 5, 3, 1]])
-        elif gender == 'female':
+        elif gender == 'f':
             chol_points = np.array([[0, 0, 0, 0, 0], [4, 3, 2, 1, 1], [8, 6, 4, 2, 1], [11, 8, 5, 3, 2], [13, 10, 7, 4, 2]])
         
         row_names = ['<4.1', '4.1-5.1', '5.2-6.1', '6.2-7.2','>=7.3']
@@ -90,14 +91,16 @@ class SgFramingham(object):
             chol_range = '6.2-7.2'
         elif total_cholesterol >= 7.3:
             chol_range = '>=7.3'
+        else:
+            chol_range = '>=7.3'
 
         # then return the column index based on age range
         age_index = find_age_index(age, age_brackets)
 
         # look up the value from the df
-        # looking up with keys 
+        # looking up with keys
         cholesterol_points = tchol_points_df[age_index][chol_range]
-        
+
         if hdl_cholesterol < 1.0:
             hdl_points = +2
         elif hdl_cholesterol <= 1.2:
@@ -113,19 +116,21 @@ class SgFramingham(object):
 
     @staticmethod
     def calculate_bp_points(gender, sbp, sbp_rx):
-    
+
         row_names = ['<120', '120-129', '130-139', '140-159', '>=160']
         col_names = ['treated', 'untreated']
-        
-        if gender == 'male':
-            sbp_points = np.array([[0,0], [0,1], [1,2], [1,2], [2,3]])
-        elif gender == 'female':
-            sbp_points = np.array([[0,0], [1,3], [2,4], [3,5], [4,6]])
+
+        if gender == 'm':
+            sbp_points = np.array([[0, 0], [0, 1], [1, 2], [1, 2], [2, 3]])
+        elif gender == 'f':
+            sbp_points = np.array([[0, 0], [1, 3], [2, 4], [3, 5], [4, 6]])
+        else:
+            sbp_points = np.array([[0, 0], [1, 3], [2, 4], [3, 5], [4, 6]])
 
         bp_df = pd.DataFrame(sbp_points, index=row_names, columns=col_names)
-        
+
         if sbp < 120:
-            spb_index = '<120'
+            sbp_index = '<120'
         elif sbp < 130:
             sbp_index = '120-129'
         elif sbp < 140:
@@ -134,19 +139,20 @@ class SgFramingham(object):
             sbp_index = '140-159'
         elif sbp >= 160:
             sbp_index = '>=160'
-        
+        else:
+            sbp_index = '>=160'
+
         if sbp_rx:
             col_index = 'treated'
         else:
             col_index = 'untreated'
-        
+
         bp_points = bp_df[col_index][sbp_index]
-        
+
         return bp_points
 
     @staticmethod
     def calculate_fre_score(params):
-        
         # Unpack the parameters
         gender = params.get('gender')
         age = params.get('age')
@@ -164,33 +170,34 @@ class SgFramingham(object):
         on_bp_medication = params.get('bp_medication')
         systolic = params.get('systolic')
         is_smoker = params.get('is_smoker')
-        has_diabetes = params.get('has_diabetes')
+        # has_diabetes = params.get('has_diabetes')
 
         age_points = SgFramingham().age_modifier_fre_points(age, gender)
-        
-        if is_smoker == True:
+
+        if is_smoker:
             smoking_points = SgFramingham().calculate_smoking_points(age, gender)
         else:
             smoking_points = 0
-    
-        cholesterol_points = SgFramingham().calculate_cholesterol_points(age, gender, total_cholesterol, hdl_cholesterol)
+
+        cholesterol_points = SgFramingham().calculate_cholesterol_points(
+            age, gender, total_cholesterol, hdl_cholesterol,
+        )
 
         sbp_points = SgFramingham().calculate_bp_points(gender, systolic, on_bp_medication)
 
         fre_points = int(age_points) + int(smoking_points) + int(cholesterol_points) + int(sbp_points)
-        
+
         # convert the points to a score based
         col_names = ['chinese', 'malay', 'indian']
-        if gender == 'male':
+        if gender == 'm':
             filename = 'OHA/sg_risk/sg_10year_risk_male.csv'
         else:
             filename = 'OHA/sg_risk/sg_10year_risk_female.csv'
-        
+
         fre_pd = pd.read_csv(filename, header=0, index_col=0)
         fre_risk = fre_pd[col_names]
         # look up the risk score based on the dataframe
         fre_risk_score = fre_risk[ethnicity][fre_points]
-        
         return fre_risk_score
 
     @staticmethod
@@ -228,21 +235,21 @@ class SgFramingham(object):
            ...    'is_smoker':              False,
            ...    'has_diabetes':           False,
            ... }
-           >>> Framingham().calculate(params)
+           >>> SgFramingham().calculate(params)
 
         Returns
         -------
         dict
            Framingham risk score and heart age and risk_range
         """
-        params = format_params(params)
+        params = ParamFormatter(params).formatted
         print(params)
-        
+
         cvd_risk = int(SgFramingham().calculate_fre_score(params))
         heart_age = None
-        #heart_age = SgFramingham.__calculate_heart_age(cvd_risk, params['gender'])
+        # heart_age = SgFramingham.__calculate_heart_age(cvd_risk, params['gender'])
         risk_range = SgFramingham().cvd_risk_level(cvd_risk)
-        
+
         return {
             'raw_risk': float('%.4f' % (round(cvd_risk, 4))),
             'risk': cvd_risk,

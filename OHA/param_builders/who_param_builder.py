@@ -44,7 +44,7 @@ class WhoParamsBuilder(object):
         return self
 
     def build(self):
-        params = {
+        return {
             'gender': self.__gender,
             'age': self.__age,
             'systolic_blood_pressure_1': self.__sbp1,
@@ -55,5 +55,3 @@ class WhoParamsBuilder(object):
             'has_diabetes': self.__diabetic,
             'region': self.__region,
         }
-
-        return params

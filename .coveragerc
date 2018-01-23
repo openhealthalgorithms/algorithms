@@ -6,6 +6,8 @@ source =
 omit =
     venv/*
     tests/*
+    OHA/Defaults.py
     OHA/__*
     OHA/**/__*
+    OHA/helpers/*
     OHA/param_builders/*

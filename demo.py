@@ -51,6 +51,12 @@ result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
+params = WPB().gender('M').age(40).sbp1(162).sbp2(160).chol(5.2, 'mmol/L').build()
+result = WHO().calculate(params)
+print('--> WHO:', params, ' => ', result)
+print()
+
+
 input_params = {
     'request': {
         'api_key': '4325872943oeqitrqet7',
@@ -66,8 +72,8 @@ input_params = {
             'cvd_risk': '20',
         },
         'demographics': {
-            'gender': 'F',
-            'age': 55,
+            'gender': 'M',
+            'age': 40,
             'dob': ['computed', '01/10/1987'],
             'occupation': 'office_worker',
             'monthly_income': '',
@@ -77,7 +83,7 @@ input_params = {
             'weight': [60.0, 'kg'],
             'waist': [99.0, 'cm'],
             'hip': [104.0, 'cm'],
-            'sbp': [140, 'sitting'],
+            'sbp': [161, 'sitting'],
             'dbp': [91, 'sitting'],
         },
         'smoking': {
@@ -97,10 +103,10 @@ input_params = {
         'family_history': ['diabetes', 'cvd'],
         'pathology': {
             'bsl': {
-                'type': 'random', 'units': 'mg/dl', 'value': 180,
+                'type': 'random', 'units': 'mmol/L', 'value': 5,
             },
             'cholesterol': {
-                'type': 'fasting', 'units': 'mg/dl', 'total_chol': 300, 'hdl': 100, 'ldl': 240,
+                'type': 'fasting', 'units': 'mmol/L', 'total_chol': 5.2, 'hdl': 1.6, 'ldl': 2.4,
             },
         },
     },
@@ -123,7 +129,17 @@ with open('response_healthassessment.json', 'w') as fp:
         json.dump(result, fp)
 
 print(' --- Singapore CVD FRE demo ---\n')
-params = SGFPB().gender('male').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
+params = SGFPB()\
+    .gender('m')\
+    .age(60)\
+    .ethnicity('indian')\
+    .t_chol(4.6, 'mmol/L')\
+    .hdl_chol(1.8, 'mmol/L')\
+    .sbp(125)\
+    .smoker(True)\
+    .diabetic(True)\
+    .bp_medication(False)\
+    .build()
 result = SgFramingham().calculate(params)
 print('--> Sg Framingham:', result)
 print()

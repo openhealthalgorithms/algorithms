@@ -46,7 +46,7 @@ class FraminghamParamsBuilder(object):
         return self
 
     def build(self):
-        params = {
+        return {
             'gender': self.__gender,
             'age': self.__age,
             'total_cholesterol': self.__t_chol,
@@ -58,5 +58,3 @@ class FraminghamParamsBuilder(object):
             'is_smoker': self.__smoker,
             'has_diabetes': self.__diabetic,
         }
-
-        return params

@@ -10,7 +10,7 @@ class DiabetesAssessment(Assessment):
 
     @property
     def __conditions(self):
-        return self._get_data()['conditions']
+        return self._get_data()['conditions']['conditions']
 
     @property
     def __bsl_type(self):
@@ -30,24 +30,24 @@ class DiabetesAssessment(Assessment):
 
         bsl_value = round(float(self.__bsl_value) / 18, 1) if self.__bsl_units == 'mg/dl' else self.__bsl_value
 
-        for condition in self.__conditions:
-            if condition == 'diabetes':
-                status = True
-                code = 'DM-4'
-            else:
-                if self.__bsl_type == 'random':
-                    if bsl_value >= 11.1:
-                        status = True
-                        code = 'DM-3'
-                elif self.__bsl_type == 'fasting':
-                    if bsl_value > 7:
-                        status = True
-                        code = 'DM-3'
-                    elif bsl_value > 6.1:
-                        status = True
-                        code = 'DM-2'
-                elif self.__bsl_type == 'hba1c':
-                    if bsl_value >= 6.5:
-                        status = True
+        # for 'diabetes' in self.__conditions:
+        if 'diabetes' in self.__conditions:
+            status = True
+            code = 'DM-4'
+        else:
+            if self.__bsl_type == 'random':
+                if bsl_value >= 11.1:
+                    status = True
+                    code = 'DM-3'
+            elif self.__bsl_type == 'fasting':
+                if bsl_value > 7:
+                    status = True
+                    code = 'DM-3'
+                elif bsl_value > 6.1:
+                    status = True
+                    code = 'DM-2'
+            elif self.__bsl_type == 'hba1c':
+                if bsl_value >= 6.5:
+                    status = True
 
         return dict(value=bsl_value, status=status, code=code)
