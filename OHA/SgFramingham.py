@@ -3,10 +3,11 @@
 
 import numpy as np
 import pandas as pd
-from OHA.__helpers import format_params, find_age_index
+
+from OHA.__helpers import find_age_index
 from OHA.__unit import convert_cholesterol_unit
-from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
+from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
@@ -28,33 +29,31 @@ class SgFramingham(object):
 
         age_brackets = ['20-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79']
         age_points = {
-            "m" : [-9, -4, 0, 3, 6, 8, 10, 11, 12, 13],
-            "f" : [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16]
-        } 
+            "m": [-9, -4, 0, 3, 6, 8, 10, 11, 12, 13],
+            "f": [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16]
+        }
 
-        index = 0
         value = None
         bracket = find_age_index(age, age_brackets)
         index = age_brackets.index(bracket)
-        
+
         if index >= 0:
             value = age_points[gender][index]
-        
-        return value   
+
+        return value
 
     @staticmethod
     def calculate_smoking_points(age, gender):
 
         age_brackets = ['20-39', '40-49', '50-59', '60-69', '70-79']
         smoking_points = {
-            "m" : [8, 5, 3, 1, 0],
-            "f" : [9, 7, 4, 2, 1]
+            "m": [8, 5, 3, 1, 0],
+            "f": [9, 7, 4, 2, 1]
         }
 
         # Based on the age, look up the index
         # For the given index in the points array return the value
-        
-        index = 0
+
         value = None
 
         bracket = find_age_index(age, age_brackets)
@@ -62,25 +61,27 @@ class SgFramingham(object):
         # should check we have a valid index
         if index >= 0:
             value = smoking_points[gender][index]
-            
-        return value    
+
+        return value
 
     @staticmethod
     def calculate_cholesterol_points(age, gender, total_cholesterol, hdl_cholesterol):
-    
+
         age_brackets = ['20-39', '40-49', '50-59', '60-69', '70-79']
-        
+
         if gender == 'm':
-            chol_points = np.array([[0, 0, 0, 0, 0], [4, 3, 2, 1, 0], [7, 5, 3, 1, 0], [9, 6, 4, 2, 1], [11, 8, 5, 3, 1]])
+            chol_points = np.array(
+                [[0, 0, 0, 0, 0], [4, 3, 2, 1, 0], [7, 5, 3, 1, 0], [9, 6, 4, 2, 1], [11, 8, 5, 3, 1]])
         elif gender == 'f':
-            chol_points = np.array([[0, 0, 0, 0, 0], [4, 3, 2, 1, 1], [8, 6, 4, 2, 1], [11, 8, 5, 3, 2], [13, 10, 7, 4, 2]])
-        
-        row_names = ['<4.1', '4.1-5.1', '5.2-6.1', '6.2-7.2','>=7.3']
-        
+            chol_points = np.array(
+                [[0, 0, 0, 0, 0], [4, 3, 2, 1, 1], [8, 6, 4, 2, 1], [11, 8, 5, 3, 2], [13, 10, 7, 4, 2]])
+
+        row_names = ['<4.1', '4.1-5.1', '5.2-6.1', '6.2-7.2', '>=7.3']
+
         tchol_points_df = pd.DataFrame(chol_points, index=row_names, columns=age_brackets)
-            
+
         # first check the cholesterol range and get the row_index
-        
+
         if total_cholesterol < 4.1:
             chol_range = '<4.1'
         elif total_cholesterol <= 5.1:
@@ -109,9 +110,9 @@ class SgFramingham(object):
             hdl_points = 0
         elif hdl_cholesterol >= 1.6:
             hdl_points = -1
-                    
+
         cholesterol_points = cholesterol_points + hdl_points
-        
+
         return cholesterol_points
 
     @staticmethod
