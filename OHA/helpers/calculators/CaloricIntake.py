@@ -55,4 +55,3 @@ class CaloricIntake(object):
         caloric_intake = bmr * activity_multiplier
 
         return caloric_intake
-

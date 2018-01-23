@@ -4,6 +4,7 @@
 import numpy as np
 import pandas as pd
 
+from OHA.Defaults import Defaults
 from OHA.__helpers import find_age_index
 from OHA.__unit import convert_cholesterol_unit
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
@@ -22,7 +23,7 @@ class SgFramingham(object):
     # co-efficients used in the calculation. See relevant paper
     @staticmethod
     def __get_co_efficient(key, gender):
-        return Framingham.__co_efficients[key][gender]
+        return Defaults.co_efficients[key][gender]
 
     @staticmethod
     def age_modifier_fre_points(age, gender):

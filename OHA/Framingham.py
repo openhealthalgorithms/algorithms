@@ -3,6 +3,7 @@
 
 import numpy as np
 
+from OHA.Defaults import Defaults
 from OHA.__unit import convert_cholesterol_unit
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
@@ -16,24 +17,12 @@ class Framingham(object):
 
     """
 
-    __co_efficients = {
-        'so10': {'F': 0.95012, 'M': 0.8893},
-        'logAge': {'F': 2.32888, 'M': 3.06117},
-        'logTChol': {'F': 1.20904, 'M': 1.12370},
-        'logHDLChol': {'F': 0.70833, 'M': 0.93263},
-        'logSBPNonRx': {'F': 2.76157, 'M': 1.93303},
-        'logSBPRx': {'F': 2.82263, 'M': 1.99881},
-        'logSmoking': {'F': 0.52873, 'M': 0.65451},
-        'logDM': {'F': 0.69154, 'M': 0.57367},
-        'calc_mean': {'F': 26.1931, 'M': 23.9802},
-    }
-
     __default_cholesterol_unit = 'mg/dl'
 
     # co-efficients used in the calculation. See relevant paper
     @staticmethod
     def __get_co_efficient(key, gender):
-        return Framingham.__co_efficients[key][gender]
+        return Defaults.co_efficients[key][gender]
 
     @staticmethod
     def calculate_fre_score(params):
@@ -101,12 +90,12 @@ class Framingham(object):
         '''
 
         standard_params = {
-            'age' : age,
+            'age': age,
             'gender': gender,
             'total_cholesterol': 120,
-            'total_cholesterol_unit' : 'mg/dl',
+            'total_cholesterol_unit': 'mg/dl',
             'hdl_cholesterol': 60,
-            'hdl_cholesterol_unit' : 'mg/dl',
+            'hdl_cholesterol_unit': 'mg/dl',
             'systolic': 120,
             'on_bp_medication': False,
             'is_smoker': False,
@@ -115,17 +104,17 @@ class Framingham(object):
 
         standard_cvd_risk = round(Framingham.calculate_fre_score(standard_params) * 100, 2)
         cvd_risk = round(cvd_risk * 100, 2)
- 
+
         # run a binary search to estimate heart age
         # to calculate the heart age, search for the age that would give ideal_cvd_risk == cvd_risk
         # if the cvd_risk is > than the ideal .. then we are looking for an age greater
         # otherwise, looking for an age lower
-        
+
         heart_age = age
         search_age = 30
         if cvd_risk > standard_cvd_risk:
             search_age = age
-        
+
         while search_age <= 100:
             standard_params['age'] = search_age
             calc_risk = round(Framingham.calculate_fre_score(standard_params) * 100, 2)
@@ -133,12 +122,12 @@ class Framingham(object):
                 heart_age = search_age
                 break
             else:
-                search_age = search_age+1
+                search_age = search_age + 1
         else:
             heart_age = search_age
-        
+
         return float(standard_cvd_risk), heart_age
-        
+
     @staticmethod
     def cvd_risk_level(cvd_risk):
 
@@ -194,7 +183,7 @@ class Framingham(object):
         return {
             'raw_risk': float('%.4f' % (round(cvd_risk, 4))),
             'risk': round(cvd_risk * 100, 2),
-            'normal_risk' : heart_age_calc[0],
+            'normal_risk': heart_age_calc[0],
             'heart_age': heart_age_calc[1],
             'risk_range': risk_range,
         }

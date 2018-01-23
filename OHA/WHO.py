@@ -2,13 +2,12 @@
 #  -*- coding: utf-8 -*-
 
 import math
-import os
 
 import numpy as np
+import os
 
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_cholesterol_unit
-from OHA.__utilities import cvd_risk_string
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
