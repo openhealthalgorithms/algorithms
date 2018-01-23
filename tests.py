@@ -33,7 +33,7 @@ def calculate_hearts_risk(row):
 
 print('---> running tests ---')
 
-filename = 'OHA/tests/who_tests.csv'
+filename = 'tests/data/who_tests.csv'
 tests_df = pd.read_csv(filename)
 
 tests_df['calculated'] = tests_df.apply(calculate_hearts_risk, axis=1)
