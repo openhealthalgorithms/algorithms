@@ -72,6 +72,21 @@ class WHO(object):
             return 4
 
     @staticmethod
+    def cvd_risk_string(cvd_risk):
+        if cvd_risk == 10:
+            return '<10'
+        elif cvd_risk == 20:
+            return '10-20'
+        elif cvd_risk == 30:
+            return '20-30'
+        elif cvd_risk == 40:
+            return '30-40'
+        elif cvd_risk == 50:
+            return '>40'
+        else:
+            return '>40'
+
+    @staticmethod
     def calculate(params):
         """
 
@@ -143,7 +158,7 @@ class WHO(object):
                 else data[sbp_index, cholesterol]
             return {
                 'risk': int(risk),
-                'risk_range': cvd_risk_string(int(risk)),
+                'risk_range': WHO.cvd_risk_string(int(risk)),
                 'debug': {
                     'matrix': data.tolist(),
                     'index': '%s,%s' % (sbp_index, cholesterol),
