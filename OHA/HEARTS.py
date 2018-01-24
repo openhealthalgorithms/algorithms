@@ -178,6 +178,7 @@ class HEARTS(object):
 
         BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
         bp_assessment = BPA.assess()
+        bp_assessment['output'] = HEARTS.output_messages('blood_pressure', bp_assessment['code'], output_level)
         assessment['blood_pressure'] = bp_assessment
 
         DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
