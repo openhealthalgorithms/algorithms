@@ -198,7 +198,7 @@ class HEARTS(object):
         assessment['cvd_assessment'] = {
             'high_risk_condition': has_high_risk_condition,
         }
- 
+
         # Determine whether eligible for CVD risk assessment
         estimate_cvd_risk_calc = HEARTS.estimate_cvd_risk(age, has_high_risk_condition)
         if estimate_cvd_risk_calc[0]:

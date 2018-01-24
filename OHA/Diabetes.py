@@ -3,7 +3,6 @@
 
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit, convert_weight_unit
-from OHA.__utilities import calculate_bmi, calculate_waist_hip_ratio
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.helpers.measurements.BMI import BMI
 from OHA.helpers.measurements.WaistHipRatio import WaistHipRatio

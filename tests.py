@@ -1,4 +1,3 @@
-import json
 import time
 
 import pandas as pd
@@ -17,9 +16,16 @@ def calculate_hearts_risk(row):
     if row['diabetes'] == 1:
         has_diabetes = True
 
-    params = WPB().gender(row['gender']).age(row['age']).sbp1(row['bp']).sbp2(row['bp']).chol(row['total_chol'],
-                                                                                              'mmol/l').region(
-        row['country']).smoker(is_smoker).diabetic(has_diabetes).build()
+    params = WPB() \
+        .gender(row['gender']) \
+        .age(row['age']) \
+        .sbp1(row['bp']) \
+        .sbp2(row['bp']) \
+        .chol(row['total_chol'], 'mmol/l') \
+        .region(row['country']) \
+        .smoker(is_smoker) \
+        .diabetic(has_diabetes) \
+        .build()
     result = WHO().calculate(params)
     # print('--> WHO:', params, ' => ', result, '---\n')
     return result['risk_range']

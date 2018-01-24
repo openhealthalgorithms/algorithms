@@ -38,6 +38,7 @@ class SgFramingham(object):
         index = age_brackets.index(bracket)
         
         gender = gender.lower()
+        
         if index >= 0:
             value = age_points[gender][index]
         
