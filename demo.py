@@ -78,7 +78,7 @@ input_params = {
         },
         'demographics': {
             'gender': 'M',
-            'age': 40,
+            'age': 70,
             'dob': ['computed', '01/10/1987'],
             'occupation': 'office_worker',
             'monthly_income': '',
@@ -92,7 +92,7 @@ input_params = {
             'dbp': [91, 'sitting'],
         },
         'smoking': {
-            'current': 0,
+            'current': 1,
             'ex_smoker': 1,
             'quit_within_year': 0,
         },

@@ -64,6 +64,16 @@ class HEARTS(object):
 
         return data
 
+    @staticmethod
+    def generate_management(advices):
+        messages = HEARTS.load_messages()['advice']
+        management_advice = {}
+        
+        for advice in advices:
+            management_advice[advice] = messages[advice]
+        
+        return management_advice
+    
     # should be moved into a package
     @staticmethod
     def output_messages(section, code, output_level):
@@ -221,8 +231,9 @@ class HEARTS(object):
             cvd_risk = WHO.calculate(cvd_params)
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]
+            assessment['cvd_assessment']['guidelines']['management'] = HEARTS.generate_management(assessment['cvd_assessment']['guidelines']['advice'])
         else:
-            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
+            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['refer']
 
         return assessment
 

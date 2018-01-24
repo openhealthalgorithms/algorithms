@@ -6,20 +6,9 @@
     "version_number" : "0.1"
   },
   "body" : {
-    "advice" : {
-        "lifestyle" : "A healthy diet, regular exercise and reduction in risk factors is key to disease prevention", 
-        "diet" : {
-            "Salt (sodium chloride)" :  ["Restrict to less than 5 grams (1 teaspoon) per day", "Reduce salt when cooking, limit processed and fast foods"],
-            "Fruits &amp; Vegetables" : ["5 servings (400-500 grams) of fruits and vegetable per day", "1 serving is equivalent to 1 orange, apple, mango, banana or 3 tablespoons of cooked vegetables"],    
-            "Fatty Food" : ["Limit fatty meat, dairy fat and cooking oil (less than two tablespoons per day)", "Replace palm and coconut oil with olive, soya, corn, rapeseed or safflower oil", "Replace other meat with chicken (without skin)"]       
-        },
-        "physical_activity" : ["Progressively increase physical activity to moderate levels (such as brisk walking); at least 150 minutes per week", "Control body weight and avoid overweight by reducing high calorie food and taking adequate physical activity"],
-        "management" : "Speak to a healthcare professional about:",
-        "follow_up" : "You should follow up in"
-    },
     "messages" : {
         "smoking" : {
-            "SM-0" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
+            "SM-0" : ["current_smoker", "Current smoker, advise to quit", "RED", "Quit now. It's the best thing you can do for your health."],
             "SM-1" : ["current_smoker", "Current smoker, advise to quit", "RED", "You will benefit from smoking cessation. For advice"],
             "SM-2" : ["ex_smoker_quit_within_12_months", "Ex smoker, quit within the past 12 months", "AMBER", "Quitting smoking is the best thing you can do for your health. If you need support to stay strong, speak to your doctor"],
             "SM-3" : ["ex_smoker", "Ex smoker, quit > 12 months ago", "GREEN", "Good work quitting. It\"s the best thing you can do for your health. Stay strong"],
@@ -86,6 +75,15 @@
             "HR-0" : [""],
             "HR-1" : ["high_risk_bp", "High BP", "RED", "Blood pressure is very high. Seek emergency care"],
             "HR-2" : ["elevated_bp_under_40", "Elevated blood pressure, age < 40", "AMBER", "High BP in age < 40 should be evaluated for secondary causes"]
+        },
+        "advice" : {
+            "lifestyle" : "<div class='lifestyle'><p class='lead'>A healthy diet, regular exercise and reduction in risk factors is key to disease prevention</p><h3>Diet</h3><ul><li>Salt: Restrict to less than 5 grams (1 teaspoon) per day. Reduce salt when cooking, limit processed and fast foods</li><li>Fruits &amp; Vegetables: 5 servings (400-500 grams) of fruits and vegetable per day (1 serving is equivalent to 1 orange, apple, mango, banana or 3 tablespoons of cooked vegetables</li><li>Fatty Food : Limit fatty meat, dairy fat and cooking oil (less than two tablespoons per day). Replace palm and coconut oil with olive, soya, corn, rapeseed or safflower oil. Replace other meat with chicken (without skin)</li></ul><h3>Physical Activity</h3><ul><li>Progressively increase physical activity to moderate levels (such as brisk walking); at least 150 minutes per week</li><li>Every bit counts, so start with short activities and gradually build up</li><li>There are many ways to staty motivated. Start by recruiting a friend to walk with</li></ul></div>",
+            "blood-pressure" : "You may need to start taking medications for your blood pressure.",
+            "lipids" : "Based on your assessment, a statin or other lipid lowering medication will help to reduce your risk of cardiovascular disease. Speak to a doctor to learn more",
+            "refer" : "Based on your assessment you should see a doctor to discuss further management",
+            "physical_activity" : ["Progressively increase physical activity to moderate levels (such as brisk walking); at least 150 minutes per week", "Control body weight and avoid overweight by reducing high calorie food and taking adequate physical activity"],
+            "management" : "Speak to a healthcare professional about:",
+            "follow_up" : "You should follow up in"
         }
     }
   }
