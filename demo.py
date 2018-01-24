@@ -36,6 +36,11 @@ result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)
 print()
 
+params = WPB().gender("M").age(60).sbp1(120).sbp2(140).chol(5.2, 'mmol/l').region('EMRD').smoker(True).diabetic(True).build()
+result = WHO().calculate(params)
+print('--> WHO:', params['region'], ' => ', result)
+print()
+
 params = WPB().gender('M').age(50).sbp1(150).sbp2(170).chol(7, 'mmol/l').region('AFRD').smoker().diabetic().build()
 result = WHO().calculate(params)
 print('--> WHO:', params['region'], ' => ', result)

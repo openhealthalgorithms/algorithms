@@ -1,36 +1,8 @@
-<<<<<<< HEAD
-from OHA.__sg_helpers import age_modifier_fre_points, calculate_smoking_points, calculate_cholesterol_points, calculate_bp_points, calculate_fre_score
-from OHA.Framingham import Framingham
 from OHA.SgFramingham import SgFramingham
-from OHA.HEARTS import HEARTS
-from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
-from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder as FPB
+from OHA.SingHealth import SingHealth as SHA
 from OHA.param_builders.sg_framingham_param_builder import SGFraminghamParamsBuilder as SGFPB
-
-'''
-=======
-from OHA.SgFramingham import SgFramingham
-from OHA.param_builders.sg_framingham_param_builder import SGFraminghamParamsBuilder as SGFPB
-
-"""
->>>>>>> f0d0ede6d8135bcb9040ba1038e59fb1db70f85d
-ethnicities = ['malay', 'chinese', 'indian']
-ethnicity = 'malay'
-gender = 'female'
-age = 36
-t_chol = 4.6
-chol_units = 'mmol/l'
-hdl = 1.8
-sbp = 160
-sbp_rx = False
-is_smoker = True
-has_diabetes = False
-<<<<<<< HEAD
-'''
 
 params = SGFPB().gender('male').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
-=======
-"""
 
 params = SGFPB()\
     .gender('m')\
@@ -44,58 +16,66 @@ params = SGFPB()\
     .bp_medication(False)\
     .build()
 
->>>>>>> f0d0ede6d8135bcb9040ba1038e59fb1db70f85d
 print(params)
 result = SgFramingham().calculate(params)
 print('--> Sg Framingham:', result)
 print()
 
-"""
-if ethnicity in ethnicities:
+input_params = {
+    'request': {
+        'api_key': '4325872943oeqitrqet7',
+        'api_secret': '3459823jfweureitu',
+        'request_api': 'https://developers.openhealthalgorithms.org/algos/hearts/',
+        'country_code': 'D',
+        'response_type': 'COMPLETE',
+    },
+    'body': {
+        'region': 'SEARD',
+        'last_assessment': {
+            'assessment_date': '',
+            'cvd_risk': '20',
+        },
+        'demographics': {
+            'gender': 'M',
+            'age': 40,
+            'ethnicity' : 'caucasian',
+            'dob': ['computed', '01/10/1987'],
+            'occupation': 'office_worker',
+            'monthly_income': '',
+        },
+        'measurements': {
+            'height': [1.5, 'm'],
+            'weight': [60.0, 'kg'],
+            'waist': [99.0, 'cm'],
+            'hip': [104.0, 'cm'],
+            'sbp': [161, 'sitting'],
+            'dbp': [91, 'sitting'],
+        },
+        'smoking': {
+            'current': 0,
+            'ex_smoker': 1,
+            'quit_within_year': 0,
+        },
+        'physical_activity': '120',
+        'diet_history': {
+            'fruit': 1, 'veg': 6, 'rice': 2, 'oil': 'olive',
+        },
+        'medical_history': {
+            'conditions': ['asthma', 'tuberculosis'],
+        },
+        'allergies': {},
+        'medications': ['anti_hypertensive', 'statin', 'antiplatelet', 'bronchodilator'],
+        'family_history': ['diabetes', 'cvd'],
+        'pathology': {
+            'bsl': {
+                'type': 'random', 'units': 'mmol/L', 'value': 5,
+            },
+            'cholesterol': {
+                'type': 'fasting', 'units': 'mmol/L', 'total_chol': 5.2, 'hdl': 1.6, 'ldl': 2.4,
+            },
+        },
+    },
+}
 
-    if is_smoker == True:
-        smoking_points = calculate_smoking_points(age, gender)
-    else:
-        smoking_points = 0
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> f0d0ede6d8135bcb9040ba1038e59fb1db70f85d
-    cholesterol_points = calculate_cholesterol_points(age, gender, t_chol, hdl)
-
-    sbp_points = calculate_bp_points(gender, sbp, sbp_rx)
-
-    fre_points = int(age_points) + int(smoking_points) + int(cholesterol_points) + int(sbp_points)
-
-    fre_score = calculate_fre_score(gender, ethnicity, fre_points)
-
-    print('\n ---- points = %s ' % fre_points)
-    print('\n ---- 10 year risk score is %s ' % fre_score)
-
-elif ethnicity == 'caucasian':
-    # use the standard FRE
-    if gender == "female":
-        gender = "F"
-    else:
-        gender = "M"
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> f0d0ede6d8135bcb9040ba1038e59fb1db70f85d
-    params = FPB().gender(gender).age(age).t_chol(t_chol, chol_units).hdl_chol(hdl, chol_units) \
-              .sbp(sbp).smoker(is_smoker).diabetic(has_diabetes).bp_medication(sbp_rx).build()
-    result = Framingham().calculate(params)
-    print('--> Framingham:', result)
-    print()
-
-else:
-    # use the standard WHO/ISH
-    # define which to use here
-    print("Not Calculated")
-"""
-<<<<<<< HEAD
-
-=======
->>>>>>> f0d0ede6d8135bcb9040ba1038e59fb1db70f85d
+print('---- Calculating SingHealth ----')
+result = SHA.calculate(input_params)

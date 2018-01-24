@@ -37,13 +37,13 @@ class WHO(object):
     def __convert_age(age):
         if age <= 18:
             return 0
-        elif age <= 50:
+        elif age < 50:
             return 40
-        elif age <= 60:
+        elif age < 60:
             return 50
-        elif age <= 70:
+        elif age < 70:
             return 60
-        elif age <= 80:
+        elif age < 80:
             return 70
         else:
             return None

@@ -37,6 +37,7 @@ class SgFramingham(object):
         bracket = find_age_index(age, age_brackets)
         index = age_brackets.index(bracket)
         
+        gender = gender.lower()
         if index >= 0:
             value = age_points[gender][index]
         
@@ -56,12 +57,13 @@ class SgFramingham(object):
         
         index = 0
         value = None
+        gender = gender.lower()
 
         bracket = find_age_index(age, age_brackets)
         index = age_brackets.index(bracket)
         # should check we have a valid index
         if index >= 0:
-            value = smoking_points[gender][index]
+            value = smoking_points[gender.lower()][index]
             
         return value    
 
@@ -70,9 +72,9 @@ class SgFramingham(object):
     
         age_brackets = ['20-39', '40-49', '50-59', '60-69', '70-79']
         
-        if gender == 'm':
+        if gender.lower() == 'm':
             chol_points = np.array([[0, 0, 0, 0, 0], [4, 3, 2, 1, 0], [7, 5, 3, 1, 0], [9, 6, 4, 2, 1], [11, 8, 5, 3, 1]])
-        elif gender == 'f':
+        elif gender.lower() == 'f':
             chol_points = np.array([[0, 0, 0, 0, 0], [4, 3, 2, 1, 1], [8, 6, 4, 2, 1], [11, 8, 5, 3, 2], [13, 10, 7, 4, 2]])
         
         row_names = ['<4.1', '4.1-5.1', '5.2-6.1', '6.2-7.2','>=7.3']

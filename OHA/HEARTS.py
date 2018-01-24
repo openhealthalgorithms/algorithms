@@ -159,7 +159,6 @@ class HEARTS(object):
             diabetes_risk = None
 
         diabetes_status['output'] = HEARTS.output_messages('diabetes', diabetes_status['code'], output_level)
-        print(diabetes_status)
         assessment['diabetes'] = diabetes_status
 
         blood_pressure = {
