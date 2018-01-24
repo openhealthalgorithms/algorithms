@@ -29,15 +29,15 @@ class BPAssessment(Assessment):
         _dbp = self.__bp['dbp'][0]
         target = '%s/%s' % (_sbp, _dbp)
 
-        if _sbp > 160:
-            result_code = 'BP-2'
-
-        elif self.__has_condition('diabetes'):
+        if self.__has_condition('diabetes'):
             if _sbp > 130:
                 result_code = 'BP-3B'
                 target = '130/80'
             else:
                 result_code = 'BP-3A'
+        elif _sbp > 160:
+            result_code = 'BP-2'
+            target = '140/90'
         elif 140 >= _sbp >= 120:
             result_code = 'BP-1A'
             target = '140/90'

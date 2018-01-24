@@ -145,6 +145,6 @@ params = SGFPB()\
     .diabetic(True)\
     .bp_medication(False)\
     .build()
-result = SgFramingham().calculate(params)
+#result = SgFramingham().calculate(params)
 print('--> Sg Framingham:', result)
 print()
