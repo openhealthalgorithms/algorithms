@@ -61,7 +61,7 @@
           "follow_up_interval" : "0",
           "follow_up" : "As per higher level of care"
       },
-      "Refer" : {
+      "refer" : {
           "criteria" : {},
           "label" : "Referral",
           "advice" : ["refer"],
