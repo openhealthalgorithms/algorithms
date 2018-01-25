@@ -84,7 +84,8 @@
             "refer" : "Based on your assessment you should see a doctor to discuss further management",
             "physical_activity" : ["Progressively increase physical activity to moderate levels (such as brisk walking); at least 150 minutes per week", "Control body weight and avoid overweight by reducing high calorie food and taking adequate physical activity"],
             "management" : "Speak to a healthcare professional about:",
-            "follow_up" : "You should follow up in"
+            "follow_up" : "You should follow up in",
+            "review-targets": "None"
         }
     }
   }
