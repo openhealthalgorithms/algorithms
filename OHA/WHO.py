@@ -45,7 +45,7 @@ class WHO(object):
         elif age < 80:
             return 70
         else:
-            return None
+            return 70
 
     @staticmethod
     def __convert_sbp(systolic_blood_pressure):
