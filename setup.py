@@ -7,8 +7,8 @@ from setuptools import setup
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
-if sys.version_info[:2] < (3, 0):
-    raise RuntimeError('Python version 3 required.')
+if sys.version_info[:2] < (3, 3):
+    raise RuntimeError('Python version > 3.3 required.')
 
 here = path.abspath(path.dirname(__file__))
 
