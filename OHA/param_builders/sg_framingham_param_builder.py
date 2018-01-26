@@ -1,3 +1,7 @@
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
+
 class SGFraminghamParamsBuilder(object):
     def __init__(self):
         self.__gender = 'male'

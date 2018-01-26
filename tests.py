@@ -10,10 +10,10 @@ def calculate_hearts_risk(row):
     # column names: country,age,gender,bp,total_chol,smoker,diabetes,cvd_risk
     is_smoker = False
     has_diabetes = False
-    if row['smoker'] == '1':
+    if row['smoker'] == 1:
         is_smoker = True
 
-    if row['diabetes'] == '1':
+    if row['diabetes'] == 1:
         has_diabetes = True
 
     params = WPB() \
@@ -35,7 +35,6 @@ print('---> running tests ---')
 
 filename = 'tests/data/who_tests.csv'
 tests_df = pd.read_csv(filename)
-
 tests_df['calculated'] = tests_df.apply(calculate_hearts_risk, axis=1)
 tests_df['result'] = tests_df.apply(lambda x: True if x['cvd_risk'] == x['calculated'] else False, axis=1)
 print(tests_df)
@@ -50,4 +49,4 @@ success_percentage = round(((int(successful_tests) / int(total_tests)) * 100), 2
 timestr = time.strftime("%Y%m%d-%H%M%S")
 filename = 'tmp/test_results/who_tests_processed_' + timestr + '.csv'
 print('---> completed tests ---, %s' % success_percentage, '% correct --- outputting to file', filename)
-tests_df.to_csv(filename)
+tests_df.to_csv(filename, mode='w+')

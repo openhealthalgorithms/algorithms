@@ -1,24 +1,24 @@
-from OHA.Defaults import Defaults
-from OHA.__unit import convert_height_unit, convert_weight_unit
-from OHA.assessments.Assessment import Assessment
+from OHA.assessments.BaseAssessment import BaseAssessment
+from OHA.helpers.converters.HeightConverter import HeightConverter
+from OHA.helpers.converters.WeightConverter import WeightConverter
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
 
-class BMIAssessment(Assessment):
+class BMIAssessment(BaseAssessment):
     def __init__(self, input_data=None):
         super(BMIAssessment, self).__init__(input_data)
 
     @property
     def __weight(self):
         weight = self._get_data()['weight']
-        return convert_height_unit(weight[0], weight[1] or Defaults.weight_unit, Defaults.weight_unit)
+        return WeightConverter(weight[0]).from_unit(weight[1]).converted
 
     @property
     def __height(self):
         height = self._get_data()['height']
-        return convert_weight_unit(height[0], height[1] or Defaults.height_unit, Defaults.height_unit)
+        return HeightConverter(height[0]).from_unit(height[1]).converted
 
     @property
     def __bmi(self):

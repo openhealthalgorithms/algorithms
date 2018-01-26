@@ -4,7 +4,7 @@ __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
 
-class Assessment(abc.ABC):
+class BaseAssessment(abc.ABC):
     __data = {}
 
     def __init__(self, input_data=None):

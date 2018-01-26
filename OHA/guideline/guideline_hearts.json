@@ -26,21 +26,21 @@
       "<10" : {
           "score" : "<10%",
           "label" : "Low",
-          "advice" : ["Lifestyle-General"],
+          "advice" : ["lifestyle"],
           "follow_up_interval" : "12",
           "follow_up_message" : "You're risk is low. You should have another check up in 12 months"
       },
       "10-20" : {
           "score" : "10-20%",
           "label" : "Low-Moderate",
-          "advice" : ["Lifestyle-General", "Review-Targets"],
+          "advice" : ["lifestyle", "review-targets"],
           "follow_up_interval" : "3",
           "follow_up" : "Every 3 months until targets are met, then 6-9 months thereafter"
       },
       "20-30" : {
           "score" : "20-30%",
           "label" : "Moderate",
-          "advice" : ["Lifestyle", "Blood Pressure", "Lipids"],
+          "advice" : ["lifestyle", "blood-pressure", "lipids"],
           "bp_target" : "140/90",
           "follow_up_interval" : "3-6",
           "follow_up" : "Follow-up every 3-6 months"
@@ -48,7 +48,7 @@
       "30-40" : {
           "score" : "30-40%",
           "label" : "Medium",
-          "advice" : ["Lifestyle", "Blood Pressure", "Statin"],
+          "advice" : ["lifestyle", "blood-pressure", "lipids"],
           "bp_target" : "130/80",
           "follow_up_interval" : "3",
           "follow_up" : "Follow-up every 3 months, if there is no reduction in cardiovascular risk after six months of follow up refer to next level"
@@ -56,15 +56,15 @@
       ">40" : {
           "score" : ">40%",
           "label" : "High",
-          "advice" : ["Lifestyle", "Blood Pressure", "Statin", "Refer"],
+          "advice" : ["lifestyle", "blood-pressure", "lipids", "refer"],
           "bp_target" : "130/80",
           "follow_up_interval" : "0",
           "follow_up" : "As per higher level of care"
       },
-      "Refer" : {
+      "refer" : {
           "criteria" : {},
           "label" : "Referral",
-          "advice" : ["Refer"],
+          "advice" : ["refer"],
           "follow_up" : "For referral to higher level of care. Seek specialist appointment ASAP"
       }
     },

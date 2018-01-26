@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-from OHA.Defaults import Defaults
-from OHA.__unit import convert_height_unit, convert_weight_unit
+from OHA.helpers.converters.HeightConverter import HeightConverter
+from OHA.helpers.converters.HipConverter import HipConverter
+from OHA.helpers.converters.WaistConverter import WaistConverter
+from OHA.helpers.converters.WeightConverter import WeightConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.helpers.measurements.BMI import BMI
 from OHA.helpers.measurements.WaistHipRatio import WaistHipRatio
@@ -111,28 +113,12 @@ class Diabetes(object):
         systolic_blood_pressure = params.get('systolic')
         diastolic_blood_pressure = params.get('diastolic')
         waist_hip_ratio = WaistHipRatio(
-            convert_height_unit(
-                params.get('waist'),
-                params.get('waist_unit') or Defaults.waist_unit,
-                Defaults.waist_unit,
-            ),
-            convert_height_unit(
-                params.get('hip'),
-                params.get('hip_unit') or Defaults.hip_unit,
-                Defaults.hip_unit,
-            ),
+            WaistConverter(params.get('waist')).from_unit(params.get('waist_unit')).converted,
+            HipConverter(params.get('hip')).from_unit(params.get('hip_unit')).converted,
         ).whr
         body_mass_index = BMI(
-            convert_weight_unit(
-                params.get('weight'),
-                params.get('weight_unit') or Defaults.weight_unit,
-                Defaults.weight_unit,
-            ),
-            convert_height_unit(
-                params.get('height'),
-                params.get('height_unit') or Defaults.height_unit,
-                Defaults.height_unit,
-            ),
+            WeightConverter(params.get('weight')).from_unit(params.get('weight_unit')).converted,
+            HeightConverter(params.get('height')).from_unit(params.get('height_unit')).converted,
         ).bmi
 
         risk_score = 0

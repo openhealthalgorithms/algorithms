@@ -64,6 +64,16 @@ class HEARTS(object):
 
         return data
 
+    @staticmethod
+    def generate_management(advices):
+        messages = HEARTS.load_messages()['advice']
+        management_advice = {}
+
+        for advice in advices:
+            management_advice[advice] = messages[advice]
+
+        return management_advice
+
     # should be moved into a package
     @staticmethod
     def output_messages(section, code, output_level):
@@ -159,7 +169,6 @@ class HEARTS(object):
             diabetes_risk = None
 
         diabetes_status['output'] = HEARTS.output_messages('diabetes', diabetes_status['code'], output_level)
-        print(diabetes_status)
         assessment['diabetes'] = diabetes_status
 
         blood_pressure = {
@@ -169,6 +178,7 @@ class HEARTS(object):
 
         BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
         bp_assessment = BPA.assess()
+        bp_assessment['output'] = HEARTS.output_messages('blood_pressure', bp_assessment['code'], output_level)
         assessment['blood_pressure'] = bp_assessment
 
         DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
@@ -222,8 +232,10 @@ class HEARTS(object):
             cvd_risk = WHO.calculate(cvd_params)
             assessment['cvd_assessment']['cvd_risk_result'] = cvd_risk
             assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][cvd_risk['risk_range']]
+            assessment['cvd_assessment']['guidelines']['management'] = \
+                HEARTS.generate_management(assessment['cvd_assessment']['guidelines']['advice'])
         else:
-            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
+            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['refer']
 
         return assessment
 

@@ -1,3 +1,7 @@
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
+
 class ParamFormatter(object):
     def __init__(self, params):
         self.__params = params

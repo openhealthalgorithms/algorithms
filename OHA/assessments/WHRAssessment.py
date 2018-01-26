@@ -1,12 +1,12 @@
-from OHA.Defaults import Defaults
-from OHA.__unit import convert_height_unit
-from OHA.assessments.Assessment import Assessment
+from OHA.assessments.BaseAssessment import BaseAssessment
+from OHA.helpers.converters.HipConverter import HipConverter
+from OHA.helpers.converters.WaistConverter import WaistConverter
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
 
-class WHRAssessment(Assessment):
+class WHRAssessment(BaseAssessment):
     def __init__(self, input_data=None):
         if input_data is not None:
             if input_data['gender'] not in ['F', 'M']:
@@ -16,12 +16,12 @@ class WHRAssessment(Assessment):
     @property
     def __waist(self):
         waist = self._get_data()['waist']
-        return convert_height_unit(waist[0], waist[1] or Defaults.waist_unit, Defaults.waist_unit)
+        return WaistConverter(waist[0]).from_unit(waist[1]).converted
 
     @property
     def __hip(self):
         hip = self._get_data()['hip']
-        return convert_height_unit(hip[0], hip[1] or Defaults.hip_unit, Defaults.hip_unit)
+        return HipConverter(hip[0]).from_unit(hip[1]).converted
 
     @property
     def __gender(self):

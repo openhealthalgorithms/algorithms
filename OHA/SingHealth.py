@@ -4,15 +4,21 @@
 import json
 import os
 
+from OHA.Defaults import Defaults
 from OHA.Diabetes import Diabetes
-from OHA.Framingham import Framingham
-from OHA.HEARTS import HEARTS
-from OHA.__assessments import assess_waist_hip_ratio, assess_smoking_status, assess_blood_pressure, assess_bmi, \
-    assess_diet, assess_physical_activity, calculate_diabetes_status, check_medications
-from OHA.__utilities import calculate_bmi, calculate_caloric_intake
+from OHA.WHO import WHO
+from OHA.SgFramingham import SgFramingham as SGFRE 
+from OHA.assessments.BMIAssessment import BMIAssessment
+from OHA.assessments.SEABMIAssessment import SEABMIAssessment
+from OHA.assessments.BPAssessment import BPAssessment
+from OHA.assessments.DiabetesAssessment import DiabetesAssessment
+from OHA.assessments.DietAssessment import DietAssessment
+from OHA.assessments.HighRiskConditionAssessment import HighRiskConditionAssessment
+from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
+from OHA.assessments.SmokingAssessment import SmokingAssessment
+from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
-from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
-from OHA.__sg_helpers import def calculate_fre_score
+from OHA.param_builders.sg_framingham_param_builder import SGFraminghamParamsBuilder as SGFPB
 
 __author__ = 'fredhersch'
 __email__ = 'fred@openhealthalgorithms.org'
@@ -60,6 +66,14 @@ class SingHealth(object):
         return data
 
     @staticmethod
+    def check_medications(search, medications):
+        for medication in medications:
+            if str.upper(medication) == str.upper(search):
+                return True
+            else:
+                return False
+    
+    @staticmethod
     def high_risk_condition_check(age, blood_pressure, conditions, high_risk_conditions):
         # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not
         #  been done)
@@ -103,7 +117,7 @@ class SingHealth(object):
     @staticmethod
     def output_messages(section, code, output_level):
         # how do we check if this is already in memory?
-        messages = HealthAssessment.load_messages()
+        messages = SingHealth.load_messages()
         output = []
 
         # print("code = %s " % code)
@@ -124,6 +138,9 @@ class SingHealth(object):
     
     @staticmethod
     def calculate_lifestyle_assessment(params):
+        output_level = 2
+        ethnicities = ['malay', 'chinese', 'east-asian']
+
         '''
             For the Lifestyle Assessment we just want to calculate:
             params include:
@@ -140,22 +157,22 @@ class SingHealth(object):
         '''
 
         demographics = params['body']['demographics']
+        ethnicity = demographics['ethnicity']
+        print('ethnicity is %s ' % ethnicity)
+
         gender = demographics['gender']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
         physical_activity = params['body']['physical_activity']
         diet_history = params['body']['diet_history']
         
-        bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
-        bmi["output"] = HealthAssessment.output_messages("anthro", bmi["code"], output_level)        
-        
-        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
-        whr["output"] = HealthAssessment.output_messages("anthro", whr["code"], output_level)
-        
-        smoker = assess_smoking_status(smoking)
-        smoker["output"] = HealthAssessment.output_messages("smoking", smoker["code"], output_level)
+        if ethnicity in ethnicities:
+            BMIA = SEABMIAssessment({'weight': measurements['weight'], 'height': measurements['height']})
+        else:
+            BMIA = BMIAssessment({'weight': measurements['weight'], 'height': measurements['height']})
 
-
+        bmi = BMIA.assess()
+        bmi['output'] = SingHealth.output_messages('anthro', bmi['code'], output_level)
 
 
     
@@ -164,8 +181,10 @@ class SingHealth(object):
         assessment = {}
         output_level = 2
 
+        print("in calculate")
+
         # load guidelines for SIMPLE algorithm model
-        guidelines = HealthAssessment.load_guidelines('healthassessment')["body"]
+        guidelines = SingHealth.load_guidelines('healthassessment')["body"]
         # Unpack some of the configurations
         # List of high risk conditions
         # Should also get the targets from here
@@ -184,19 +203,19 @@ class SingHealth(object):
         pathology = params['body']['pathology']
         medications = params['body']['medications']
 
-        bmi = assess_bmi(calculate_bmi(measurements['weight'][0], measurements['height'][0]))
-        bmi["output"] = HealthAssessment.output_messages("anthro", bmi["code"], output_level)        
-        
-        whr = assess_waist_hip_ratio(measurements['waist'], measurements['hip'], demographics['gender'])
-        whr["output"] = HealthAssessment.output_messages("anthro", whr["code"], output_level)
-        
-        smoker = assess_smoking_status(smoking)
-        smoker["output"] = HealthAssessment.output_messages("smoking", smoker["code"], output_level)
+        SingHealth.calculate_lifestyle_assessment(params)
+        SMA = SmokingAssessment({'smoking': smoking})
+        smoker = SMA.assess()
+        smoker['output'] = SingHealth.output_messages('smoking', smoker['code'], output_level)
 
         # assess diabetes status or risk
-        diabetes_status = calculate_diabetes_status(
-            medical_history, pathology['bsl']['type'], pathology['bsl']['units'], pathology['bsl']['value']
-        )
+        DSA = DiabetesAssessment({
+            'conditions': medical_history,
+            'bsl_type': pathology['bsl']['type'],
+            'bsl_units': pathology['bsl']['units'],
+            'bsl_value': pathology['bsl']['value'],
+        })
+        diabetes_status = DSA.assess()
 
         # If does not have diabetes OR impaired status
         if not diabetes_status['status']:
@@ -223,7 +242,7 @@ class SingHealth(object):
         
         # unpack the messages
         # print("---- diabetes status = %s " % diabetes_status)
-        diabetes_status["output"] = HealthAssessment.output_messages("diabetes", diabetes_status["code"], output_level)
+        diabetes_status["output"] = SingHealth.output_messages("diabetes", diabetes_status["code"], output_level)
         assessment['diabetes'] = diabetes_status
 
         blood_pressure = {
@@ -231,11 +250,12 @@ class SingHealth(object):
             'dbp': measurements['dbp']
         }
 
-        bp_assessment = assess_blood_pressure(blood_pressure, medical_history['conditions'])
-        bp_assessment["output"] = HealthAssessment.output_messages("blood_pressure", bp_assessment["code"], output_level)
+        BPA = BPAssessment({'bp': blood_pressure, 'conditions': medical_history['conditions']})
+        bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
-        
-        diet = assess_diet(diet_history, medical_history['conditions'], targets)
+
+        #diet = assess_diet(diet_history, medical_history['conditions'], targets)
+        '''
         exercise = assess_physical_activity(physical_activity, targets)
         assessment['lifestyle'] = {
             'bmi': bmi,
@@ -244,10 +264,11 @@ class SingHealth(object):
             'exercise': exercise,
             'smoking': smoker
         }
+        '''
 
         age = demographics['age']
         # work out how to add in diabetes if newly diagnosed?
-        has_high_risk_condition = HealthAssessment.high_risk_condition_check(
+        has_high_risk_condition = SingHealth.high_risk_condition_check(
             demographics['age'], blood_pressure, medical_history['conditions'], high_risk_conditions
         )
 
@@ -256,15 +277,15 @@ class SingHealth(object):
         }
 
         # Determine whether eligible for CVD risk assessment
-        estimate_cvd_risk_calc = HealthAssessment.estimate_cvd_risk(age, has_high_risk_condition)
-        # print('high risk output %s ' % assessment['high_risk'][0])
+        estimate_cvd_risk_calc = SingHealth().estimate_cvd_risk(age, has_high_risk_condition)
         # if not high_risk_condition[0]:
         if estimate_cvd_risk_calc[0]:
             # check if on bp_medications
-            on_bp_meds = check_medications('anti_hypertensive', medications)
+            print('performing cvd risk check')
+            on_bp_meds = SingHealth.check_medications('anti_hypertensive', medications)
             # print("\n--- on bp meds %s " % on_bp_meds)
             # params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
-            cvd_params = FraminghamParamsBuilder() \
+            cvd_params = SGFPB() \
                 .gender(gender) \
                 .age(age) \
                 .t_chol(pathology['cholesterol']['total_chol'], pathology['cholesterol']['units']) \
@@ -275,17 +296,17 @@ class SingHealth(object):
                 .diabetic(diabetes_status['status']) \
                 .build()
             # print("\n---\n cvd assessment \n")
-            fre_result = Framingham().calculate(cvd_params)
-            # print("\n---\nFRE result %s " % fre_result)
+            fre_result = SGFRE().calculate(cvd_params)
+            print("\n---\nFRE result %s " % fre_result)
             # print("\n---\n")
             
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = fre_result
-            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]
+            #assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]
 
         else:
             # cvd_calc = estimate_cvd_risk_calc[1]
-            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['Refer']
+            assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk']['refer']
 
         return assessment
 

@@ -1,3 +1,7 @@
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
+
 class CaloricIntake(object):
     def __init__(self, gender=None, weight=None, height=None, age=None, physical_activity_level=None):
         self.__gender = gender

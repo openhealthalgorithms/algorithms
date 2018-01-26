@@ -4,8 +4,11 @@ from os import path
 
 from setuptools import setup
 
-if sys.version_info[:2] < (3, 0):
-    raise RuntimeError('Python version 3 required.')
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
+if sys.version_info[:2] < (3, 4):
+    raise RuntimeError('Python version > 3.4 required.')
 
 here = path.abspath(path.dirname(__file__))
 
@@ -19,6 +22,7 @@ def find_packages(*args, **kwargs):
         'OHA.assessments',
         'OHA.helpers',
         'OHA.helpers.calculators',
+        'OHA.helpers.converters',
         'OHA.helpers.formatters',
         'OHA.helpers.measurements',
         'OHA.param_builders',
@@ -26,7 +30,7 @@ def find_packages(*args, **kwargs):
 
 
 def version():
-    __version = '0.2.2'
+    __version = '0.2.3'
     __tag = 'b'
     if path.exists('.git'):
         __tag = 'git'
