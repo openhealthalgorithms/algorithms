@@ -17,11 +17,6 @@ class WhoTest(unittest.TestCase):
         result = WHO().calculate(params)
         self.assertEqual(result['exception'], 'color chart not found.', params)
 
-    def test_should_produce_exception_2(self):
-        params = WhoParamsBuilder().gender('M').age(100).sbp1(130).sbp2(145).chol(5).smoker().diabetic().build()
-        result = WHO().calculate(params)
-        self.assertEqual(result['exception'], 'color chart not found.', params)
-
     @parameterized.expand(DataHelper.who_test_data())
     def test_who_algorithm(self, region, age, gender, bp, total_chol, smoker, diabetes, cvd_risk):
         params = WhoParamsBuilder() \
