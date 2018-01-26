@@ -10,14 +10,7 @@ def convert_cholesterol_unit(value, from_unit, to_unit):
 
 
 def convert_weight_unit(value, from_unit, to_unit):
-    if from_unit.lower() == to_unit.lower():
-        return value
-    elif to_unit.lower() == 'lb':
-        return value / 0.45359237
-    elif to_unit.lower() == 'kg':
-        return value * 0.45359237
-    else:
-        return None
+    raise NotImplementedError('use "helpers.converter.WeightConverter"')
 
 
 def convert_height_unit(value, from_unit, to_unit):

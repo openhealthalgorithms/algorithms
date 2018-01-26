@@ -3,6 +3,7 @@
 
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit, convert_weight_unit
+from OHA.helpers.converter.WeightConverter import WeightConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.helpers.measurements.BMI import BMI
 from OHA.helpers.measurements.WaistHipRatio import WaistHipRatio
@@ -123,11 +124,7 @@ class Diabetes(object):
             ),
         ).whr
         body_mass_index = BMI(
-            convert_weight_unit(
-                params.get('weight'),
-                params.get('weight_unit') or Defaults.weight_unit,
-                Defaults.weight_unit,
-            ),
+            WeightConverter(params.get('weight')).from_unit(params.get('weight_unit')).converted,
             convert_height_unit(
                 params.get('height'),
                 params.get('height_unit') or Defaults.height_unit,
