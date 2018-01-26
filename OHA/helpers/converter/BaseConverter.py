@@ -10,10 +10,14 @@ class BaseConverter(abc.ABC):
 
     @property
     def _from(self):
+        if self.__from is None:
+            return self._default_from_unit().lower()
         return self.__from.lower()
 
     @property
     def _to(self):
+        if self.__to is None:
+            return self._default_to_unit().lower()
         return self.__to.lower()
 
     @property
@@ -27,6 +31,14 @@ class BaseConverter(abc.ABC):
     def to_unit(self, value=None):
         self.__to = value
         return self
+
+    @abc.abstractmethod
+    def _default_from_unit(self):
+        raise NotImplementedError('method not implemented')
+
+    @abc.abstractmethod
+    def _default_to_unit(self):
+        raise NotImplementedError('method not implemented')
 
     def __validate_values(self):
         if self._from not in self._from_values():
@@ -48,7 +60,8 @@ class BaseConverter(abc.ABC):
     def _convert(self):
         raise NotImplementedError('method not implemented')
 
-    def convert(self):
+    @property
+    def converted(self):
         self.__validate_values()
         if len(self.__exception) > 0:
             raise ValueError(', '.join(self.__exception))
