@@ -1,12 +1,12 @@
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit, convert_weight_unit
-from OHA.assessments.Assessment import Assessment
+from OHA.assessments.BaseAssessment import BaseAssessment
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
 
-class BMIAssessment(Assessment):
+class BMIAssessment(BaseAssessment):
     def __init__(self, input_data=None):
         super(BMIAssessment, self).__init__(input_data)
 

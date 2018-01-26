@@ -1,10 +1,10 @@
-from OHA.assessments.Assessment import Assessment
+from OHA.assessments.BaseAssessment import BaseAssessment
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
 
-class PhysicalActivityAssessment(Assessment):
+class PhysicalActivityAssessment(BaseAssessment):
     def __init__(self, input_data=None):
         super(PhysicalActivityAssessment, self).__init__(input_data)
 

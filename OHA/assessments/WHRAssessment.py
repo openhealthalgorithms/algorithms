@@ -1,12 +1,12 @@
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit
-from OHA.assessments.Assessment import Assessment
+from OHA.assessments.BaseAssessment import BaseAssessment
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
 
-class WHRAssessment(Assessment):
+class WHRAssessment(BaseAssessment):
     def __init__(self, input_data=None):
         if input_data is not None:
             if input_data['gender'] not in ['F', 'M']:
