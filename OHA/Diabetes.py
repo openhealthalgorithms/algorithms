@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
 
-from OHA.Defaults import Defaults
-from OHA.__unit import convert_height_unit
 from OHA.helpers.converters.HeightConverter import HeightConverter
 from OHA.helpers.converters.HipConverter import HipConverter
 from OHA.helpers.converters.WaistConverter import WaistConverter

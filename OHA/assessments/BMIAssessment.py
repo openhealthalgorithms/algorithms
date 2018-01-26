@@ -1,5 +1,3 @@
-from OHA.Defaults import Defaults
-from OHA.__unit import convert_height_unit
 from OHA.assessments.BaseAssessment import BaseAssessment
 from OHA.helpers.converters.HeightConverter import HeightConverter
 from OHA.helpers.converters.WeightConverter import WeightConverter
