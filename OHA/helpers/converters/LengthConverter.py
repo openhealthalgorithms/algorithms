@@ -2,6 +2,9 @@ import abc
 
 from OHA.helpers.converters.BaseConverter import BaseConverter
 
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
 
 class LengthConverter(BaseConverter):
     def __init__(self, _value, _from=None, _to=None):

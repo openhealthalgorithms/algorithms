@@ -1,3 +1,7 @@
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
+
 class Defaults(object):
     weight_unit = 'kg'
     height_unit = 'm'

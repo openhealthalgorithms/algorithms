@@ -1,5 +1,8 @@
 import abc
 
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
 
 class BaseConverter(abc.ABC):
     def __init__(self, _value, _from=None, _to=None):

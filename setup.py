@@ -4,6 +4,9 @@ from os import path
 
 from setuptools import setup
 
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
 if sys.version_info[:2] < (3, 0):
     raise RuntimeError('Python version 3 required.')
 

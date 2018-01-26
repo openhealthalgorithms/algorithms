@@ -1,3 +1,7 @@
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
+
 class BMI(object):
 
     def __init__(self, weight=None, height=None):

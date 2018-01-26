@@ -1,3 +1,7 @@
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
+
 class WaistHipRatio(object):
 
     def __init__(self, waist=None, hip=None):

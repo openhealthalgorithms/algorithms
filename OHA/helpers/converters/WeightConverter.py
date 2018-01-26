@@ -1,6 +1,9 @@
 from OHA.Defaults import Defaults
 from OHA.helpers.converters.BaseConverter import BaseConverter
 
+__author__ = 'indrajit'
+__email__ = 'eendroroy@gmail.com'
+
 
 class WeightConverter(BaseConverter):
     def __init__(self, _value, _from=None, _to=None):
