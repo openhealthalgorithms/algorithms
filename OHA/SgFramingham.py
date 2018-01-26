@@ -5,13 +5,12 @@ import numpy as np
 import pandas as pd
 
 from OHA.Defaults import Defaults
-from OHA.__helpers import find_age_index
 from OHA.__unit import convert_cholesterol_unit
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
-__author__ = 'indrajit'
-__email__ = 'eendroroy@gmail.com'
+__author__ = 'fredhersch'
+__email__ = 'fred@openhealthalgorithms.org'
 
 
 class SgFramingham(object):
@@ -25,6 +24,17 @@ class SgFramingham(object):
     def __get_co_efficient(key, gender):
         return Defaults.co_efficients[key][gender]
 
+    # TODO: needs refactoring
+    @staticmethod
+    def __find_age_index(age, age_brackets):
+        age_index = '20-34'
+        for age_range in age_brackets:
+            min, max = age_range.split('-')
+            if int(min) <= age <= int(max):
+                age_index = age_range
+
+        return age_index
+
     @staticmethod
     def age_modifier_fre_points(age, gender):
 
@@ -34,9 +44,8 @@ class SgFramingham(object):
             "f": [-7, -3, 0, 3, 6, 8, 10, 12, 14, 16]
         }
 
-        index = 0
         value = None
-        bracket = find_age_index(age, age_brackets)
+        bracket = SgFramingham.__find_age_index(age, age_brackets)
         index = age_brackets.index(bracket)
 
         gender = gender.lower()
@@ -62,7 +71,7 @@ class SgFramingham(object):
         value = None
         gender = gender.lower()
 
-        bracket = find_age_index(age, age_brackets)
+        bracket = SgFramingham.__find_age_index(age, age_brackets)
         index = age_brackets.index(bracket)
         # should check we have a valid index
         if index >= 0:
@@ -102,7 +111,7 @@ class SgFramingham(object):
             chol_range = '>=7.3'
 
         # then return the column index based on age range
-        age_index = find_age_index(age, age_brackets)
+        age_index = SgFramingham.__find_age_index(age, age_brackets)
 
         # look up the value from the df
         # looking up with keys
