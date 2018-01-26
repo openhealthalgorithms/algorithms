@@ -1,6 +1,7 @@
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit
 from OHA.assessments.BaseAssessment import BaseAssessment
+from OHA.helpers.converters.HeightConverter import HeightConverter
 from OHA.helpers.converters.WeightConverter import WeightConverter
 
 __author__ = 'indrajit'
@@ -19,7 +20,7 @@ class BMIAssessment(BaseAssessment):
     @property
     def __height(self):
         height = self._get_data()['height']
-        return convert_height_unit(height[0], height[1] or Defaults.height_unit, Defaults.height_unit)
+        return HeightConverter(height[0]).from_unit(height[1]).converted
 
     @property
     def __bmi(self):

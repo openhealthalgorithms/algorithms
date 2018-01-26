@@ -14,23 +14,4 @@ def convert_weight_unit(value, from_unit, to_unit):
 
 
 def convert_height_unit(value, from_unit, to_unit):
-    if from_unit.lower() == to_unit.lower():
-        return value
-    elif to_unit.lower() == 'm' and from_unit.lower() == 'ft':
-        return value * 3.28084
-    elif to_unit.lower() == 'm' and from_unit.lower() == 'in':
-        return value * 39.3701
-    elif to_unit.lower() == 'cm' and from_unit.lower() == 'ft':
-        return value * 0.0328084
-    elif to_unit.lower() == 'cm' and from_unit.lower() == 'in':
-        return value * 0.393701
-    elif to_unit.lower() == 'ft' and from_unit.lower() == 'm':
-        return value * 0.3048
-    elif to_unit.lower() == 'ft' and from_unit.lower() == 'cm':
-        return value * 30.48
-    elif to_unit.lower() == 'in' and from_unit.lower() == 'm':
-        return value * 0.0254
-    elif to_unit.lower() == 'in' and from_unit.lower() == 'cm':
-        return value * 2.54
-    else:
-        return None
+    raise NotImplementedError('use "helpers.converter.HeightConverter"')
