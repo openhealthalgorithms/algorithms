@@ -45,11 +45,9 @@ class BaseConverter(abc.ABC):
 
     def __validate_values(self):
         if self._from not in self._from_values():
-            _from = self.__from
-            self.__exception.append(f'"{_from}" is not allowed as "from" value.')
+            self.__exception.append('"{_from}" is not allowed as "from" value.'.format(_from=self.__from))
         if self._to not in self._to_values():
-            _to = self.__to
-            self.__exception.append(f'"{_to}" is not allowed as "to" value.')
+            self.__exception.append('"{_to}" is not allowed as "to" value.'.format(_to=self.__to))
 
     @abc.abstractmethod
     def _from_values(self) -> list:
