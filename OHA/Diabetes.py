@@ -2,8 +2,8 @@
 #  -*- coding: utf-8 -*-
 
 from OHA.Defaults import Defaults
-from OHA.__unit import convert_height_unit, convert_weight_unit
-from OHA.helpers.converter.WeightConverter import WeightConverter
+from OHA.__unit import convert_height_unit
+from OHA.helpers.converters.WeightConverter import WeightConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.helpers.measurements.BMI import BMI
 from OHA.helpers.measurements.WaistHipRatio import WaistHipRatio

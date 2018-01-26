@@ -1,5 +1,5 @@
 from OHA.Defaults import Defaults
-from OHA.helpers.converter.BaseConverter import BaseConverter
+from OHA.helpers.converters.BaseConverter import BaseConverter
 
 
 class WeightConverter(BaseConverter):

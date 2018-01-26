@@ -1,7 +1,7 @@
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_height_unit
 from OHA.assessments.BaseAssessment import BaseAssessment
-from OHA.helpers.converter.WeightConverter import WeightConverter
+from OHA.helpers.converters.WeightConverter import WeightConverter
 
 __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
