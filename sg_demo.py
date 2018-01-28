@@ -2,7 +2,8 @@ from OHA.SgFramingham import SgFramingham
 from OHA.SingHealth import SingHealth as SHA
 from OHA.param_builders.sg_framingham_param_builder import SGFraminghamParamsBuilder as SGFPB
 
-params = SGFPB().gender('male').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125).smoker(True).diabetic(True).bp_medication(False).build()
+# params = SGFPB().gender('male').age(60).ethnicity('indian').t_chol(4.6, 'mmol/L').hdl_chol(1.8, 'mmol/L').sbp(125)\
+#     .smoker(True).diabetic(True).bp_medication(False).build()
 
 params = SGFPB()\
     .gender('m')\
@@ -38,7 +39,7 @@ input_params = {
         'demographics': {
             'gender': 'M',
             'age': 40,
-            'ethnicity' : 'caucasian',
+            'ethnicity': 'caucasian',
             'dob': ['computed', '01/10/1987'],
             'occupation': 'office_worker',
             'monthly_income': '',
