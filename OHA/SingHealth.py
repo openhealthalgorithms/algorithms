@@ -312,7 +312,7 @@ class SingHealth(object):
 
     @staticmethod
     def get_messages():
-        return HA.load_messages()
+        return SingHealth.load_messages()
 
     @staticmethod
     def get_sample_params():
@@ -327,7 +327,8 @@ class SingHealth(object):
             body=dict(
                 last_assessment=dict(assessment_date="", cvd_risk="20"),
                 demographics=dict(
-                    gender="F", age=50, dob=["computed", "01/10/1987"], occupation="office_worker", monthly_income=""
+                    gender="F", age=50, dob=["computed", "01/10/1987"], occupation="office_worker",
+                    monthly_income="", ethnicity='caucasian'
                 ),
                 measurements=dict(
                     height=[1.5, "m"], weight=[70.0, "kg"], waist=[99.0, "cm"],
