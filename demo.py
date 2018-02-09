@@ -4,6 +4,7 @@ from OHA.Diabetes import Diabetes
 from OHA.Framingham import Framingham
 from OHA.HEARTS import HEARTS
 from OHA.HealthAssessment import HealthAssessment as HA
+from OHA.SgFramingham import SgFramingham
 from OHA.SingHealth import SingHealth
 from OHA.WHO import WHO
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder as DBP
@@ -145,7 +146,8 @@ params = SGFPB() \
     .diabetic(True) \
     .bp_medication(False) \
     .build()
-# result = SgFramingham().calculate(params)
+
+result = SgFramingham().calculate(params)
 print('--> Sg Framingham:', result)
 print()
 
