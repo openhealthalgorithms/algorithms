@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 
 from OHA.Defaults import Defaults
-from OHA.__unit import convert_cholesterol_unit
 from OHA.helpers.converters.CholesterolConverter import CholesterolConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder

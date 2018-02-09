@@ -2,12 +2,10 @@
 #  -*- coding: utf-8 -*-
 
 import math
-
-import numpy as np
 import os
 
-from OHA.Defaults import Defaults
-from OHA.__unit import convert_cholesterol_unit
+import numpy as np
+
 from OHA.helpers.converters.CholesterolConverter import CholesterolConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
