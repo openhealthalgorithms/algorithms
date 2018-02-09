@@ -6,6 +6,7 @@ import pandas as pd
 
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_cholesterol_unit
+from OHA.helpers.converters.CholesterolConverter import CholesterolConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
@@ -17,7 +18,7 @@ class SgFramingham(object):
     """
         Modified FRE based on the SG MoH CVD Guidelines
     """
-    __default_cholesterol_unit = 'mmol/L'
+    __default_cholesterol_unit = 'mmol/l'
 
     # co-efficients used in the calculation. See relevant paper
     @staticmethod
@@ -173,16 +174,14 @@ class SgFramingham(object):
         gender = params.get('gender')
         age = params.get('age')
         ethnicity = params.get('ethnicity')
-        total_cholesterol = convert_cholesterol_unit(
-            params.get('total_cholesterol'),
-            params.get('cholesterol_unit') or SgFramingham.__default_cholesterol_unit,
-            SgFramingham.__default_cholesterol_unit,
-        )
-        hdl_cholesterol = convert_cholesterol_unit(
-            params.get('hdl_cholesterol'),
-            params.get('cholesterol_unit') or SgFramingham.__default_cholesterol_unit,
-            SgFramingham.__default_cholesterol_unit,
-        )
+        total_cholesterol = CholesterolConverter(params.get('total_cholesterol'))\
+            .from_unit(params.get('cholesterol_unit'))\
+            .to_unit(SgFramingham.__default_cholesterol_unit)\
+            .converted
+        hdl_cholesterol = CholesterolConverter(params.get('hdl_cholesterol'))\
+            .from_unit(params.get('cholesterol_unit'))\
+            .to_unit(SgFramingham.__default_cholesterol_unit)\
+            .converted
         on_bp_medication = params.get('bp_medication')
         systolic = params.get('systolic')
         is_smoker = params.get('is_smoker')

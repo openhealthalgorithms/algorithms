@@ -8,6 +8,7 @@ import os
 
 from OHA.Defaults import Defaults
 from OHA.__unit import convert_cholesterol_unit
+from OHA.helpers.converters.CholesterolConverter import CholesterolConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.who_param_builder import WhoParamsBuilder
 
@@ -122,11 +123,7 @@ class WHO(object):
         params = ParamFormatter(params).formatted
 
         cholesterol = WHO.__convert_cholesterol(
-            convert_cholesterol_unit(
-                params.get('cholesterol'),
-                params.get('cholesterol_unit') or Defaults.cholesterol_unit,
-                Defaults.cholesterol_unit,
-            ),
+            CholesterolConverter(params.get('cholesterol')).from_unit(params.get('cholesterol_unit')).converted,
         ) if 'cholesterol' in params.keys() else 'uc'
         diabetes = params.get('has_diabetes')
         gender = params.get('gender')
