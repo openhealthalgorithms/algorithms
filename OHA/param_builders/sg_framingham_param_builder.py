@@ -10,7 +10,7 @@ class SGFraminghamParamsBuilder(object):
         self.__sbp = 140
         self.__t_chol = None
         self.__t_chol_unit = 'mg/dl'
-        self.__chol_unit = 'mmol/L'
+        self.__chol_unit = 'mmol/l'
         self.__hdl_chol = None
         self.__hdl_chol_unit = 'mg/dl'
         self.__bp_medication = False

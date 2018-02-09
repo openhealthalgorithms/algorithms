@@ -138,8 +138,8 @@ params = SGFPB() \
     .gender('m') \
     .age(60) \
     .ethnicity('indian') \
-    .t_chol(4.6, 'mmol/L') \
-    .hdl_chol(1.8, 'mmol/L') \
+    .t_chol(4.6, 'mmol/l') \
+    .hdl_chol(1.8, 'mmol/l') \
     .sbp(125) \
     .smoker(True) \
     .diabetic(True) \
