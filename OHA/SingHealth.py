@@ -4,13 +4,17 @@
 import json
 import os
 
+from OHA.Defaults import Defaults
 from OHA.Diabetes import Diabetes
 from OHA.SgFramingham import SgFramingham as SGFRE
 from OHA.assessments.BMIAssessment import BMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.DiabetesAssessment import DiabetesAssessment
+from OHA.assessments.DietAssessment import DietAssessment
+from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
 from OHA.assessments.SEABMIAssessment import SEABMIAssessment
 from OHA.assessments.SmokingAssessment import SmokingAssessment
+from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
 from OHA.param_builders.sg_framingham_param_builder import SGFraminghamParamsBuilder as SGFPB
 
@@ -182,19 +186,28 @@ class SingHealth(object):
         # List of high risk conditions
         # Should also get the targets from here
         high_risk_conditions = guidelines["high_risk_conditions"]
-        # targets = guidelines["targets"]
+        targets = guidelines["targets"]
         # print("targets = %s " % targets)
 
         # unpack the request, validate it and set up the params
+        region = params['body']['region'] if 'region' in params['body'].keys() else Defaults.region
         demographics = params['body']['demographics']
         gender = demographics['gender']
         measurements = params['body']['measurements']
         smoking = params['body']['smoking']
-        # physical_activity = params['body']['physical_activity']
-        # diet_history = params['body']['diet_history']
+        physical_activity = params['body']['physical_activity']
+        diet_history = params['body']['diet_history']
         medical_history = params['body']['medical_history']
         pathology = params['body']['pathology']
         medications = params['body']['medications']
+
+        BMIA = BMIAssessment({'weight': measurements['weight'], 'height': measurements['height']})
+        bmi = BMIA.assess()
+        bmi['output'] = SingHealth.output_messages('anthro', bmi['code'], output_level)
+
+        WHRA = WHRAssessment(dict(waist=measurements['waist'], hip=measurements['hip'], gender=demographics['gender']))
+        whr = WHRA.assess()
+        whr['output'] = SingHealth.output_messages('anthro', whr['code'], output_level)
 
         SingHealth.calculate_lifestyle_assessment(params)
         SMA = SmokingAssessment({'smoking': smoking})
@@ -247,17 +260,21 @@ class SingHealth(object):
         bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
 
-        # diet = assess_diet(diet_history, medical_history['conditions'], targets)
-        '''
-        exercise = assess_physical_activity(physical_activity, targets)
+        DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
+        diet = DTA.assess()
+
+        PAA = PhysicalActivityAssessment({
+            'active_time': physical_activity,
+            'targets_active_time': targets['general']['physical_activity']['active_time'],
+        })
+        exercise = PAA.assess()
         assessment['lifestyle'] = {
             'bmi': bmi,
             'whr': whr,
             'diet': diet,
             'exercise': exercise,
-            'smoking': smoker
+            'smoking': smoker,
         }
-        '''
 
         age = demographics['age']
         # work out how to add in diabetes if newly diagnosed?
