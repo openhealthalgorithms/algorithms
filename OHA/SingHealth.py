@@ -6,15 +6,13 @@ import os
 
 from OHA.Defaults import Defaults
 from OHA.Diabetes import Diabetes
-from OHA.WHO import WHO
-from OHA.SgFramingham import SgFramingham as SGFRE 
+from OHA.SgFramingham import SgFramingham as SGFRE
 from OHA.assessments.BMIAssessment import BMIAssessment
-from OHA.assessments.SEABMIAssessment import SEABMIAssessment
 from OHA.assessments.BPAssessment import BPAssessment
 from OHA.assessments.DiabetesAssessment import DiabetesAssessment
 from OHA.assessments.DietAssessment import DietAssessment
-from OHA.assessments.HighRiskConditionAssessment import HighRiskConditionAssessment
 from OHA.assessments.PhysicalActivityAssessment import PhysicalActivityAssessment
+from OHA.assessments.SEABMIAssessment import SEABMIAssessment
 from OHA.assessments.SmokingAssessment import SmokingAssessment
 from OHA.assessments.WHRAssessment import WHRAssessment
 from OHA.param_builders.diabetes_param_builder import DiabetesParamsBuilder
@@ -72,13 +70,13 @@ class SingHealth(object):
                 return True
             else:
                 return False
-    
+
     @staticmethod
     def high_risk_condition_check(age, blood_pressure, conditions, high_risk_conditions):
         # Known heart disease, stroke, transient ischemic attack, DM, kidney disease (for assessment, if this has not
         #  been done)
         #  Pull this in from the configuration file
-        # high_risk_conditions = 
+        # high_risk_conditions =
         # Return whether medical history contains any of these
         has_high_risk_condition = False
         result_code = ""
@@ -87,7 +85,7 @@ class SingHealth(object):
             if condition.upper() in high_risk_conditions:
                 has_high_risk_condition = True
                 result_code = "HR-0"
-                hrc_value = condition
+                # hrc_value = condition
             else:
                 condition = None
 
@@ -99,21 +97,22 @@ class SingHealth(object):
             dbp = blood_pressure['dbp'][0]
 
             if sbp > 200 or dbp > 120:
-                #return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
-                # Very elevated 
+                # return True, "HRC-HTN", 'Severely high blood pressure. Seek emergency care immediately'
+                # Very elevated
                 has_high_risk_condition = True
                 result_code = "HR-1"
             elif age < 40 and (sbp >= 140 or dbp >= 90):
-                #High blood pressure in under 40, should be investigated for secondary hypertension
+                # High blood pressure in under 40, should be investigated for secondary hypertension
                 result_code = "HR-2"
-            
+
         hrc_output = {
             'status': has_high_risk_condition,
-            'reason' : condition,
+            'reason': condition,
             'code': result_code
         }
 
-        return hrc_output   
+        return hrc_output
+
     @staticmethod
     def output_messages(section, code, output_level):
         # how do we check if this is already in memory?
@@ -133,9 +132,9 @@ class SingHealth(object):
             output = messages[section][code][0:3]
         elif output_level == 4:
             output = messages[section][code][0:4]
-        
+
         return output
-    
+
     @staticmethod
     def calculate_lifestyle_assessment(params):
         output_level = 2
@@ -160,12 +159,12 @@ class SingHealth(object):
         ethnicity = demographics['ethnicity']
         print('ethnicity is %s ' % ethnicity)
 
-        gender = demographics['gender']
+        # gender = demographics['gender']
         measurements = params['body']['measurements']
-        smoking = params['body']['smoking']
-        physical_activity = params['body']['physical_activity']
-        diet_history = params['body']['diet_history']
-        
+        # smoking = params['body']['smoking']
+        # physical_activity = params['body']['physical_activity']
+        # diet_history = params['body']['diet_history']
+
         if ethnicity in ethnicities:
             BMIA = SEABMIAssessment({'weight': measurements['weight'], 'height': measurements['height']})
         else:
@@ -174,8 +173,6 @@ class SingHealth(object):
         bmi = BMIA.assess()
         bmi['output'] = SingHealth.output_messages('anthro', bmi['code'], output_level)
 
-
-    
     @staticmethod
     def calculate(params):
         assessment = {}
@@ -191,8 +188,9 @@ class SingHealth(object):
         high_risk_conditions = guidelines["high_risk_conditions"]
         targets = guidelines["targets"]
         # print("targets = %s " % targets)
-        
+
         # unpack the request, validate it and set up the params
+        region = params['body']['region'] if 'region' in params['body'].keys() else Defaults.region
         demographics = params['body']['demographics']
         gender = demographics['gender']
         measurements = params['body']['measurements']
@@ -202,6 +200,14 @@ class SingHealth(object):
         medical_history = params['body']['medical_history']
         pathology = params['body']['pathology']
         medications = params['body']['medications']
+
+        BMIA = BMIAssessment({'weight': measurements['weight'], 'height': measurements['height']})
+        bmi = BMIA.assess()
+        bmi['output'] = SingHealth.output_messages('anthro', bmi['code'], output_level)
+
+        WHRA = WHRAssessment(dict(waist=measurements['waist'], hip=measurements['hip'], gender=demographics['gender']))
+        whr = WHRA.assess()
+        whr['output'] = SingHealth.output_messages('anthro', whr['code'], output_level)
 
         SingHealth.calculate_lifestyle_assessment(params)
         SMA = SmokingAssessment({'smoking': smoking})
@@ -239,7 +245,7 @@ class SingHealth(object):
             conditions.append('diabetes')
             medical_history['conditions'] = conditions
             diabetes_risk = None
-        
+
         # unpack the messages
         # print("---- diabetes status = %s " % diabetes_status)
         diabetes_status["output"] = SingHealth.output_messages("diabetes", diabetes_status["code"], output_level)
@@ -254,17 +260,21 @@ class SingHealth(object):
         bp_assessment = BPA.assess()
         assessment['blood_pressure'] = bp_assessment
 
-        #diet = assess_diet(diet_history, medical_history['conditions'], targets)
-        '''
-        exercise = assess_physical_activity(physical_activity, targets)
+        DTA = DietAssessment({'diet_history': diet_history, 'targets': targets})
+        diet = DTA.assess()
+
+        PAA = PhysicalActivityAssessment({
+            'active_time': physical_activity,
+            'targets_active_time': targets['general']['physical_activity']['active_time'],
+        })
+        exercise = PAA.assess()
         assessment['lifestyle'] = {
             'bmi': bmi,
             'whr': whr,
             'diet': diet,
             'exercise': exercise,
-            'smoking': smoker
+            'smoking': smoker,
         }
-        '''
 
         age = demographics['age']
         # work out how to add in diabetes if newly diagnosed?
@@ -284,7 +294,8 @@ class SingHealth(object):
             print('performing cvd risk check')
             on_bp_meds = SingHealth.check_medications('anti_hypertensive', medications)
             # print("\n--- on bp meds %s " % on_bp_meds)
-            # params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125).smoker(False).diabetic(False).bp_medication(True).build()
+            # params = FPB().gender("M").age(45).t_chol(170, 'mg/dl').hdl_chol(45, 'mg/dl').sbp(125)
+            # .smoker(False).diabetic(False).bp_medication(True).build()
             cvd_params = SGFPB() \
                 .gender(gender) \
                 .age(age) \
@@ -299,10 +310,10 @@ class SingHealth(object):
             fre_result = SGFRE().calculate(cvd_params)
             print("\n---\nFRE result %s " % fre_result)
             # print("\n---\n")
-            
+
             # use the key to look up the guidelines output
             assessment['cvd_assessment']['cvd_risk_result'] = fre_result
-            #assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]
+            # assessment['cvd_assessment']['guidelines'] = guidelines['cvd_risk'][fre_result['risk_range']]
 
         else:
             # cvd_calc = estimate_cvd_risk_calc[1]
@@ -312,7 +323,7 @@ class SingHealth(object):
 
     @staticmethod
     def get_messages():
-        return HA.load_messages()
+        return SingHealth.load_messages()
 
     @staticmethod
     def get_sample_params():
@@ -327,7 +338,8 @@ class SingHealth(object):
             body=dict(
                 last_assessment=dict(assessment_date="", cvd_risk="20"),
                 demographics=dict(
-                    gender="F", age=50, dob=["computed", "01/10/1987"], occupation="office_worker", monthly_income=""
+                    gender="F", age=50, dob=["computed", "01/10/1987"], occupation="office_worker",
+                    monthly_income="", ethnicity='caucasian'
                 ),
                 measurements=dict(
                     height=[1.5, "m"], weight=[70.0, "kg"], waist=[99.0, "cm"],

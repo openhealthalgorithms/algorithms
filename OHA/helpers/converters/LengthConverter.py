@@ -10,10 +10,7 @@ class LengthConverter(BaseConverter):
     def __init__(self, _value, _from=None, _to=None):
         super(LengthConverter, self).__init__(_value, _from, _to)
 
-    def _from_values(self):
-        return ['ft', 'in', 'm', 'cm']
-
-    def _to_values(self):
+    def _supported_units(self):
         return ['ft', 'in', 'm', 'cm']
 
     @abc.abstractmethod

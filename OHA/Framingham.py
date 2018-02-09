@@ -4,7 +4,7 @@
 import numpy as np
 
 from OHA.Defaults import Defaults
-from OHA.__unit import convert_cholesterol_unit
+from OHA.helpers.converters.CholesterolConverter import CholesterolConverter
 from OHA.helpers.formatters.ParamFormatter import ParamFormatter
 from OHA.param_builders.framingham_param_builder import FraminghamParamsBuilder
 
@@ -28,16 +28,14 @@ class Framingham(object):
     def calculate_fre_score(params):
         gender = params.get('gender')
         age = params.get('age')
-        total_cholesterol = convert_cholesterol_unit(
-            params.get('total_cholesterol'),
-            params.get('total_cholesterol_unit') or Framingham.__default_cholesterol_unit,
-            Framingham.__default_cholesterol_unit,
-        )
-        hdl_cholesterol = convert_cholesterol_unit(
-            params.get('hdl_cholesterol'),
-            params.get('hdl_cholesterol_unit') or Framingham.__default_cholesterol_unit,
-            Framingham.__default_cholesterol_unit,
-        )
+        total_cholesterol = CholesterolConverter(params.get('total_cholesterol'))\
+            .from_unit(params.get('total_cholesterol_unit'))\
+            .to_unit(Framingham.__default_cholesterol_unit)\
+            .converted
+        hdl_cholesterol = CholesterolConverter(params.get('hdl_cholesterol'))\
+            .from_unit(params.get('hdl_cholesterol_unit'))\
+            .to_unit(Framingham.__default_cholesterol_unit)\
+            .converted
         on_bp_medication = params.get('on_bp_medication')
         systolic = params.get('systolic')
         is_smoker = params.get('is_smoker')

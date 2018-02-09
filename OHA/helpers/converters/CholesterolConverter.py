@@ -5,25 +5,25 @@ __author__ = 'indrajit'
 __email__ = 'eendroroy@gmail.com'
 
 
-class WeightConverter(BaseConverter):
+class CholesterolConverter(BaseConverter):
     def __init__(self, _value, _from=None, _to=None):
-        super(WeightConverter, self).__init__(_value, _from, _to)
+        super(CholesterolConverter, self).__init__(_value, _from, _to)
 
     def _supported_units(self):
-        return ['lb', 'kg']
+        return ['mmol/l', 'mg/dl']
 
     def _default_from_unit(self):
-        return Defaults.weight_unit
+        return Defaults.cholesterol_unit
 
     def _default_to_unit(self):
-        return Defaults.weight_unit
+        return Defaults.cholesterol_unit
 
     def _convert(self):
         if self._from == self._to:
             return self._value
-        elif self._to == 'lb':
-            return self._value / 0.45359237
-        elif self._to == 'kg':
-            return self._value * 0.45359237
+        elif self._to == 'mmol/l':
+            return self._value * 0.02586
+        elif self._to == 'mg/dl':
+            return self._value * 88.57
         else:
             return None

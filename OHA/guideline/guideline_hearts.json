@@ -76,7 +76,7 @@
                 "HBA1C" : "7",
                 "fasting" : "6",
                 "post-prandial" : "10",
-                "units" : "mmol/L"
+                "units" : "mmol/l"
               },
               "complex" : {
                 "HBA1C" : "8"
