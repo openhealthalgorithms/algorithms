@@ -44,17 +44,13 @@ class BaseConverter(abc.ABC):
         raise NotImplementedError('method not implemented')
 
     def __validate_values(self):
-        if self._from not in self._from_values():
+        if self._from not in self._supported_units():
             self.__exception.append('"{_from}" is not allowed as "from" value.'.format(_from=self.__from))
-        if self._to not in self._to_values():
+        if self._to not in self._supported_units():
             self.__exception.append('"{_to}" is not allowed as "to" value.'.format(_to=self.__to))
 
     @abc.abstractmethod
-    def _from_values(self) -> list:
-        raise NotImplementedError('method not implemented')
-
-    @abc.abstractmethod
-    def _to_values(self) -> list:
+    def _supported_units(self) -> list:
         raise NotImplementedError('method not implemented')
 
     @abc.abstractmethod

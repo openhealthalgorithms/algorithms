@@ -9,10 +9,7 @@ class WeightConverter(BaseConverter):
     def __init__(self, _value, _from=None, _to=None):
         super(WeightConverter, self).__init__(_value, _from, _to)
 
-    def _from_values(self):
-        return ['lb', 'kg']
-
-    def _to_values(self):
+    def _supported_units(self):
         return ['lb', 'kg']
 
     def _default_from_unit(self):

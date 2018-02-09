@@ -9,10 +9,7 @@ class CholesterolConverter(BaseConverter):
     def __init__(self, _value, _from=None, _to=None):
         super(CholesterolConverter, self).__init__(_value, _from, _to)
 
-    def _from_values(self):
-        return ['mmol/l', 'mg/dl']
-
-    def _to_values(self):
+    def _supported_units(self):
         return ['mmol/l', 'mg/dl']
 
     def _default_from_unit(self):
