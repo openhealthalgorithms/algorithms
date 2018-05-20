@@ -35,6 +35,7 @@ class BPAssessment(BaseAssessment):
                 target = '130/80'
             else:
                 result_code = 'BP-3A'
+                target = '130/80'
         elif _sbp > 160:
             result_code = 'BP-2'
             target = '140/90'

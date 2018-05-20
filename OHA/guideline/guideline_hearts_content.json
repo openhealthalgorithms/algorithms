@@ -22,7 +22,7 @@
             "WHR-0" : ["normal", "Normal waist hip ratio", "GREEN", "Your wait hip ratio is normal"],
             "WHR-1" : ["abnormal_female", "Abnormal waist hip ratio for female", "AMBER", "Your wait hip ratio is above the target for females"],
             "WHR-2" : ["abnormal_male", "Abnormal waist hip ratio for male", "AMBER", "Your wait hip ratio is above the target for males"]
-        }, 
+        },
         "nutrition" : {
             "NUT-1" : ["fv_on_target", "Meeting F&V Targets", "GREEN", "You are eating the recommended amount of fruit and vegetables. Keep it up"],
             "NUT-2" : ["fv_off_target_partial", "Partially meeting targets", "YELLOW", "Almost there .. Try to meet the recommended targets for both Fruit and Vegetables"],
@@ -41,7 +41,7 @@
             "BP-1A" : ["off_target_mild", "Mildly Elevated BP", "YELLOW", "Your BP is a little on the high side. Follow lifestyle advice and ensure you get a review"],
             "BP-1B" : ["off_target_moderate", "Moderately Elevated BP", "AMBER", "Your BP is on the high side. Follow lifestyle advice and ensure you get a review"],
             "BP-2" : ["off_target_review", "Significantly Elevated BP", "RED", "At this level you need a review with a doctor"],
-            "BP-3A" : ["on_target_dm", "On target for patient with diabetes", "GREEN", "Good job"],
+            "BP-3A" : ["on_target_dm", "YAY On target for patient with diabetes", "GREEN", "Good job"],
             "BP-3B" : ["off_target_dm", "Off target for patient with diabetes", "AMBER", "Need to better control BP"],
             "BP-4" : ["refer", "Blood pressure is very high, needs referral", "RED", "Seek care now"],
             "BP-5" : ["dx_htn", "History of high blood pressure", "AMBER", "You told us you have high blood pressure"],
